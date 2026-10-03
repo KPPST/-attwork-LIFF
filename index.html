@@ -405,33 +405,28 @@
         }
       }
 
-      // เผื่อกรณี Drive ตอบ 308 ใน chunk สุดท้าย แต่ server รับข้อมูลครบแล้ว
-      // ตรวจสถานะจาก Applications อีกครั้งก่อนแจ้งล้มเหลว
+      // ตรวจ session โดยตรงหลังส่ง chunk ครบ
+      // ไม่อาศัย Applications เป็นตัวตัดสิน เพราะสถานะจะถูกเปลี่ยนเป็น COMPLETE
+      // เมื่อ Drive คืน 200/201 หรือ session ตรวจพบว่าเสร็จแล้ว
       for (let attempt = 0; attempt < 5; attempt++) {
-        await new Promise(resolve => setTimeout(resolve, 700));
-
-        const statusResult = await apiCall(
-          'getApplicationResumeUploadStatus',
-          { applicationId }
+        const finalizeResult = await apiCall(
+          'finalizeApplicationResumeUpload',
+          { applicationId, uploadId, uploadKey }
         );
 
-        if (statusResult.resumeStatus === 'แนบ Resume สำเร็จ') {
+        if (finalizeResult.status === 'COMPLETE') {
           $('progressBar').style.width = '100%';
           $('progressText').textContent = 'แนบ Resume สำเร็จ';
-          return {
-            ok: true,
-            status: 'COMPLETE',
-            applicationId
-          };
+          return finalizeResult;
         }
 
-        if (statusResult.resumeStatus === 'อัปโหลดไม่สำเร็จ') {
-          throw new Error('ระบบอัปโหลด Resume แจ้งว่าอัปโหลดไม่สำเร็จ');
+        if (attempt < 4) {
+          await new Promise(resolve => setTimeout(resolve, 500));
         }
       }
 
       throw new Error(
-        'การอัปโหลด Resume ยังไม่เสร็จ กรุณาตรวจสอบสถานะอีกครั้งก่อนส่งใหม่'
+        'Google Drive ยังยืนยันการอัปโหลดไม่เสร็จ กรุณาลองใหม่อีกครั้ง'
       );
     }
 
@@ -470,6 +465,7 @@
 
         button.textContent = 'กำลังส่งใบสมัคร...';
         const result = await apiCall('createApplication', form);
+        console.log('Application created:', result.applicationId, result.sheetName, result.rowNumber, result.apiVersion);
 
         if (file) {
           button.textContent = 'กำลังแนบ Resume...';
