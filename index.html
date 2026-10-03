@@ -1,141 +1,133 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ATWORK | สมัครงาน</title>
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-<style>
-body{margin:0;background:#f4f7fb;font-family:Arial,Tahoma,sans-serif;color:#182230}
-main{max-width:680px;margin:auto;padding:16px}
-header,form{background:#fff;border-radius:16px;padding:20px;margin-bottom:12px;box-shadow:0 5px 20px #00000012}
-header{background:#102d61;color:#fff}h1{margin:0 0 5px;font-size:24px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}
-label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px}
-input,select{width:100%;box-sizing:border-box;padding:11px;border:1px solid #d7dee8;border-radius:10px}
-button{width:100%;padding:12px;border:0;border-radius:10px;background:#1657b8;color:#fff;font-weight:bold;margin-top:16px}
-button:disabled{opacity:.5}.msg{display:none;padding:11px;border-radius:10px;margin-top:12px;white-space:pre-line}
-.ok{background:#e9f8f0;color:#16834f}.bad{background:#fff0f2;color:#c53b4b}
-@media(max-width:600px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
-</style>
-</head>
-<body>
-<main>
-<header>
-  <h1>ATWORK | ระบบสมัครงาน</h1>
-  <div id="state">กำลังเชื่อมต่อ LINE...</div>
-</header>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATWORK</title>
 
-<form id="f">
-  <div class="grid">
-    <div class="full"><label>ชื่อ-นามสกุล *</label><input id="name" required></div>
-    <div>
-      <label>ตำแหน่งที่ต้องการ *</label>
-      <select id="position" required>
-        <option value="">เลือกตำแหน่ง</option>
-        <option>ช่าง</option><option>พนักงานโรงงาน</option><option>ออฟฟิศ</option>
-      </select>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      color: #222;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 24px 18px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    #status {
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 10px;
+      background: #f1f3f5;
+    }
+
+    #profile {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    #profile img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+
+    <h1>ATWORK</h1>
+
+    <div id="status">
+      กำลังเชื่อมต่อ LINE...
     </div>
-    <div><label>เงินเดือนที่คาดหวัง *</label><input id="expectedSalary" type="number" min="1" required></div>
-    <div class="full"><label>วันที่สามารถเริ่มงานได้ *</label><input id="startDate" type="date" required></div>
-    <div><label>บ้านเลขที่ *</label><input id="houseNo" required></div>
-    <div><label>หมู่</label><input id="moo"></div>
-    <div class="full"><label>ถนน</label><input id="road"></div>
-    <div><label>ตำบล/แขวง *</label><input id="subdistrict" required></div>
-    <div><label>อำเภอ/เขต *</label><input id="district" required></div>
-    <div><label>จังหวัด *</label><input id="province" required></div>
-    <div><label>รหัสไปรษณีย์</label><input id="postalCode" inputmode="numeric"></div>
-    <div><label>เบอร์โทรศัพท์ *</label><input id="phone" type="tel" required></div>
-    <div><label>อีเมล *</label><input id="email" type="email" required></div>
+
+    <div id="profile">
+      <img id="profileImage" src="" alt="Profile">
+      <h3 id="profileName"></h3>
+      <p>เชื่อมต่อ LINE สำเร็จ</p>
+    </div>
+
   </div>
-  <div id="msg" class="msg"></div>
-  <button id="send" disabled>กำลังเตรียมระบบ...</button>
-</form>
-</main>
+</div>
 
 <script>
-const LIFF_ID='2011817085-Mqy2mWhy';
-const GAS='https://script.google.com/macros/s/AKfycbx-at7k-HTUunIkEQbNiX_RirlV6GEGd2uBmNH_jGmCIWSxqTawgeSIxfB3R3EcJxY/exec';
-const VERSION='ATWORK-SIMPLE-1';
-let token='',ready=false;
-const $=id=>document.getElementById(id);
 
-function msg(t,ok=false){
-  $('msg').textContent=t;
-  $('msg').className='msg '+(ok?'ok':'bad');
-  $('msg').style.display='block';
-}
+const LIFF_ID = "2011817085-Mqy2mWhy";
 
-async function api(action,data={}){
-  const r=await fetch(GAS,{
-    method:'POST',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action,idToken:token,data})
-  });
-  const d=await r.json();
-  if(!d.ok) throw Error(d.message||'ระบบตอบกลับไม่สำเร็จ');
-  return d;
-}
+async function startLIFF() {
+  try {
 
-async function init(){
-  try{
-    await liff.init({liffId:LIFF_ID,withLoginOnExternalBrowser:true});
-    if(!liff.isLoggedIn()){
-      liff.login({redirectUri:location.href});
+    await liff.init({
+      liffId: LIFF_ID,
+      withLoginOnExternalBrowser: true
+    });
+
+    console.log("LIFF initialized");
+    console.log("isInClient:", liff.isInClient());
+    console.log("isLoggedIn:", liff.isLoggedIn());
+
+    if (!liff.isLoggedIn()) {
+
+      document.getElementById("status").textContent =
+        "กรุณาเข้าสู่ระบบ LINE...";
+
+      liff.login();
+
       return;
     }
-    token=liff.getIDToken()||'';
-    if(!token) throw Error('ไม่พบ LINE ID Token');
-    const p=await api('ping');
-    if(p.version!==VERSION) throw Error('Apps Script ยังเป็นเวอร์ชันเก่า');
-    ready=true;
-    $('state').textContent='● เชื่อมต่อ LINE แล้ว';
-    $('send').disabled=false;
-    $('send').textContent='ส่งใบสมัคร';
-  }catch(e){
-    $('state').textContent='เชื่อมต่อ LINE ไม่สำเร็จ';
-    msg(e.message||'เปิดระบบไม่สำเร็จ');
+
+    const profile = await liff.getProfile();
+
+    document.getElementById("status").textContent =
+      "เชื่อมต่อ LINE สำเร็จ";
+
+    document.getElementById("profile").style.display = "block";
+
+    document.getElementById("profileImage").src =
+      profile.pictureUrl || "";
+
+    document.getElementById("profileName").textContent =
+      profile.displayName || "ผู้ใช้ LINE";
+
+  } catch (error) {
+
+    console.error("LIFF ERROR:", error);
+
+    document.getElementById("status").textContent =
+      "เกิดข้อผิดพลาด: " + (error.message || error);
+
   }
 }
 
-$('f').onsubmit=async e=>{
-  e.preventDefault();
-  if(!ready)return;
-  $('send').disabled=true;
-  $('send').textContent='กำลังส่ง...';
-  try{
-    token=liff.getIDToken()||token;
-    const data={
-      name:$('name').value.trim(),
-      position:$('position').value,
-      expectedSalary:$('expectedSalary').value,
-      startDate:$('startDate').value,
-      houseNo:$('houseNo').value.trim(),
-      moo:$('moo').value.trim(),
-      road:$('road').value.trim(),
-      subdistrict:$('subdistrict').value.trim(),
-      district:$('district').value.trim(),
-      province:$('province').value.trim(),
-      postalCode:$('postalCode').value.trim(),
-      phone:$('phone').value.trim(),
-      email:$('email').value.trim()
-    };
-    const r=await api('createApplication',data);
-    if(!r.applicationId)throw Error('ระบบไม่ส่งเลขที่สมัครกลับมา');
-    msg('ส่งใบสมัครเรียบร้อยแล้ว\\nเลขที่สมัคร: '+r.applicationId,true);
-    $('f').reset();
-  }catch(e){
-    msg(e.message||'ส่งใบสมัครไม่สำเร็จ');
-  }finally{
-    $('send').disabled=false;
-    $('send').textContent='ส่งใบสมัคร';
-  }
-};
+startLIFF();
 
-const d=new Date();
-d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
-$('startDate').min=d.toISOString().slice(0,10);
-init();
 </script>
+
 </body>
 </html>
