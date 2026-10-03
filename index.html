@@ -454,6 +454,23 @@
         };
 
         button.textContent = 'กำลังส่งใบสมัคร...';
+        // ตรวจ backend ก่อนสร้างใบสมัคร เพื่อไม่ให้ส่งข้อมูลเข้า Deployment รุ่นเก่า
+        const backend = await apiCall('ping');
+        const backendVersion = String(
+          backend.apiVersion ||
+          backend.data?.apiVersion ||
+          backend.result?.apiVersion ||
+          ''
+        ).trim();
+
+        if (backendVersion !== '2026-10-03-github-ready-2') {
+          throw new Error(
+            'Backend ยังไม่ใช่เวอร์ชันล่าสุด: ' +
+            (backendVersion || 'ไม่พบ API_VERSION') +
+            '\nกรุณา Deploy Code.gs เวอร์ชัน 2026-10-03-github-ready-2 ก่อน'
+          );
+        }
+
         const result = await apiCall('createApplication', form);
         const applicationId = String(
           result.applicationId ||
