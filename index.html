@@ -145,6 +145,7 @@
     const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxOdHuaR1KVKH0bfym1ZoHCV784Ubw2x8bbwiuo8O7Ohwa5YGxtUtve7h9mIHwVxdrT/exec';
     const MAX_FILE_SIZE = 50 * 1024 * 1024;
     const CHUNK_SIZE = 2 * 1024 * 1024;
+    const EXPECTED_API_VERSION = '2026-10-03-upload-fix-3';
 
     let ready = false;
     let idToken = '';
@@ -232,6 +233,17 @@
         }
 
         await refreshToken();
+
+        // ตรวจว่า GitHub Pages กำลังคุยกับ Apps Script deployment รุ่นเดียวกับโค้ดนี้
+        const ping = await apiCall('ping');
+        if (String(ping.apiVersion || '') !== EXPECTED_API_VERSION) {
+          throw new Error(
+            'Apps Script ที่เชื่อมต่ออยู่ยังไม่ใช่เวอร์ชันล่าสุด (' +
+            (ping.apiVersion || 'ไม่พบ version') +
+            ') กรุณา Deploy Apps Script เวอร์ชันใหม่ แล้วอัปเดต URL /exec ใน GitHub Pages'
+          );
+        }
+
         ready = true;
 
         $('lineState').textContent = liff.isInClient()
