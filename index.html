@@ -142,9 +142,10 @@
     // 1) CONFIG — เปลี่ยนแค่ GAS_WEB_APP_URL ให้เป็น /exec จริง
     // ==========================================================
     const LIFF_ID = '2011817085-Mqy2mWhy';
-    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2uM3YXhdOfWT8aZDDkqdeL-ygv6LgKi-7kYch7qZyB63twTCFA4fgKeDPHzrLbc_y/exec';
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx-at7k-HTUunIkEQbNiX_RirlV6GEGd2uBmNH_jGmCIWSxqTawgeSIxfB3R3EcJxY/exec';
     const MAX_FILE_SIZE = 50 * 1024 * 1024;
     const CHUNK_SIZE = 2 * 1024 * 1024;
+    const EXPECTED_API_VERSION = '2026-10-03-github-full-1';
 
     let ready = false;
     let idToken = '';
@@ -205,7 +206,9 @@
         throw new Error(result?.message || 'ระบบตอบกลับไม่สำเร็จ');
       }
 
-      return result;
+      // รองรับทั้ง response แบบตรง และ response ที่ถูกห่อไว้ใน data/result
+      const normalized = result.data || result.result || result;
+      return { ...result, ...normalized };
     }
 
     async function refreshToken() {
@@ -232,6 +235,15 @@
         }
 
         await refreshToken();
+
+        // ตรวจว่า GitHub กำลังเชื่อมต่อ Apps Script ชุดเดียวกับ index.html นี้
+        const ping = await apiCall('ping');
+        if (String(ping.apiVersion || '') !== EXPECTED_API_VERSION) {
+          throw new Error(
+            'Apps Script ที่เชื่อมต่ออยู่ยังเป็นเวอร์ชันเก่า กรุณา Deploy Code.gs เวอร์ชันล่าสุดแล้วลองใหม่'
+          );
+        }
+
         ready = true;
 
         $('lineState').textContent = liff.isInClient()
@@ -443,10 +455,22 @@
 
         button.textContent = 'กำลังส่งใบสมัคร...';
         const result = await apiCall('createApplication', form);
+        const applicationId = String(
+          result.applicationId ||
+          result.data?.applicationId ||
+          result.result?.applicationId ||
+          ''
+        ).trim();
+
+        if (!applicationId) {
+          throw new Error(
+            'ส่งข้อมูลไปแล้ว แต่ระบบไม่ส่งเลขที่ใบสมัครกลับมา กรุณา Deploy Code.gs เวอร์ชันล่าสุด'
+          );
+        }
 
         if (file) {
           button.textContent = 'กำลังแนบ Resume...';
-          await uploadResume(result.applicationId, file);
+          await uploadResume(applicationId, file);
           setNotice(
             'formMessage',
             'ส่งใบสมัครและแนบ Resume เรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId,
@@ -455,7 +479,7 @@
         } else {
           setNotice(
             'formMessage',
-            'ส่งใบสมัครเรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId + '\nResume: ไม่มีไฟล์แนบ',
+            'ส่งใบสมัครเรียบร้อยแล้ว\nเลขที่สมัคร: ' + applicationId + '\nResume: ไม่มีไฟล์แนบ',
             'success'
           );
         }
