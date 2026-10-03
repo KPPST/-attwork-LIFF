@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ATWORK | สมัครงาน</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    :root {
+      --navy: #071b3a;
+      --blue: #1657b8;
+      --purple: #6c4ce6;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #182230;
+      --muted: #667085;
+      --border: #dbe2ea;
+      --success: #138a58;
+      --warning: #b7791f;
+      --danger: #c53b4b;
+      --shadow: 0 8px 30px rgba(15, 35, 70, .08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #eef4ff 0, var(--bg) 260px);
+      color: var(--text);
+      font-family: Arial, Tahoma, sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 18px 16px 40px;
+    }
+
+    .hero {
+      border-radius: 20px;
+      color: white;
+      padding: 22px;
+      background: linear-gradient(135deg, var(--navy), #153d83 55%, var(--purple));
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      font-size: 13px;
+      letter-spacing: .8px;
+      opacity: .9;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 6px 0 4px;
+      font-size: 26px;
+    }
+
+    .hero p {
+      margin: 0;
+      opacity: .92;
+      font-size: 14px;
+    }
+
+    .line-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 14px;
+      font-size: 13px;
+      background: rgba(255,255,255,.12);
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #e9eef6;
+      padding: 5px;
+      border-radius: 13px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      border: 0;
+      padding: 11px 10px;
+      border-radius: 9px;
+      background: transparent;
+      color: #5f6b7a;
+      font-weight: 700;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: var(--navy);
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #e7edf4;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin: 0 0 4px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0 0 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 800;
+      margin: 18px 0 8px;
+      color: var(--navy);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--danger);
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(22,87,184,.11);
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      background: #fafcff;
+    }
+
+    .file-note {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .primary {
+      width: 100%;
+      border: 0;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #1657b8, #6c4ce6);
+      color: white;
+      padding: 13px 16px;
+      font-weight: 800;
+      margin-top: 16px;
+    }
+
+    .primary:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .secondary {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--navy);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-weight: 700;
+    }
+
+    .notice {
+      padding: 11px 12px;
+      border-radius: 10px;
+      background: #f3f6fa;
+      color: #52606f;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    .notice.success { background: #ebf9f2; color: var(--success); }
+    .notice.warning { background: #fff8e8; color: var(--warning); }
+    .notice.danger { background: #fff0f2; color: var(--danger); }
+
+    .progress-wrap {
+      margin-top: 14px;
+      display: none;
+    }
+
+    .progress-track {
+      height: 9px;
+      background: #e8edf4;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #1657b8, #6c4ce6);
+      transition: width .15s ease;
+    }
+
+    .progress-text {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .application-card {
+      border: 1px solid #e3eaf2;
+      border-radius: 13px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: white;
+    }
+
+    .application-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .application-id {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .status-pill {
+      display: inline-block;
+      white-space: nowrap;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .detail {
+      background: #f7f9fc;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .detail.full { grid-column: 1 / -1; }
+    .detail-label { color: var(--muted); font-size: 11px; }
+    .detail-value { font-size: 13px; margin-top: 2px; word-break: break-word; }
+
+    .resume-box {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: #f7f9fc;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .resume-status {
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 28px 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .grid, .detail-grid { grid-template-columns: 1fr; }
+      .field.full, .detail.full { grid-column: auto; }
+      .app { padding: 12px 12px 30px; }
+      .hero { padding: 18px; }
+      h1 { font-size: 23px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="brand">ATWORK | RECRUITMENT SERVICE</div>
+      <h1>ระบบสมัครงาน</h1>
+      <p>สมัครงานกับ ATWORK และตรวจสอบสถานะใบสมัครของคุณได้จาก LINE</p>
+      <div id="lineState" class="line-state">กำลังเชื่อมต่อ LINE...</div>
+    </section>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-panel="applyPanel">สมัครงาน</button>
+      <button class="tab-btn" data-panel="statusPanel">สถานะของฉัน</button>
+    </div>
+
+    <section id="applyPanel" class="panel active">
+      <div class="card">
+        <h2>ใบสมัครงาน</h2>
+        <p class="hint">กรอกข้อมูลให้ครบทุกช่องที่มีเครื่องหมาย * และแนบ Resume ได้ถ้ามี</p>
+
+        <form id="applicationForm">
+          <div class="section-title">ข้อมูลผู้สมัคร</div>
+          <div class="grid">
+            <div class="field full">
+              <label class="required" for="name">ชื่อ-นามสกุล</label>
+              <input id="name" name="name" maxlength="150" required>
+            </div>
+
+            <div class="field">
+              <label class="required" for="position">ตำแหน่งที่ต้องการ</label>
+              <select id="position" name="position" required>
+                <option value="">เลือกตำแหน่ง</option>
+                <option value="ช่าง">ช่าง</option>
+                <option value="พนักงานโรงงาน">พนักงานโรงงาน</option>
+                <option value="ออฟฟิศ">ออฟฟิศ</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="required" for="expectedSalary">เงินเดือนที่คาดหวัง</label>
+              <input id="expectedSalary" name="expectedSalary" type="number" min="1" step="1" inputmode="numeric" placeholder="เช่น 15000" required>
+            </div>
+
+            <div class="field full">
+              <label class="required" for="startDate">วันที่สามารถเริ่มงานได้</label>
+              <input id="startDate" name="startDate" type="date" required>
+            </div>
+          </div>
+
+          <div class="section-title">ที่อยู่ปัจจุบัน</div>
+          <div class="grid">
+            <div class="field">
+              <label class="required" for="houseNo">บ้านเลขที่</label>
+              <input id="houseNo" name="houseNo" maxlength="100" required>
+            </div>
+
+            <div class="field">
+              <label for="moo">หมู่</label>
+              <input id="moo" name="moo" maxlength="100">
+            </div>
+
+            <div class="field full">
+              <label for="road">ถนน</label>
+              <input id="road" name="road" maxlength="150">
+            </div>
+
+            <div class="field">
+              <label class="required" for="subdistrict">ตำบล/แขวง</label>
+              <input id="subdistrict" name="subdistrict" maxlength="150" required>
+            </div>
+
+            <div class="field">
+              <label class="required" for="district">อำเภอ/เขต</label>
+              <input id="district" name="district" maxlength="150" required>
+            </div>
+
+            <div class="field">
+              <label class="required" for="province">จังหวัด</label>
+              <input id="province" name="province" maxlength="150" required>
+            </div>
+
+            <div class="field">
+              <label class="required" for="postalCode">รหัสไปรษณีย์</label>
+              <input id="postalCode" name="postalCode" inputmode="numeric" maxlength="5" pattern="\d{5}" required>
+            </div>
+          </div>
+
+          <div class="section-title">ช่องทางติดต่อ</div>
+          <div class="grid">
+            <div class="field">
+              <label class="required" for="phone">เบอร์โทรศัพท์</label>
+              <input id="phone" name="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="08xxxxxxxx" required>
+            </div>
+
+            <div class="field">
+              <label class="required" for="email">อีเมล</label>
+              <input id="email" name="email" type="email" maxlength="150" placeholder="name@example.com" required>
+            </div>
+          </div>
+
+          <div class="section-title">Resume</div>
+          <div class="field full">
+            <label for="resume">แนบ Resume (ถ้ามี)</label>
+            <input id="resume" name="resume" type="file">
+            <div id="fileNote" class="file-note">ไม่บังคับแนบ • รองรับทุกประเภทไฟล์ • ขนาดไม่เกิน 50 MB</div>
+          </div>
+
+          <div id="progressWrap" class="progress-wrap">
+            <div class="progress-track">
+              <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <div id="progressText" class="progress-text">กำลังอัปโหลด...</div>
+          </div>
+
+          <div id="formMessage" class="notice" style="display:none;"></div>
+
+          <button id="submitButton" class="primary" type="submit" disabled>
+            กำลังเตรียมระบบ...
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="statusPanel" class="panel">
+      <div class="card">
+        <div class="application-head">
+          <div>
+            <h2>สถานะใบสมัครของฉัน</h2>
+            <p class="hint">แสดงเฉพาะใบสมัครที่ผูกกับบัญชี LINE นี้</p>
+          </div>
+          <button id="refreshButton" class="secondary" type="button" disabled>รีเฟรช</button>
+        </div>
+
+        <div id="statusMessage" class="notice" style="display:none;"></div>
+        <div id="applicationsList"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let appConfig = null;
+    let ready = false;
+    let idToken = '';
+
+    const $ = id => document.getElementById(id);
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch]));
+    }
+
+    function formatMoney(value) {
+      const number = Number(value || 0);
+      if (!number) return '-';
+      return new Intl.NumberFormat('th-TH').format(number) + ' บาท';
+    }
+
+    function setNotice(id, message, type = '') {
+      const el = $(id);
+      el.textContent = message;
+      el.className = 'notice' + (type ? ' ' + type : '');
+      el.style.display = 'block';
+    }
+
+    function hideNotice(id) {
+      $(id).style.display = 'none';
+    }
+
+    function serverCall(method, ...args) {
+      return new Promise((resolve, reject) => {
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(error => {
+            reject(new Error(error && error.message ? error.message : 'เกิดข้อผิดพลาดจากระบบ'));
+          })[method](...args);
+      });
+    }
+
+    async function init() {
+      try {
+        appConfig = await serverCall('getAppConfig');
+
+        if (!appConfig || !appConfig.liffId) {
+          throw new Error('ไม่พบ LIFF ID จากระบบ');
+        }
+
+        // เริ่ม LIFF
+        // withLoginOnExternalBrowser: true
+        // ช่วยให้กรณี LINE เปิดหน้า LIFF ใน in-app browser
+        // หรือผู้ใช้เปิดผ่าน browser ภายนอก สามารถเข้าสู่ LINE Login ได้
+        await liff.init({
+          liffId: appConfig.liffId,
+          withLoginOnExternalBrowser: true
+        });
+
+        // ใน LIFF Browser ผู้ใช้จะถูกยืนยันตัวตนอยู่แล้ว
+        // ส่วน external browser / LINE in-app browser
+        // LIFF จะจัดการ login ตาม option ด้านบน
+        if (!liff.isLoggedIn()) {
+          // กรณีที่ระบบยังไม่ได้ login และ automatic login ไม่ได้ทำงาน
+          liff.login();
+          return;
+        }
+
+        // ดึง ID Token จากบัญชี LINE ที่ผ่านการยืนยันแล้ว
+        idToken = liff.getIDToken() || '';
+
+        if (!idToken) {
+          throw new Error(
+            'ไม่พบ ID Token จาก LINE กรุณาปิดหน้านี้แล้วเปิด LIFF ใหม่'
+          );
+        }
+
+        ready = true;
+
+        // แสดงสถานะตาม environment จริง
+        const inClient = liff.isInClient();
+        $('lineState').textContent = inClient
+          ? '● เชื่อมต่อ LINE แล้ว'
+          : '● เชื่อมต่อ LINE แล้ว (Browser)';
+
+        $('submitButton').disabled = false;
+        $('submitButton').textContent = 'ส่งใบสมัคร';
+        $('refreshButton').disabled = false;
+
+        const maxMb = Math.round(
+          Number(appConfig.maxFileSize || 50 * 1024 * 1024) /
+          1024 /
+          1024
+        );
+
+        $('fileNote').textContent =
+          'ไม่บังคับแนบ • รองรับทุกประเภทไฟล์ • ขนาดไม่เกิน ' +
+          maxMb +
+          ' MB';
+
+        await loadApplications();
+
+      } catch (error) {
+        console.error('LIFF INIT ERROR:', error);
+
+        ready = false;
+
+        $('lineState').textContent =
+          'เชื่อมต่อ LINE ไม่สำเร็จ';
+
+        $('submitButton').disabled = true;
+        $('refreshButton').disabled = true;
+
+        setNotice(
+          'formMessage',
+          error && error.message
+            ? error.message
+            : 'เปิดระบบไม่สำเร็จ กรุณาลองใหม่',
+          'danger'
+        );
+      }
+    }
+
+    async function refreshToken() {
+      idToken = liff.getIDToken() || '';
+      if (!idToken) throw new Error('ไม่พบ ID Token กรุณาเปิดระบบใหม่');
+      return idToken;
+    }
+
+    async function loadApplications() {
+      if (!ready) return;
+
+      try {
+        await refreshToken();
+        hideNotice('statusMessage');
+
+        const result = await serverCall('getMyApplications', idToken);
+        renderApplications(result.applications || []);
+      } catch (error) {
+        setNotice('statusMessage', error.message || 'โหลดสถานะไม่สำเร็จ', 'danger');
+      }
+    }
+
+    function renderApplications(applications) {
+      const container = $('applicationsList');
+      container.innerHTML = '';
+
+      if (!applications.length) {
+        container.innerHTML = '<div class="empty">ยังไม่มีใบสมัครที่ผูกกับบัญชี LINE นี้</div>';
+        return;
+      }
+
+      [...applications].reverse().forEach(app => {
+        const div = document.createElement('div');
+        div.className = 'application-card';
+        div.innerHTML = `
+          <div class="application-head">
+            <div>
+              <div><strong>${escapeHtml(app.position)}</strong></div>
+              <div class="application-id">${escapeHtml(app.applicationId)}</div>
+            </div>
+            <span class="status-pill">${escapeHtml(app.status || 'รอตรวจสอบ')}</span>
+          </div>
+
+          <div class="detail-grid">
+            <div class="detail">
+              <div class="detail-label">ชื่อ-นามสกุล</div>
+              <div class="detail-value">${escapeHtml(app.name)}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">เงินเดือนที่คาดหวัง</div>
+              <div class="detail-value">${escapeHtml(formatMoney(app.expectedSalary))}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">เริ่มงานได้</div>
+              <div class="detail-value">${escapeHtml(app.startDate)}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">วันที่สมัคร</div>
+              <div class="detail-value">${escapeHtml(app.appliedDate)}</div>
+            </div>
+            <div class="detail full">
+              <div class="detail-label">ที่อยู่ปัจจุบัน</div>
+              <div class="detail-value">${escapeHtml(app.address)}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">เบอร์โทรศัพท์</div>
+              <div class="detail-value">${escapeHtml(app.phone)}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">อีเมล</div>
+              <div class="detail-value">${escapeHtml(app.email)}</div>
+            </div>
+          </div>
+
+          <div class="resume-box">
+            <strong>Resume:</strong>
+            <span class="resume-status">${escapeHtml(app.resumeStatus || 'ไม่มีไฟล์แนบ')}</span>
+            ${app.resumeName ? '<br><span>ไฟล์: ' + escapeHtml(app.resumeName) + '</span>' : ''}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function readFileAsBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || '');
+          const comma = result.indexOf(',');
+          resolve(comma >= 0 ? result.substring(comma + 1) : result);
+        };
+        reader.onerror = () => reject(new Error('อ่านไฟล์ Resume ไม่สำเร็จ'));
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    async function uploadResume(applicationId, file) {
+      if (!file) {
+        return { ok: true, status: 'NO_FILE' };
+      }
+
+      const maxSize = Number(appConfig.maxFileSize || 0);
+
+      if (file.size > maxSize) {
+        throw new Error('ไฟล์ Resume ต้องมีขนาดไม่เกิน ' + Math.round(maxSize / 1024 / 1024) + ' MB');
+      }
+
+      const chunkSize = Number(appConfig.chunkSize || 2 * 1024 * 1024);
+      const totalChunks = Math.ceil(file.size / chunkSize);
+      const mimeType = file.type || 'application/octet-stream';
+
+      const start = await serverCall(
+        'prepareApplicationResumeUpload',
+        idToken,
+        applicationId,
+        file.name,
+        mimeType,
+        file.size,
+        totalChunks
+      );
+
+      const uploadId = start.uploadId;
+      const uploadKey = start.uploadKey;
+
+      $('progressWrap').style.display = 'block';
+      $('progressBar').style.width = '0%';
+      $('progressText').textContent = 'เริ่มอัปโหลด ' + escapeHtml(file.name);
+
+      for (let index = 0; index < totalChunks; index++) {
+        const startByte = index * chunkSize;
+        const endByte = Math.min(startByte + chunkSize, file.size);
+        const blob = file.slice(startByte, endByte);
+        const base64 = await readFileAsBase64(blob);
+
+        const result = await serverCall(
+          'uploadApplicationChunk',
+          uploadId,
+          uploadKey,
+          index,
+          base64
+        );
+
+        const uploadedBytes = Number(result.uploadedBytes || endByte);
+        const percent = Math.min(100, Math.round((uploadedBytes / file.size) * 100));
+
+        $('progressBar').style.width = percent + '%';
+        $('progressText').textContent = 'กำลังอัปโหลด... ' + percent + '% (' + (index + 1) + '/' + totalChunks + ')';
+
+        if (result.status === 'COMPLETE') {
+          $('progressBar').style.width = '100%';
+          $('progressText').textContent = 'แนบ Resume สำเร็จ';
+          return result;
+        }
+      }
+
+      throw new Error('การอัปโหลด Resume ไม่จบสมบูรณ์');
+    }
+
+    $('applicationForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!ready) return;
+
+      const button = $('submitButton');
+      const file = $('resume').files && $('resume').files[0] ? $('resume').files[0] : null;
+
+      button.disabled = true;
+      button.textContent = 'กำลังส่งใบสมัคร...';
+      hideNotice('formMessage');
+      $('progressWrap').style.display = 'none';
+
+      try {
+        await refreshToken();
+
+        const form = {
+          name: $('name').value.trim(),
+          position: $('position').value,
+          expectedSalary: $('expectedSalary').value,
+          startDate: $('startDate').value,
+          houseNo: $('houseNo').value.trim(),
+          moo: $('moo').value.trim(),
+          road: $('road').value.trim(),
+          subdistrict: $('subdistrict').value.trim(),
+          district: $('district').value.trim(),
+          province: $('province').value.trim(),
+          postalCode: $('postalCode').value.trim(),
+          phone: $('phone').value.trim(),
+          email: $('email').value.trim()
+        };
+
+        const result = await serverCall('createApplication', idToken, form);
+        let resumeResult = null;
+
+        if (file) {
+          button.textContent = 'กำลังแนบ Resume...';
+          resumeResult = await uploadResume(result.applicationId, file);
+        }
+
+        if (file && resumeResult && resumeResult.status === 'COMPLETE') {
+          setNotice(
+            'formMessage',
+            'ส่งใบสมัครและแนบ Resume เรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId,
+            'success'
+          );
+        } else if (!file) {
+          setNotice(
+            'formMessage',
+            'ส่งใบสมัครเรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId + '\nResume: ไม่มีไฟล์แนบ',
+            'success'
+          );
+        } else {
+          setNotice(
+            'formMessage',
+            'ส่งใบสมัครแล้ว แต่ Resume มีปัญหาในการอัปโหลด\nเลขที่สมัคร: ' + result.applicationId,
+            'warning'
+          );
+        }
+
+        $('applicationForm').reset();
+        await loadApplications();
+      } catch (error) {
+        setNotice('formMessage', error.message || 'ส่งใบสมัครไม่สำเร็จ', 'danger');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'ส่งใบสมัคร';
+      }
+    });
+
+    $('refreshButton').addEventListener('click', loadApplications);
+
+    document.querySelectorAll('.tab-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
+
+        button.classList.add('active');
+        $(button.dataset.panel).classList.add('active');
+
+        if (button.dataset.panel === 'statusPanel') {
+          loadApplications();
+        }
+      });
+    });
+
+    init();
+  </script>
+</body>
+</html>
