@@ -1,540 +1,141 @@
 <!doctype html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#071b3a">
-  <title>ATWORK | สมัครงาน</title>
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-  <style>
-    :root {
-      --navy:#071b3a; --blue:#1657b8; --purple:#6c4ce6;
-      --bg:#f4f7fb; --card:#fff; --text:#182230; --muted:#667085;
-      --border:#dbe2ea; --success:#138a58; --warning:#b7791f; --danger:#c53b4b;
-      --shadow:0 8px 30px rgba(15,35,70,.08); --radius:16px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:linear-gradient(180deg,#eef4ff 0,var(--bg) 260px);color:var(--text);font-family:Arial,Tahoma,sans-serif;line-height:1.5}
-    button,input,select{font:inherit} button{cursor:pointer}
-    .app{max-width:760px;margin:0 auto;padding:16px 14px 40px}
-    .hero{border-radius:20px;color:#fff;padding:22px;background:linear-gradient(135deg,var(--navy),#153d83 55%,var(--purple));box-shadow:var(--shadow);margin-bottom:12px}
-    .brand{font-size:13px;letter-spacing:.8px;opacity:.9;font-weight:700}
-    h1{margin:6px 0 4px;font-size:26px}.hero p{margin:0;opacity:.92;font-size:14px}
-    .line-state{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:13px;background:rgba(255,255,255,.12);padding:7px 10px;border-radius:999px}
-    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#e9eef6;padding:5px;border-radius:13px;margin-bottom:12px}
-    .tab-btn{border:0;padding:11px 10px;border-radius:9px;background:transparent;color:#5f6b7a;font-weight:700}
-    .tab-btn.active{background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(0,0,0,.06)}
-    .panel{display:none}.panel.active{display:block}
-    .card{background:var(--card);border:1px solid #e4eaf2;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:12px}
-    .card h2{font-size:18px;margin:0 0 4px}.hint{color:var(--muted);font-size:13px;margin:0 0 15px}
-    .section-title{font-size:14px;font-weight:800;margin:18px 0 8px;color:var(--navy)}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field.full{grid-column:1/-1}
-    label{display:block;margin-bottom:6px;font-size:13px;font-weight:700}.required::after{content:" *";color:var(--danger)}
-    input,select{width:100%;border:1px solid var(--border);border-radius:10px;padding:11px 12px;background:#fff;color:var(--text);outline:none}
-    input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(22,87,184,.11)}
-    input[type=file]{padding:10px;background:#fafcff}
-    .file-note{margin-top:7px;color:var(--muted);font-size:12px}
-    .primary{width:100%;border:0;border-radius:11px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;padding:13px 16px;font-weight:800;margin-top:16px}
-    .primary:disabled{opacity:.55;cursor:not-allowed}.secondary{border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:10px;padding:9px 12px;font-weight:700}
-    .notice{padding:11px 12px;border-radius:10px;background:#f3f6fa;color:#52606f;font-size:13px;margin-top:12px;white-space:pre-line}
-    .notice.success{background:#ebf9f2;color:var(--success)}.notice.warning{background:#fff8e8;color:var(--warning)}.notice.danger{background:#fff0f2;color:var(--danger)}
-    .progress-wrap{margin-top:14px;display:none}.progress-track{height:9px;background:#e8edf4;border-radius:999px;overflow:hidden}.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .15s ease}.progress-text{margin-top:6px;color:var(--muted);font-size:12px}
-    .application-card{border:1px solid #e3eaf2;border-radius:13px;padding:14px;margin-bottom:12px;background:#fff}.application-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-    .application-id{color:var(--muted);font-size:12px;margin-top:2px}.status-pill{display:inline-block;white-space:nowrap;padding:5px 9px;border-radius:999px;background:#eef4ff;color:var(--blue);font-size:12px;font-weight:800}
-    .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.detail{background:#f7f9fc;border-radius:10px;padding:10px}.detail.full{grid-column:1/-1}.detail-label{color:var(--muted);font-size:11px}.detail-value{font-size:13px;margin-top:2px;word-break:break-word}.resume-box{margin-top:12px;padding:10px 12px;background:#f7f9fc;border-radius:10px;font-size:13px}.resume-status{font-weight:800;color:var(--blue)}
-    .empty{text-align:center;padding:28px 12px;color:var(--muted);font-size:14px}.small{font-size:12px;color:var(--muted)}
-    @media(max-width:600px){.grid,.detail-grid{grid-template-columns:1fr}.field.full,.detail.full{grid-column:auto}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ATWORK | สมัครงาน</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+body{margin:0;background:#f4f7fb;font-family:Arial,Tahoma,sans-serif;color:#182230}
+main{max-width:680px;margin:auto;padding:16px}
+header,form{background:#fff;border-radius:16px;padding:20px;margin-bottom:12px;box-shadow:0 5px 20px #00000012}
+header{background:#102d61;color:#fff}h1{margin:0 0 5px;font-size:24px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px}
+input,select{width:100%;box-sizing:border-box;padding:11px;border:1px solid #d7dee8;border-radius:10px}
+button{width:100%;padding:12px;border:0;border-radius:10px;background:#1657b8;color:#fff;font-weight:bold;margin-top:16px}
+button:disabled{opacity:.5}.msg{display:none;padding:11px;border-radius:10px;margin-top:12px;white-space:pre-line}
+.ok{background:#e9f8f0;color:#16834f}.bad{background:#fff0f2;color:#c53b4b}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
 </head>
 <body>
-  <main class="app">
-    <header class="hero">
-      <div class="brand">ATWORK | CAREER SERVICE</div>
-      <h1>ระบบสมัครงาน</h1>
-      <p>สมัครงาน แนบ Resume และตรวจสอบสถานะได้จากบัญชี LINE ของคุณ</p>
-      <div id="lineState" class="line-state">กำลังเชื่อมต่อ LINE...</div>
-    </header>
+<main>
+<header>
+  <h1>ATWORK | ระบบสมัครงาน</h1>
+  <div id="state">กำลังเชื่อมต่อ LINE...</div>
+</header>
 
-    <div class="tabs">
-      <button class="tab-btn active" data-panel="applyPanel" type="button">สมัครงาน</button>
-      <button class="tab-btn" data-panel="statusPanel" type="button">สถานะของฉัน</button>
+<form id="f">
+  <div class="grid">
+    <div class="full"><label>ชื่อ-นามสกุล *</label><input id="name" required></div>
+    <div>
+      <label>ตำแหน่งที่ต้องการ *</label>
+      <select id="position" required>
+        <option value="">เลือกตำแหน่ง</option>
+        <option>ช่าง</option><option>พนักงานโรงงาน</option><option>ออฟฟิศ</option>
+      </select>
     </div>
+    <div><label>เงินเดือนที่คาดหวัง *</label><input id="expectedSalary" type="number" min="1" required></div>
+    <div class="full"><label>วันที่สามารถเริ่มงานได้ *</label><input id="startDate" type="date" required></div>
+    <div><label>บ้านเลขที่ *</label><input id="houseNo" required></div>
+    <div><label>หมู่</label><input id="moo"></div>
+    <div class="full"><label>ถนน</label><input id="road"></div>
+    <div><label>ตำบล/แขวง *</label><input id="subdistrict" required></div>
+    <div><label>อำเภอ/เขต *</label><input id="district" required></div>
+    <div><label>จังหวัด *</label><input id="province" required></div>
+    <div><label>รหัสไปรษณีย์</label><input id="postalCode" inputmode="numeric"></div>
+    <div><label>เบอร์โทรศัพท์ *</label><input id="phone" type="tel" required></div>
+    <div><label>อีเมล *</label><input id="email" type="email" required></div>
+  </div>
+  <div id="msg" class="msg"></div>
+  <button id="send" disabled>กำลังเตรียมระบบ...</button>
+</form>
+</main>
 
-    <section id="applyPanel" class="panel active">
-      <form id="applicationForm" class="card">
-        <h2>ข้อมูลใบสมัคร</h2>
-        <p class="hint">Resume ไม่บังคับแนบ หากมีสามารถแนบพร้อมใบสมัครได้</p>
+<script>
+const LIFF_ID='2011817085-Mqy2mWhy';
+const GAS='https://script.google.com/macros/s/AKfycbx-at7k-HTUunIkEQbNiX_RirlV6GEGd2uBmNH_jGmCIWSxqTawgeSIxfB3R3EcJxY/exec';
+const VERSION='ATWORK-SIMPLE-1';
+let token='',ready=false;
+const $=id=>document.getElementById(id);
 
-        <div class="section-title">ข้อมูลผู้สมัคร</div>
-        <div class="grid">
-          <div class="field full">
-            <label class="required" for="name">ชื่อ-นามสกุล</label>
-            <input id="name" maxlength="150" autocomplete="name" required>
-          </div>
-          <div class="field">
-            <label class="required" for="position">ตำแหน่งที่ต้องการ</label>
-            <select id="position" required>
-              <option value="">เลือกตำแหน่ง</option>
-              <option value="ช่าง">ช่าง</option>
-              <option value="พนักงานโรงงาน">พนักงานโรงงาน</option>
-              <option value="ออฟฟิศ">ออฟฟิศ</option>
-            </select>
-          </div>
-          <div class="field">
-            <label class="required" for="expectedSalary">เงินเดือนที่คาดหวัง</label>
-            <input id="expectedSalary" type="number" min="1" step="1" inputmode="numeric" placeholder="เช่น 15000" required>
-          </div>
-          <div class="field full">
-            <label class="required" for="startDate">วันที่สามารถเริ่มงานได้</label>
-            <input id="startDate" type="date" required>
-          </div>
-        </div>
+function msg(t,ok=false){
+  $('msg').textContent=t;
+  $('msg').className='msg '+(ok?'ok':'bad');
+  $('msg').style.display='block';
+}
 
-        <div class="section-title">ที่อยู่ปัจจุบัน</div>
-        <div class="grid">
-          <div class="field"><label class="required" for="houseNo">บ้านเลขที่</label><input id="houseNo" maxlength="100" required></div>
-          <div class="field"><label for="moo">หมู่</label><input id="moo" maxlength="100"></div>
-          <div class="field full"><label for="road">ถนน</label><input id="road" maxlength="150"></div>
-          <div class="field"><label class="required" for="subdistrict">ตำบล/แขวง</label><input id="subdistrict" maxlength="150" required></div>
-          <div class="field"><label class="required" for="district">อำเภอ/เขต</label><input id="district" maxlength="150" required></div>
-          <div class="field"><label class="required" for="province">จังหวัด</label><input id="province" maxlength="150" required></div>
-          <div class="field"><label for="postalCode">รหัสไปรษณีย์</label><input id="postalCode" maxlength="5" inputmode="numeric" pattern="\d{5}"></div>
-        </div>
+async function api(action,data={}){
+  const r=await fetch(GAS,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({action,idToken:token,data})
+  });
+  const d=await r.json();
+  if(!d.ok) throw Error(d.message||'ระบบตอบกลับไม่สำเร็จ');
+  return d;
+}
 
-        <div class="section-title">ข้อมูลติดต่อ</div>
-        <div class="grid">
-          <div class="field"><label class="required" for="phone">เบอร์โทรศัพท์</label><input id="phone" type="tel" maxlength="30" inputmode="tel" autocomplete="tel" required></div>
-          <div class="field"><label class="required" for="email">อีเมล</label><input id="email" type="email" maxlength="150" autocomplete="email" required></div>
-        </div>
-
-        <div class="section-title">Resume</div>
-        <label for="resume">แนบ Resume (ถ้ามี)</label>
-        <input id="resume" type="file" accept="*/*">
-        <div id="fileNote" class="file-note">ไม่บังคับแนบ • รองรับทุกประเภทไฟล์ • ขนาดไม่เกิน 50 MB</div>
-
-        <div id="progressWrap" class="progress-wrap">
-          <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
-          <div id="progressText" class="progress-text">กำลังเตรียมอัปโหลด...</div>
-        </div>
-
-        <div id="formMessage" class="notice" style="display:none"></div>
-        <button id="submitButton" class="primary" type="submit" disabled>กำลังเตรียมระบบ...</button>
-      </form>
-    </section>
-
-    <section id="statusPanel" class="panel">
-      <div class="card">
-        <div class="application-head">
-          <div>
-            <h2>สถานะใบสมัครของฉัน</h2>
-            <p class="hint">แสดงเฉพาะข้อมูลที่ผูกกับบัญชี LINE นี้</p>
-          </div>
-          <button id="refreshButton" class="secondary" type="button" disabled>รีเฟรช</button>
-        </div>
-        <div id="statusMessage" class="notice" style="display:none"></div>
-        <div id="applicationsList"></div>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    // ==========================================================
-    // 1) CONFIG — เปลี่ยนแค่ GAS_WEB_APP_URL ให้เป็น /exec จริง
-    // ==========================================================
-    const LIFF_ID = '2011817085-Mqy2mWhy';
-    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx-at7k-HTUunIkEQbNiX_RirlV6GEGd2uBmNH_jGmCIWSxqTawgeSIxfB3R3EcJxY/exec';
-    const MAX_FILE_SIZE = 50 * 1024 * 1024;
-    const CHUNK_SIZE = 2 * 1024 * 1024;
-    const EXPECTED_API_VERSION = '2026-10-03-github-full-1';
-
-    let ready = false;
-    let idToken = '';
-
-    const $ = id => document.getElementById(id);
-
-    function escapeHtml(value) {
-      return String(value ?? '').replace(/[&<>"']/g, ch => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-      }[ch]));
+async function init(){
+  try{
+    await liff.init({liffId:LIFF_ID,withLoginOnExternalBrowser:true});
+    if(!liff.isLoggedIn()){
+      liff.login({redirectUri:location.href});
+      return;
     }
+    token=liff.getIDToken()||'';
+    if(!token) throw Error('ไม่พบ LINE ID Token');
+    const p=await api('ping');
+    if(p.version!==VERSION) throw Error('Apps Script ยังเป็นเวอร์ชันเก่า');
+    ready=true;
+    $('state').textContent='● เชื่อมต่อ LINE แล้ว';
+    $('send').disabled=false;
+    $('send').textContent='ส่งใบสมัคร';
+  }catch(e){
+    $('state').textContent='เชื่อมต่อ LINE ไม่สำเร็จ';
+    msg(e.message||'เปิดระบบไม่สำเร็จ');
+  }
+}
 
-    function setNotice(id, message, type = '') {
-      const el = $(id);
-      el.textContent = message;
-      el.className = 'notice' + (type ? ' ' + type : '');
-      el.style.display = 'block';
-    }
+$('f').onsubmit=async e=>{
+  e.preventDefault();
+  if(!ready)return;
+  $('send').disabled=true;
+  $('send').textContent='กำลังส่ง...';
+  try{
+    token=liff.getIDToken()||token;
+    const data={
+      name:$('name').value.trim(),
+      position:$('position').value,
+      expectedSalary:$('expectedSalary').value,
+      startDate:$('startDate').value,
+      houseNo:$('houseNo').value.trim(),
+      moo:$('moo').value.trim(),
+      road:$('road').value.trim(),
+      subdistrict:$('subdistrict').value.trim(),
+      district:$('district').value.trim(),
+      province:$('province').value.trim(),
+      postalCode:$('postalCode').value.trim(),
+      phone:$('phone').value.trim(),
+      email:$('email').value.trim()
+    };
+    const r=await api('createApplication',data);
+    if(!r.applicationId)throw Error('ระบบไม่ส่งเลขที่สมัครกลับมา');
+    msg('ส่งใบสมัครเรียบร้อยแล้ว\\nเลขที่สมัคร: '+r.applicationId,true);
+    $('f').reset();
+  }catch(e){
+    msg(e.message||'ส่งใบสมัครไม่สำเร็จ');
+  }finally{
+    $('send').disabled=false;
+    $('send').textContent='ส่งใบสมัคร';
+  }
+};
 
-    function hideNotice(id) {
-      $(id).style.display = 'none';
-    }
-
-    function formatMoney(value) {
-      const n = Number(value || 0);
-      return n ? new Intl.NumberFormat('th-TH').format(n) + ' บาท' : '-';
-    }
-
-    // ==========================================================
-    // 2) API CLIENT
-    // Backend ที่ใช้กับ GitHub Pages ต้องรองรับ POST JSON:
-    // { action, idToken, data }
-    // ==========================================================
-    async function apiCall(action, data = {}) {
-      if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes('PASTE_YOUR_')) {
-        throw new Error('ยังไม่ได้ใส่ GAS Web App URL ใน index.html');
-      }
-
-      const response = await fetch(GAS_WEB_APP_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8'
-        },
-        body: JSON.stringify({
-          action,
-          idToken,
-          data
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Google Apps Script ตอบกลับ HTTP ' + response.status);
-      }
-
-      const result = await response.json();
-
-      if (!result || result.success === false || result.ok === false) {
-        throw new Error(result?.message || 'ระบบตอบกลับไม่สำเร็จ');
-      }
-
-      // รองรับทั้ง response แบบตรง และ response ที่ถูกห่อไว้ใน data/result
-      const normalized = result.data || result.result || result;
-      return { ...result, ...normalized };
-    }
-
-    async function refreshToken() {
-      idToken = liff.getIDToken() || '';
-      if (!idToken) throw new Error('ไม่พบ ID Token กรุณาเปิด LIFF ใหม่');
-      return idToken;
-    }
-
-    // ==========================================================
-    // 3) LIFF INIT
-    // รองรับทั้ง LIFF Browser และ external/in-app browser
-    // ==========================================================
-    async function init() {
-      try {
-        await liff.init({
-          liffId: LIFF_ID,
-          withLoginOnExternalBrowser: true
-        });
-
-        if (!liff.isLoggedIn()) {
-          // เฉพาะกรณี external browser ที่ยังไม่ได้ login
-          liff.login({ redirectUri: window.location.href });
-          return;
-        }
-
-        await refreshToken();
-
-        // ตรวจว่า GitHub กำลังเชื่อมต่อ Apps Script ชุดเดียวกับ index.html นี้
-        const ping = await apiCall('ping');
-        if (String(ping.apiVersion || '') !== EXPECTED_API_VERSION) {
-          throw new Error(
-            'Apps Script ที่เชื่อมต่ออยู่ยังเป็นเวอร์ชันเก่า กรุณา Deploy Code.gs เวอร์ชันล่าสุดแล้วลองใหม่'
-          );
-        }
-
-        ready = true;
-
-        $('lineState').textContent = liff.isInClient()
-          ? '● เชื่อมต่อ LINE แล้ว'
-          : '● เชื่อมต่อ LINE แล้ว (Browser)';
-
-        $('submitButton').disabled = false;
-        $('submitButton').textContent = 'ส่งใบสมัคร';
-        $('refreshButton').disabled = false;
-
-        await loadApplications();
-      } catch (error) {
-        console.error(error);
-        ready = false;
-        $('lineState').textContent = 'เชื่อมต่อ LINE ไม่สำเร็จ';
-        $('submitButton').disabled = true;
-        $('refreshButton').disabled = true;
-
-        setNotice(
-          'formMessage',
-          (error?.message || 'เปิดระบบไม่สำเร็จ') +
-          '\n\nตรวจสอบ LIFF Endpoint URL ให้ตรงกับ GitHub Pages URL และตรวจว่า LIFF เปิด scope openid แล้ว',
-          'danger'
-        );
-      }
-    }
-
-    // ==========================================================
-    // 4) LOAD STATUS — เฉพาะบัญชีตัวเอง
-    // ==========================================================
-    async function loadApplications() {
-      if (!ready) return;
-
-      try {
-        await refreshToken();
-        hideNotice('statusMessage');
-
-        const result = await apiCall('getMyApplications');
-        renderApplications(result.applications || []);
-      } catch (error) {
-        setNotice('statusMessage', error.message || 'โหลดสถานะไม่สำเร็จ', 'danger');
-      }
-    }
-
-    function renderApplications(applications) {
-      const container = $('applicationsList');
-      container.innerHTML = '';
-
-      if (!applications.length) {
-        container.innerHTML = '<div class="empty">ยังไม่มีใบสมัครที่ผูกกับบัญชี LINE นี้</div>';
-        return;
-      }
-
-      [...applications].reverse().forEach(app => {
-        const div = document.createElement('div');
-        div.className = 'application-card';
-        div.innerHTML = `
-          <div class="application-head">
-            <div>
-              <strong>${escapeHtml(app.position)}</strong>
-              <div class="application-id">${escapeHtml(app.applicationId)}</div>
-            </div>
-            <span class="status-pill">${escapeHtml(app.status || 'รอตรวจสอบ')}</span>
-          </div>
-
-          <div class="detail-grid">
-            <div class="detail">
-              <div class="detail-label">ชื่อ-นามสกุล</div>
-              <div class="detail-value">${escapeHtml(app.name)}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">เงินเดือนที่คาดหวัง</div>
-              <div class="detail-value">${escapeHtml(formatMoney(app.expectedSalary))}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">เริ่มงานได้</div>
-              <div class="detail-value">${escapeHtml(app.startDate)}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">วันที่สมัคร</div>
-              <div class="detail-value">${escapeHtml(app.appliedDate)}</div>
-            </div>
-            <div class="detail full">
-              <div class="detail-label">ที่อยู่ปัจจุบัน</div>
-              <div class="detail-value">${escapeHtml(app.address)}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">เบอร์โทรศัพท์</div>
-              <div class="detail-value">${escapeHtml(app.phone)}</div>
-            </div>
-            <div class="detail">
-              <div class="detail-label">อีเมล</div>
-              <div class="detail-value">${escapeHtml(app.email)}</div>
-            </div>
-          </div>
-
-          <div class="resume-box">
-            <strong>Resume:</strong>
-            <span class="resume-status">${escapeHtml(app.resumeStatus || 'ไม่มีไฟล์แนบ')}</span>
-            ${app.resumeName ? '<br><span>ไฟล์: ' + escapeHtml(app.resumeName) + '</span>' : ''}
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    // ==========================================================
-    // 5) RESUME UPLOAD
-    // สมัครก่อน แล้วค่อยสร้าง upload session ผูกกับ ApplicationID
-    // ==========================================================
-    function readFileAsBase64(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const result = String(reader.result || '');
-          const comma = result.indexOf(',');
-          resolve(comma >= 0 ? result.substring(comma + 1) : result);
-        };
-        reader.onerror = () => reject(new Error('อ่านไฟล์ Resume ไม่สำเร็จ'));
-        reader.readAsDataURL(blob);
-      });
-    }
-
-    async function uploadResume(applicationId, file) {
-      if (!file) return { success: true, status: 'NO_FILE' };
-
-      if (file.size > MAX_FILE_SIZE) {
-        throw new Error('ไฟล์ Resume ต้องมีขนาดไม่เกิน 50 MB');
-      }
-
-      const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
-      const mimeType = file.type || 'application/octet-stream';
-
-      $('progressWrap').style.display = 'block';
-      $('progressBar').style.width = '0%';
-      $('progressText').textContent = 'กำลังเตรียม Resume...';
-
-      const start = await apiCall('prepareApplicationResumeUpload', {
-        applicationId,
-        fileName: file.name,
-        mimeType,
-        fileSize: file.size,
-        totalChunks
-      });
-
-      const uploadId = start.uploadId;
-      const uploadKey = start.uploadKey;
-
-      for (let index = 0; index < totalChunks; index++) {
-        const startByte = index * CHUNK_SIZE;
-        const endByte = Math.min(startByte + CHUNK_SIZE, file.size);
-        const blob = file.slice(startByte, endByte);
-        const base64 = await readFileAsBase64(blob);
-
-        const result = await apiCall('uploadApplicationChunk', {
-          uploadId,
-          uploadKey,
-          chunkIndex: index,
-          chunkBase64: base64
-        });
-
-        const uploadedBytes = Number(result.uploadedBytes || endByte);
-        const percent = Math.min(100, Math.round((uploadedBytes / file.size) * 100));
-        $('progressBar').style.width = percent + '%';
-        $('progressText').textContent = 'กำลังอัปโหลด... ' + percent + '% (' + (index + 1) + '/' + totalChunks + ')';
-
-        if (result.status === 'COMPLETE') {
-          $('progressBar').style.width = '100%';
-          $('progressText').textContent = 'แนบ Resume สำเร็จ';
-          return result;
-        }
-      }
-
-      throw new Error('การอัปโหลด Resume ไม่จบสมบูรณ์');
-    }
-
-    // ==========================================================
-    // 6) SUBMIT APPLICATION
-    // ==========================================================
-    $('applicationForm').addEventListener('submit', async event => {
-      event.preventDefault();
-      if (!ready) return;
-
-      const button = $('submitButton');
-      const file = $('resume').files?.[0] || null;
-
-      button.disabled = true;
-      hideNotice('formMessage');
-      $('progressWrap').style.display = 'none';
-
-      try {
-        await refreshToken();
-
-        const form = {
-          name: $('name').value.trim(),
-          position: $('position').value,
-          expectedSalary: $('expectedSalary').value,
-          startDate: $('startDate').value,
-          houseNo: $('houseNo').value.trim(),
-          moo: $('moo').value.trim(),
-          road: $('road').value.trim(),
-          subdistrict: $('subdistrict').value.trim(),
-          district: $('district').value.trim(),
-          province: $('province').value.trim(),
-          postalCode: $('postalCode').value.trim(),
-          phone: $('phone').value.trim(),
-          email: $('email').value.trim()
-        };
-
-        button.textContent = 'กำลังส่งใบสมัคร...';
-        // ตรวจ backend ก่อนสร้างใบสมัคร เพื่อไม่ให้ส่งข้อมูลเข้า Deployment รุ่นเก่า
-        const backend = await apiCall('ping');
-        const backendVersion = String(
-          backend.apiVersion ||
-          backend.data?.apiVersion ||
-          backend.result?.apiVersion ||
-          ''
-        ).trim();
-
-        if (backendVersion !== '2026-10-03-github-ready-2') {
-          throw new Error(
-            'Backend ยังไม่ใช่เวอร์ชันล่าสุด: ' +
-            (backendVersion || 'ไม่พบ API_VERSION') +
-            '\nกรุณา Deploy Code.gs เวอร์ชัน 2026-10-03-github-ready-2 ก่อน'
-          );
-        }
-
-        const result = await apiCall('createApplication', form);
-        const applicationId = String(
-          result.applicationId ||
-          result.data?.applicationId ||
-          result.result?.applicationId ||
-          ''
-        ).trim();
-
-        if (!applicationId) {
-          throw new Error(
-            'ส่งข้อมูลไปแล้ว แต่ระบบไม่ส่งเลขที่ใบสมัครกลับมา กรุณา Deploy Code.gs เวอร์ชันล่าสุด'
-          );
-        }
-
-        if (file) {
-          button.textContent = 'กำลังแนบ Resume...';
-          await uploadResume(applicationId, file);
-          setNotice(
-            'formMessage',
-            'ส่งใบสมัครและแนบ Resume เรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId,
-            'success'
-          );
-        } else {
-          setNotice(
-            'formMessage',
-            'ส่งใบสมัครเรียบร้อยแล้ว\nเลขที่สมัคร: ' + applicationId + '\nResume: ไม่มีไฟล์แนบ',
-            'success'
-          );
-        }
-
-        $('applicationForm').reset();
-        await loadApplications();
-      } catch (error) {
-        console.error(error);
-        setNotice('formMessage', error.message || 'ส่งใบสมัครไม่สำเร็จ', 'danger');
-      } finally {
-        button.disabled = false;
-        button.textContent = 'ส่งใบสมัคร';
-      }
-    });
-
-    $('refreshButton').addEventListener('click', loadApplications);
-
-    document.querySelectorAll('.tab-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
-        button.classList.add('active');
-        $(button.dataset.panel).classList.add('active');
-
-        if (button.dataset.panel === 'statusPanel') {
-          loadApplications();
-        }
-      });
-    });
-
-    // จำกัดวันที่เริ่มงานเป็นวันนี้หรือหลังจากวันนี้
-    (() => {
-      const now = new Date();
-      const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
-      $('startDate').min = local.toISOString().slice(0, 10);
-    })();
-
-    init();
-  </script>
+const d=new Date();
+d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
+$('startDate').min=d.toISOString().slice(0,10);
+init();
+</script>
 </body>
 </html>
