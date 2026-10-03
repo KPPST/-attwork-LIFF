@@ -142,7 +142,7 @@
     // 1) CONFIG — เปลี่ยนแค่ GAS_WEB_APP_URL ให้เป็น /exec จริง
     // ==========================================================
     const LIFF_ID = '2011817085-Mqy2mWhy';
-    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxOdHuaR1KVKH0bfym1ZoHCV784Ubw2x8bbwiuo8O7Ohwa5YGxtUtve7h9mIHwVxdrT/exec';
+    const GAS_WEB_APP_URL = 'PASTE_YOUR_GAS_WEB_APP_EXEC_URL_HERE';
     const MAX_FILE_SIZE = 50 * 1024 * 1024;
     const CHUNK_SIZE = 2 * 1024 * 1024;
 
@@ -405,7 +405,34 @@
         }
       }
 
-      throw new Error('การอัปโหลด Resume ไม่จบสมบูรณ์');
+      // เผื่อกรณี Drive ตอบ 308 ใน chunk สุดท้าย แต่ server รับข้อมูลครบแล้ว
+      // ตรวจสถานะจาก Applications อีกครั้งก่อนแจ้งล้มเหลว
+      for (let attempt = 0; attempt < 5; attempt++) {
+        await new Promise(resolve => setTimeout(resolve, 700));
+
+        const statusResult = await apiCall(
+          'getApplicationResumeUploadStatus',
+          { applicationId }
+        );
+
+        if (statusResult.resumeStatus === 'แนบ Resume สำเร็จ') {
+          $('progressBar').style.width = '100%';
+          $('progressText').textContent = 'แนบ Resume สำเร็จ';
+          return {
+            ok: true,
+            status: 'COMPLETE',
+            applicationId
+          };
+        }
+
+        if (statusResult.resumeStatus === 'อัปโหลดไม่สำเร็จ') {
+          throw new Error('ระบบอัปโหลด Resume แจ้งว่าอัปโหลดไม่สำเร็จ');
+        }
+      }
+
+      throw new Error(
+        'การอัปโหลด Resume ยังไม่เสร็จ กรุณาตรวจสอบสถานะอีกครั้งก่อนส่งใหม่'
+      );
     }
 
     // ==========================================================
