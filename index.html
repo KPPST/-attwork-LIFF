@@ -51,7 +51,7 @@
     <header class="hero">
       <div class="brand">ATWORK | CAREER SERVICE</div>
       <h1>ระบบสมัครงาน</h1>
-      <p>สมัครงาน แนบ Resume และตรวจสอบสถานะได้จากบัญชี LINE ของคุณ</p>
+      <p>กรอกใบสมัครผ่าน LINE OA และตรวจสอบสถานะของตัวเองได้เท่านั้น</p>
       <div id="lineState" class="line-state">กำลังเชื่อมต่อ LINE...</div>
     </header>
 
@@ -63,7 +63,7 @@
     <section id="applyPanel" class="panel active">
       <form id="applicationForm" class="card">
         <h2>ข้อมูลใบสมัคร</h2>
-        <p class="hint">Resume ไม่บังคับแนบ หากมีสามารถแนบพร้อมใบสมัครได้</p>
+        <p class="hint">กรอกข้อมูลใบสมัครให้ครบ ระบบจะบันทึกข้อมูลและส่งเลขที่สมัครกลับเข้า LINE OA ของคุณ</p>
 
         <div class="section-title">ข้อมูลผู้สมัคร</div>
         <div class="grid">
@@ -105,16 +105,6 @@
         <div class="grid">
           <div class="field"><label class="required" for="phone">เบอร์โทรศัพท์</label><input id="phone" type="tel" maxlength="30" inputmode="tel" autocomplete="tel" required></div>
           <div class="field"><label class="required" for="email">อีเมล</label><input id="email" type="email" maxlength="150" autocomplete="email" required></div>
-        </div>
-
-        <div class="section-title">Resume</div>
-        <label for="resume">แนบ Resume (ถ้ามี)</label>
-        <input id="resume" type="file" accept="*/*">
-        <div id="fileNote" class="file-note">ไม่บังคับแนบ • รองรับทุกประเภทไฟล์ • ขนาดไม่เกิน 50 MB</div>
-
-        <div id="progressWrap" class="progress-wrap">
-          <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
-          <div id="progressText" class="progress-text">กำลังเตรียมอัปโหลด...</div>
         </div>
 
         <div id="formMessage" class="notice" style="display:none"></div>
@@ -222,14 +212,15 @@
     async function init() {
       try {
         await liff.init({
-          liffId: LIFF_ID,
-          withLoginOnExternalBrowser: true
+          liffId: LIFF_ID
         });
 
+        if (!liff.isInClient()) {
+          throw new Error('ระบบสมัครงานนี้เปิดใช้งานผ่าน LINE OA เท่านั้น กรุณาเปิดจากปุ่มสมัครงานใน LINE');
+        }
+
         if (!liff.isLoggedIn()) {
-          // เฉพาะกรณี external browser ที่ยังไม่ได้ login
-          liff.login({ redirectUri: window.location.href });
-          return;
+          throw new Error('ยังไม่ได้เชื่อมต่อบัญชี LINE กรุณาเปิด LIFF ใหม่จาก LINE OA');
         }
 
         await refreshToken();
@@ -265,7 +256,7 @@
         setNotice(
           'formMessage',
           (error?.message || 'เปิดระบบไม่สำเร็จ') +
-          '\n\nตรวจสอบ LIFF Endpoint URL ให้ตรงกับ GitHub Pages URL และตรวจว่า LIFF เปิด scope openid แล้ว',
+          '\n\nกรุณาเปิดระบบจาก LINE OA โดยตรง และตรวจสอบว่า LIFF เปิด scope openid แล้ว',
           'danger'
         );
       }
@@ -351,110 +342,18 @@
     }
 
     // ==========================================================
-    // 5) RESUME UPLOAD
-    // สมัครก่อน แล้วค่อยสร้าง upload session ผูกกับ ApplicationID
+    // 5) SUBMIT APPLICATION
+    // ตอนนี้ใช้เฉพาะใบสมัครก่อน — ยังไม่เปิด Resume
     // ==========================================================
-    function readFileAsBase64(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const result = String(reader.result || '');
-          const comma = result.indexOf(',');
-          resolve(comma >= 0 ? result.substring(comma + 1) : result);
-        };
-        reader.onerror = () => reject(new Error('อ่านไฟล์ Resume ไม่สำเร็จ'));
-        reader.readAsDataURL(blob);
-      });
-    }
-
-    async function uploadResume(applicationId, file) {
-      if (!file) return { success: true, status: 'NO_FILE' };
-
-      if (file.size > MAX_FILE_SIZE) {
-        throw new Error('ไฟล์ Resume ต้องมีขนาดไม่เกิน 50 MB');
-      }
-
-      const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
-      const mimeType = file.type || 'application/octet-stream';
-
-      $('progressWrap').style.display = 'block';
-      $('progressBar').style.width = '0%';
-      $('progressText').textContent = 'กำลังเตรียม Resume...';
-
-      const start = await apiCall('prepareApplicationResumeUpload', {
-        applicationId,
-        fileName: file.name,
-        mimeType,
-        fileSize: file.size,
-        totalChunks
-      });
-
-      const uploadId = start.uploadId;
-      const uploadKey = start.uploadKey;
-
-      for (let index = 0; index < totalChunks; index++) {
-        const startByte = index * CHUNK_SIZE;
-        const endByte = Math.min(startByte + CHUNK_SIZE, file.size);
-        const blob = file.slice(startByte, endByte);
-        const base64 = await readFileAsBase64(blob);
-
-        const result = await apiCall('uploadApplicationChunk', {
-          uploadId,
-          uploadKey,
-          chunkIndex: index,
-          chunkBase64: base64
-        });
-
-        const uploadedBytes = Number(result.uploadedBytes || endByte);
-        const percent = Math.min(100, Math.round((uploadedBytes / file.size) * 100));
-        $('progressBar').style.width = percent + '%';
-        $('progressText').textContent = 'กำลังอัปโหลด... ' + percent + '% (' + (index + 1) + '/' + totalChunks + ')';
-
-        if (result.status === 'COMPLETE') {
-          $('progressBar').style.width = '100%';
-          $('progressText').textContent = 'แนบ Resume สำเร็จ';
-          return result;
-        }
-      }
-
-      // ตรวจ session โดยตรงหลังส่ง chunk ครบ
-      // ไม่อาศัย Applications เป็นตัวตัดสิน เพราะสถานะจะถูกเปลี่ยนเป็น COMPLETE
-      // เมื่อ Drive คืน 200/201 หรือ session ตรวจพบว่าเสร็จแล้ว
-      for (let attempt = 0; attempt < 5; attempt++) {
-        const finalizeResult = await apiCall(
-          'finalizeApplicationResumeUpload',
-          { applicationId, uploadId, uploadKey }
-        );
-
-        if (finalizeResult.status === 'COMPLETE') {
-          $('progressBar').style.width = '100%';
-          $('progressText').textContent = 'แนบ Resume สำเร็จ';
-          return finalizeResult;
-        }
-
-        if (attempt < 4) {
-          await new Promise(resolve => setTimeout(resolve, 500));
-        }
-      }
-
-      throw new Error(
-        'Google Drive ยังยืนยันการอัปโหลดไม่เสร็จ กรุณาลองใหม่อีกครั้ง'
-      );
-    }
-
-    // ==========================================================
-    // 6) SUBMIT APPLICATION
     // ==========================================================
     $('applicationForm').addEventListener('submit', async event => {
       event.preventDefault();
       if (!ready) return;
 
       const button = $('submitButton');
-      const file = $('resume').files?.[0] || null;
 
       button.disabled = true;
       hideNotice('formMessage');
-      $('progressWrap').style.display = 'none';
 
       try {
         await refreshToken();
@@ -479,21 +378,11 @@
         const result = await apiCall('createApplication', form);
         console.log('Application created:', result.applicationId, result.sheetName, result.rowNumber, result.apiVersion);
 
-        if (file) {
-          button.textContent = 'กำลังแนบ Resume...';
-          await uploadResume(result.applicationId, file);
-          setNotice(
-            'formMessage',
-            'ส่งใบสมัครและแนบ Resume เรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId,
-            'success'
-          );
-        } else {
-          setNotice(
-            'formMessage',
-            'ส่งใบสมัครเรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId + '\nResume: ไม่มีไฟล์แนบ',
-            'success'
-          );
-        }
+        setNotice(
+          'formMessage',
+          '✅ ส่งใบสมัครเรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId + '\n\nระบบบันทึกใบสมัครไว้ในระบบภายในของ ATWORK และส่งรายละเอียดกลับเข้า LINE OA ของคุณแล้ว',
+          'success'
+        );
 
         $('applicationForm').reset();
         await loadApplications();
