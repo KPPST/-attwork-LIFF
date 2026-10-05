@@ -709,75 +709,98 @@
        APPLICATION
     ===================================================== */
 
-   function sendApplication() {
+   async function sendApplication() {
 
   const button =
-    document.getElementById("applicationSubmitButton");
+    document.getElementById(
+      "applicationSubmitButton"
+    );
 
   const message =
-    document.getElementById("applicationMessage");
+    document.getElementById(
+      "applicationMessage"
+    );
 
   if (!lineReady) {
+
     showMessage(
       message,
       "error",
       "LINE ยังเชื่อมต่อไม่สำเร็จ"
     );
+
     return;
   }
 
   const name =
-    document.getElementById("applicationName")
-      .value.trim();
+    document.getElementById(
+      "applicationName"
+    ).value.trim();
 
   const phone =
-    document.getElementById("applicationPhone")
-      .value.trim();
+    document.getElementById(
+      "applicationPhone"
+    ).value.trim();
 
   const jobType =
-    document.getElementById("applicationJobType")
-      .value;
+    document.getElementById(
+      "applicationJobType"
+    ).value;
 
   const province =
-    document.getElementById("applicationProvince")
-      .value;
+    document.getElementById(
+      "applicationProvince"
+    ).value;
 
   if (!name || !phone || !jobType || !province) {
+
     showMessage(
       message,
       "error",
       "กรุณากรอกข้อมูลให้ครบทุกช่อง"
     );
+
     return;
   }
 
   let idToken;
 
   try {
+
     idToken = liff.getIDToken();
+
   } catch (error) {
+
     showMessage(
       message,
       "error",
       "ไม่สามารถรับ LINE ID Token ได้"
     );
+
     return;
   }
 
   if (!idToken) {
+
     showMessage(
       message,
       "error",
-      "ไม่พบ LINE ID Token กรุณาเปิดหน้า ATWORK ใหม่"
+      "ไม่พบ LINE ID Token"
     );
+
     return;
   }
 
   const payload = {
+
     idToken: idToken,
+
     name: name,
+
     phone: phone,
+
     jobType: jobType,
+
     province: province
   };
 
@@ -789,40 +812,20 @@
     "กำลังส่งใบสมัคร..."
   );
 
-  /*
-   * ส่งไป Apps Script ผ่าน hidden iframe
-   */
   document.getElementById(
     "applicationPayload"
-  ).value = JSON.stringify(payload);
+  ).value =
+    JSON.stringify(payload);
 
   const form =
     document.getElementById(
       "applicationBackendForm"
     );
 
-  form.action = APPS_SCRIPT_URL;
+  form.action =
+    APPS_SCRIPT_URL;
 
   form.submit();
-
-  /*
-   * ไม่รอ response จาก Apps Script
-   * แสดงผลให้ผู้ใช้ทันที
-   */
-  setTimeout(function () {
-
-    showMessage(
-      message,
-      "success",
-      "รับใบสมัครเรียบร้อยแล้ว<br>" +
-      "สถานะ: <strong>รอตรวจสอบ</strong>"
-    );
-
-    button.disabled = false;
-
-    clearApplicationForm();
-
-  }, 500);
 }
 
     /* =====================================================
