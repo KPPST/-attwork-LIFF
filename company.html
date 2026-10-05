@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATWORK | แจ้งความต้องการบุคลากร v4</title>
+  <title>ATWORK | แจ้งความต้องการบุคลากร</title>
   <style>
     *{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Thai","Segoe UI",sans-serif;background:#f5f7fb;color:#1f2937}
     .app{width:min(760px,100%);margin:0 auto;padding:20px 14px 40px}.hero{background:linear-gradient(135deg,#172554,#2563eb);color:#fff;border-radius:22px;padding:28px 22px;margin-bottom:16px;box-shadow:0 10px 30px rgba(37,99,235,.18)}
@@ -20,7 +20,7 @@
 <body>
 <main class="app">
   <header class="hero">
-    <div class="brand">ATWORK | RECRUITMENT SERVICE • V4</div>
+    <div class="brand">ATWORK | RECRUITMENT SERVICE • FINAL</div>
     <h1>แจ้งความต้องการบุคลากร</h1>
     <p>สำหรับบริษัท / นายจ้างที่ต้องการแจ้งตำแหน่งงานและจำนวนบุคลากรที่ต้องการ</p>
     <div id="lineState" class="line-state">กำลังเชื่อมต่อ LINE...</div>
@@ -92,6 +92,7 @@
 <script>
 const LIFF_ID = '2011817085-Mqy2mWhy';
 const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec';
+const PAGE_VERSION = '2026-10-05-company-final-1';
 let ready = false;
 let idToken = '';
 const $ = id => document.getElementById(id);
@@ -126,6 +127,7 @@ async function apiCall(action, data={}) {
   if (!result || result.success === false || result.ok === false) {
     throw new Error(result?.message || 'ส่งข้อมูลไม่สำเร็จ');
   }
+  console.log('ATWORK API result:', result);
   return result;
 }
 
@@ -193,10 +195,15 @@ $('personnelRequestForm').addEventListener('submit', async event => {
 
     const result = await apiCall('createPersonnelRequest', data);
 
+    if (!result.requestId) {
+      console.error('Personnel request response:', result);
+      throw new Error('ระบบบันทึกข้อมูลแล้ว แต่ไม่ได้รับเลขที่คำขอกลับมา กรุณาอัปเดต Web App เป็นเวอร์ชันล่าสุด');
+    }
+
     $('formCard').style.display = 'none';
     $('successCard').style.display = 'block';
-    $('requestId').textContent = result.requestId || '-';
-    $('requestStatus').textContent = result.status || 'เสร็จสิ้น';
+    $('requestId').textContent = String(result.requestId);
+    $('requestStatus').textContent = String(result.status || 'เสร็จสิ้น');
 
   } catch (error) {
     console.error(error);
