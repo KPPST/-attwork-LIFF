@@ -709,7 +709,7 @@
        APPLICATION
     ===================================================== */
 
-    function sendApplication() {
+   function sendApplication() {
 
   const button =
     document.getElementById("applicationSubmitButton");
@@ -743,26 +743,33 @@
       .value;
 
   if (!name || !phone || !jobType || !province) {
-
     showMessage(
       message,
       "error",
       "กรุณากรอกข้อมูลให้ครบทุกช่อง"
     );
-
     return;
   }
 
-  const idToken = liff.getIDToken();
+  let idToken;
+
+  try {
+    idToken = liff.getIDToken();
+  } catch (error) {
+    showMessage(
+      message,
+      "error",
+      "ไม่สามารถรับ LINE ID Token ได้"
+    );
+    return;
+  }
 
   if (!idToken) {
-
     showMessage(
       message,
       "error",
       "ไม่พบ LINE ID Token กรุณาเปิดหน้า ATWORK ใหม่"
     );
-
     return;
   }
 
@@ -774,18 +781,6 @@
     province: province
   };
 
-  const body = new URLSearchParams();
-
-  body.append(
-    "action",
-    "application"
-  );
-
-  body.append(
-    "payload",
-    JSON.stringify(payload)
-  );
-
   button.disabled = true;
 
   showMessage(
@@ -794,53 +789,40 @@
     "กำลังส่งใบสมัคร..."
   );
 
-  try {
+  /*
+   * ส่งไป Apps Script ผ่าน hidden iframe
+   */
+  document.getElementById(
+    "applicationPayload"
+  ).value = JSON.stringify(payload);
 
-    const queued =
-      navigator.sendBeacon(
-        APPS_SCRIPT_URL,
-        body
-      );
+  const form =
+    document.getElementById(
+      "applicationBackendForm"
+    );
 
-    if (!queued) {
-      throw new Error(
-        "ไม่สามารถส่งข้อมูลเข้าสู่ระบบได้"
-      );
-    }
+  form.action = APPS_SCRIPT_URL;
 
-    /*
-     * sendBeacon ส่งข้อมูลแบบเบื้องหลัง
-     * หน้าเว็บไม่ต้องรอ response จาก Apps Script
-     */
+  form.submit();
+
+  /*
+   * ไม่รอ response จาก Apps Script
+   * แสดงผลให้ผู้ใช้ทันที
+   */
+  setTimeout(function () {
 
     showMessage(
       message,
       "success",
-      "ระบบรับใบสมัครแล้ว<br>" +
+      "รับใบสมัครเรียบร้อยแล้ว<br>" +
       "สถานะ: <strong>รอตรวจสอบ</strong>"
     );
 
-    clearApplicationForm();
-
-  } catch (error) {
-
-    console.error(
-      "SEND APPLICATION ERROR:",
-      error
-    );
-
-    showMessage(
-      message,
-      "error",
-      "ส่งใบสมัครไม่สำเร็จ: " +
-      error.message
-    );
-
-  } finally {
-
     button.disabled = false;
 
-  }
+    clearApplicationForm();
+
+  }, 500);
 }
 
     /* =====================================================
