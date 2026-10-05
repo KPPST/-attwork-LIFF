@@ -603,72 +603,69 @@
     ===================================================== */
 
     async function startLIFF() {
+  const statusElement = document.getElementById("lineStatus");
+  const mainContent = document.getElementById("mainContent");
+  const profileBox = document.getElementById("profileBox");
 
-      const statusElement =
-        document.getElementById("lineStatus");
+  try {
+    statusElement.textContent = "กำลังเชื่อมต่อ LINE...";
 
-      try {
+    await liff.init({
+      liffId: LIFF_ID,
+      withLoginOnExternalBrowser: true
+    });
 
-        statusElement.textContent =
-          "กำลังเชื่อมต่อ LINE...";
+    console.log("LIFF initialized");
+    console.log("Logged In:", liff.isLoggedIn());
 
-        await liff.init({
-          liffId: LIFF_ID,
-          withLoginOnExternalBrowser: true
-        });
-
-        console.log("LIFF initialized");
-        console.log("LIFF ID:", liff.id);
-        console.log("In Client:", liff.isInClient());
-        console.log("Logged In:", liff.isLoggedIn());
-
-        if (!liff.isLoggedIn()) {
-
-          statusElement.textContent =
-            "กำลังเข้าสู่ระบบ LINE...";
-
-          return;
-        }
-
-        const profile =
-          await liff.getProfile();
-
-        const picture =
-          document.getElementById("profileImage");
-
-        const name =
-          document.getElementById("profileName");
-
-        picture.src =
-          profile.pictureUrl || "";
-
-        name.textContent =
-          profile.displayName || "ผู้ใช้ LINE";
-
-        document.getElementById("profileBox")
-          .style.display = "flex";
-
-        statusElement.style.display = "none";
-
-        document.getElementById("mainContent")
-          .style.display = "block";
-
-        lineReady = true;
-
-      } catch (error) {
-
-        console.error("LIFF ERROR:", error);
-
-        statusElement.innerHTML =
-          "เชื่อมต่อ LINE ไม่สำเร็จ<br><br>" +
-          escapeHtml(
-            error.message || String(error)
-          );
-
-        lineReady = false;
-      }
+    // ถ้ายังไม่ได้ login
+    if (!liff.isLoggedIn()) {
+      statusElement.textContent = "กำลังเข้าสู่ระบบ LINE...";
+      liff.login();
+      return;
     }
 
+    // ✅ แสดงหน้า สมัครงาน / Resume ทันที
+    // ไม่รอ getProfile
+    mainContent.style.display = "block";
+    statusElement.style.display = "none";
+
+    lineReady = true;
+
+    // ดึง Profile แยกทีหลัง
+    try {
+      const profile = await liff.getProfile();
+
+      document.getElementById("profileImage").src =
+        profile.pictureUrl || "";
+
+      document.getElementById("profileName").textContent =
+        profile.displayName || "ผู้ใช้ LINE";
+
+      profileBox.style.display = "flex";
+
+    } catch (profileError) {
+      console.warn(
+        "ไม่สามารถโหลด LINE Profile:",
+        profileError
+      );
+    }
+
+  } catch (error) {
+
+    console.error("LIFF ERROR:", error);
+
+    statusElement.style.display = "block";
+
+    statusElement.innerHTML =
+      "เชื่อมต่อ LINE ไม่สำเร็จ<br><br>" +
+      escapeHtml(
+        error.message || String(error)
+      );
+
+    lineReady = false;
+  }
+}
 
     /* =====================================================
        TAB
