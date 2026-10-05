@@ -3,967 +3,213 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>ATWORK | แจ้งความต้องการบุคลากร</title>
-
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family:
-        Arial,
-        "Noto Sans Thai",
-        "Segoe UI",
-        sans-serif;
-      background: #f5f7fb;
-      color: #1f2937;
-    }
-
-    .app {
-      width: min(760px, 100%);
-      margin: 0 auto;
-      padding: 20px 14px 40px;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, #172554, #2563eb);
-      color: #fff;
-      border-radius: 22px;
-      padding: 28px 22px;
-      margin-bottom: 16px;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.18);
-    }
-
-    .brand {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      opacity: 0.85;
-      margin-bottom: 8px;
-    }
-
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: 27px;
-      line-height: 1.3;
-    }
-
-    .hero p {
-      margin: 0;
-      line-height: 1.6;
-      opacity: 0.92;
-      font-size: 14px;
-    }
-
-    .line-state {
-      margin-top: 16px;
-      display: inline-block;
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 13px;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 14px;
-      box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
-    }
-
-    .section {
-      margin-bottom: 24px;
-    }
-
-    .section:last-child {
-      margin-bottom: 0;
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 7px;
-    }
-
-    .required::after {
-      content: " *";
-      color: #dc2626;
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      border: 1px solid #d8dee9;
-      border-radius: 12px;
-      padding: 12px 13px;
-      font-size: 15px;
-      font-family: inherit;
-      background: #fff;
-      color: #111827;
-      outline: none;
-      transition: 0.2s;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
-    }
-
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    .hint {
-      color: #6b7280;
-      font-size: 12px;
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-
-    .submit-area {
-      margin-top: 8px;
-    }
-
-    button {
-      width: 100%;
-      border: 0;
-      border-radius: 14px;
-      padding: 15px;
-      font-size: 16px;
-      font-weight: 800;
-      font-family: inherit;
-      cursor: pointer;
-    }
-
-    .primary {
-      background: #2563eb;
-      color: #fff;
-    }
-
-    .primary:disabled {
-      background: #9ca3af;
-      cursor: not-allowed;
-    }
-
-    .notice {
-      display: none;
-      margin-bottom: 14px;
-      border-radius: 12px;
-      padding: 13px 14px;
-      font-size: 14px;
-      line-height: 1.5;
-      white-space: pre-line;
-    }
-
-    .notice.success {
-      display: block;
-      background: #ecfdf5;
-      color: #065f46;
-      border: 1px solid #a7f3d0;
-    }
-
-    .notice.danger {
-      display: block;
-      background: #fef2f2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-    }
-
-    @media (max-width: 600px) {
-      .app {
-        padding: 12px 10px 30px;
-      }
-
-      .hero {
-        padding: 23px 18px;
-        border-radius: 18px;
-      }
-
-      .hero h1 {
-        font-size: 23px;
-      }
-
-      .card {
-        padding: 18px;
-        border-radius: 17px;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .field.full {
-        grid-column: auto;
-      }
-    }
+    *{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Thai","Segoe UI",sans-serif;background:#f5f7fb;color:#1f2937}
+    .app{width:min(760px,100%);margin:0 auto;padding:20px 14px 40px}.hero{background:linear-gradient(135deg,#172554,#2563eb);color:#fff;border-radius:22px;padding:28px 22px;margin-bottom:16px;box-shadow:0 10px 30px rgba(37,99,235,.18)}
+    .brand{font-size:13px;font-weight:700;letter-spacing:1px;opacity:.85;margin-bottom:8px}.hero h1{margin:0 0 8px;font-size:27px;line-height:1.3}.hero p{margin:0;line-height:1.6;opacity:.92;font-size:14px}.line-state{margin-top:16px;display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 12px;font-size:13px}
+    .card{background:#fff;border-radius:20px;padding:22px;margin-bottom:14px;box-shadow:0 5px 20px rgba(15,23,42,.06)}.section{margin-bottom:24px}.section-title{font-size:18px;font-weight:800;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #e5e7eb}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field.full{grid-column:1/-1}label{display:block;font-size:14px;font-weight:700;margin-bottom:7px}.required::after{content:" *";color:#dc2626}
+    input,select,textarea{width:100%;border:1px solid #d8dee9;border-radius:12px;padding:12px 13px;font-size:15px;font-family:inherit;background:#fff;color:#111827;outline:none;transition:.2s}input:focus,select:focus,textarea:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1)}textarea{min-height:110px;resize:vertical}.hint{color:#6b7280;font-size:12px;margin-top:6px;line-height:1.5}
+    button{width:100%;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer}.primary{background:#2563eb;color:#fff}.primary:disabled{background:#9ca3af;cursor:not-allowed}
+    .notice{display:none;margin-bottom:14px;border-radius:12px;padding:13px 14px;font-size:14px;line-height:1.5;white-space:pre-line}.notice.success{display:block;background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}.notice.danger{display:block;background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+    .success-box{display:none;text-align:center}.success-box h2{margin:0 0 12px;font-size:24px}.request-id{font-weight:800;font-size:18px;margin:8px 0}.status{font-weight:800}
+    @media(max-width:600px){.app{padding:12px 10px 30px}.hero{padding:23px 18px;border-radius:18px}.hero h1{font-size:23px}.card{padding:18px;border-radius:17px}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
   </style>
 </head>
-
 <body>
-
 <main class="app">
-
   <header class="hero">
-
-    <div class="brand">
-      ATWORK | RECRUITMENT SERVICE
-    </div>
-
-    <h1>
-      แจ้งความต้องการบุคลากร
-    </h1>
-
-    <p>
-      สำหรับบริษัท / นายจ้างที่ต้องการแจ้งตำแหน่งงาน
-      และจำนวนบุคลากรที่ต้องการ
-    </p>
-
-    <div id="lineState" class="line-state">
-      กำลังเชื่อมต่อ LINE...
-    </div>
-
+    <div class="brand">ATWORK | RECRUITMENT SERVICE</div>
+    <h1>แจ้งความต้องการบุคลากร</h1>
+    <p>สำหรับบริษัท / นายจ้างที่ต้องการแจ้งตำแหน่งงานและจำนวนบุคลากรที่ต้องการ</p>
+    <div id="lineState" class="line-state">กำลังเชื่อมต่อ LINE...</div>
   </header>
-
 
   <div id="formMessage" class="notice"></div>
 
-
-  <form id="personnelRequestForm">
-
-
-    <!-- =========================
-         ข้อมูลบริษัท
-         ========================= -->
-
-    <section class="card section">
-
-      <div class="section-title">
-        ข้อมูลบริษัท / นายจ้าง
+  <section id="formCard" class="card">
+    <form id="personnelRequestForm">
+      <div class="section">
+        <div class="section-title">ข้อมูลบริษัท / นายจ้าง</div>
+        <div class="grid">
+          <div class="field full"><label class="required" for="companyName">ชื่อบริษัท / นายจ้าง</label><input id="companyName" maxlength="200" required></div>
+          <div class="field"><label class="required" for="contactName">ชื่อผู้ติดต่อ</label><input id="contactName" maxlength="150" required></div>
+          <div class="field"><label class="required" for="phone">เบอร์โทรศัพท์</label><input id="phone" type="tel" maxlength="20" inputmode="tel" required></div>
+          <div class="field"><label for="email">อีเมล</label><input id="email" type="email" maxlength="150"></div>
+          <div class="field"><label class="required" for="workLocation">สถานที่ทำงาน</label><input id="workLocation" maxlength="250" required></div>
+        </div>
       </div>
 
-      <div class="grid">
-
-        <div class="field full">
-          <label class="required" for="companyName">
-            ชื่อบริษัท / นายจ้าง
-          </label>
-
-          <input
-            id="companyName"
-            maxlength="200"
-            placeholder="ชื่อบริษัท หรือชื่อนายจ้าง"
-            required
-          >
+      <div class="section">
+        <div class="section-title">รายละเอียดตำแหน่ง</div>
+        <div class="grid">
+          <div class="field"><label class="required" for="position">ตำแหน่งที่ต้องการ</label><input id="position" maxlength="150" placeholder="เช่น ช่างไฟฟ้า" required></div>
+          <div class="field"><label class="required" for="quantity">จำนวนที่ต้องการ</label><input id="quantity" type="number" min="1" step="1" inputmode="numeric" required></div>
+          <div class="field"><label for="jobType">ประเภทงาน</label><select id="jobType"><option value="">เลือกประเภทงาน</option><option>งานประจำ</option><option>งานชั่วคราว</option><option>งานสัญญาจ้าง</option><option>อื่น ๆ</option></select></div>
+          <div class="field"><label for="salary">เงินเดือน / ค่าจ้าง</label><input id="salary" maxlength="100" placeholder="เช่น 15,000 - 18,000 บาท"></div>
+          <div class="field"><label for="startDate">วันที่ต้องการเริ่มงาน</label><input id="startDate" type="date"></div>
         </div>
-
-
-        <div class="field">
-          <label class="required" for="contactName">
-            ชื่อผู้ติดต่อ
-          </label>
-
-          <input
-            id="contactName"
-            maxlength="150"
-            placeholder="ชื่อผู้ประสานงาน"
-            required
-          >
-        </div>
-
-
-        <div class="field">
-          <label class="required" for="phone">
-            เบอร์โทรศัพท์
-          </label>
-
-          <input
-            id="phone"
-            type="tel"
-            maxlength="20"
-            inputmode="tel"
-            placeholder="08xxxxxxxx"
-            required
-          >
-        </div>
-
-
-        <div class="field">
-          <label for="email">
-            อีเมล
-          </label>
-
-          <input
-            id="email"
-            type="email"
-            maxlength="150"
-            placeholder="example@email.com"
-          >
-        </div>
-
-
-        <div class="field">
-          <label class="required" for="workLocation">
-            สถานที่ทำงาน
-          </label>
-
-          <input
-            id="workLocation"
-            maxlength="250"
-            placeholder="จังหวัด / สถานที่ทำงาน"
-            required
-          >
-        </div>
-
       </div>
 
-    </section>
-
-
-    <!-- =========================
-         รายละเอียดตำแหน่ง
-         ========================= -->
-
-    <section class="card section">
-
-      <div class="section-title">
-        รายละเอียดตำแหน่ง
+      <div class="section">
+        <div class="section-title">คุณสมบัติที่ต้องการ</div>
+        <div class="grid">
+          <div class="field"><label for="ageRequirement">อายุ</label><input id="ageRequirement" maxlength="100" placeholder="เช่น 20 - 35 ปี"></div>
+          <div class="field"><label for="genderRequirement">เพศ</label><select id="genderRequirement"><option value="">ไม่ระบุ</option><option>ชาย</option><option>หญิง</option><option>ชายหรือหญิง</option></select></div>
+          <div class="field"><label for="education">วุฒิการศึกษา</label><input id="education" maxlength="150" placeholder="เช่น ม.6 / ปวช. / ปวส."></div>
+          <div class="field"><label for="experience">ประสบการณ์</label><input id="experience" maxlength="200" placeholder="เช่น มีประสบการณ์ 1 ปีขึ้นไป"></div>
+          <div class="field full"><label for="skills">ทักษะ / ความสามารถ</label><textarea id="skills" maxlength="1000"></textarea></div>
+          <div class="field full"><label for="language">ภาษา</label><input id="language" maxlength="300" placeholder="เช่น ไทย / อังกฤษ / จีน"></div>
+        </div>
       </div>
 
-      <div class="grid">
-
-        <div class="field">
-          <label class="required" for="position">
-            ตำแหน่งที่ต้องการ
-          </label>
-
-          <input
-            id="position"
-            maxlength="150"
-            placeholder="เช่น ช่างไฟฟ้า"
-            required
-          >
+      <div class="section">
+        <div class="section-title">รายละเอียดงาน</div>
+        <div class="grid">
+          <div class="field full"><label class="required" for="jobDescription">ลักษณะงาน / หน้าที่</label><textarea id="jobDescription" maxlength="3000" required></textarea></div>
+          <div class="field"><label for="workingHours">เวลาทำงาน</label><input id="workingHours" maxlength="150" placeholder="เช่น 08:00 - 17:00 น."></div>
+          <div class="field"><label for="dayOff">วันหยุด</label><input id="dayOff" maxlength="150" placeholder="เช่น เสาร์-อาทิตย์"></div>
+          <div class="field full"><label for="benefits">สวัสดิการ</label><textarea id="benefits" maxlength="2000"></textarea></div>
+          <div class="field full"><label for="additionalNotes">หมายเหตุเพิ่มเติม</label><textarea id="additionalNotes" maxlength="2000"></textarea></div>
         </div>
-
-
-        <div class="field">
-          <label class="required" for="quantity">
-            จำนวนที่ต้องการ
-          </label>
-
-          <input
-            id="quantity"
-            type="number"
-            min="1"
-            step="1"
-            inputmode="numeric"
-            placeholder="เช่น 5"
-            required
-          >
-        </div>
-
-
-        <div class="field">
-          <label for="jobType">
-            ประเภทงาน
-          </label>
-
-          <select id="jobType">
-
-            <option value="">
-              เลือกประเภทงาน
-            </option>
-
-            <option value="งานประจำ">
-              งานประจำ
-            </option>
-
-            <option value="งานชั่วคราว">
-              งานชั่วคราว
-            </option>
-
-            <option value="งานสัญญาจ้าง">
-              งานสัญญาจ้าง
-            </option>
-
-            <option value="อื่น ๆ">
-              อื่น ๆ
-            </option>
-
-          </select>
-        </div>
-
-
-        <div class="field">
-          <label for="salary">
-            เงินเดือน / ค่าจ้าง
-          </label>
-
-          <input
-            id="salary"
-            maxlength="100"
-            placeholder="เช่น 15,000 - 18,000 บาท"
-          >
-        </div>
-
-
-        <div class="field">
-          <label for="startDate">
-            วันที่ต้องการเริ่มงาน
-          </label>
-
-          <input
-            id="startDate"
-            type="date"
-          >
-        </div>
-
       </div>
 
-    </section>
+      <div class="hint" style="margin-bottom:12px">ระบบจะผูกคำขอนี้กับบัญชี LINE ที่ใช้เปิดแบบฟอร์มโดยอัตโนมัติ</div>
+      <button id="submitButton" class="primary" type="submit" disabled>กำลังเตรียมระบบ...</button>
+    </form>
+  </section>
 
-
-    <!-- =========================
-         คุณสมบัติ
-         ========================= -->
-
-    <section class="card section">
-
-      <div class="section-title">
-        คุณสมบัติที่ต้องการ
-      </div>
-
-      <div class="grid">
-
-        <div class="field">
-          <label for="ageRequirement">
-            อายุ
-          </label>
-
-          <input
-            id="ageRequirement"
-            maxlength="100"
-            placeholder="เช่น 20 - 35 ปี"
-          >
-        </div>
-
-
-        <div class="field">
-          <label for="genderRequirement">
-            เพศ
-          </label>
-
-          <select id="genderRequirement">
-
-            <option value="">
-              ไม่ระบุ
-            </option>
-
-            <option value="ชาย">
-              ชาย
-            </option>
-
-            <option value="หญิง">
-              หญิง
-            </option>
-
-            <option value="ชายหรือหญิง">
-              ชายหรือหญิง
-            </option>
-
-          </select>
-        </div>
-
-
-        <div class="field">
-          <label for="education">
-            วุฒิการศึกษา
-          </label>
-
-          <input
-            id="education"
-            maxlength="150"
-            placeholder="เช่น ม.6 / ปวช. / ปวส."
-          >
-        </div>
-
-
-        <div class="field">
-          <label for="experience">
-            ประสบการณ์
-          </label>
-
-          <input
-            id="experience"
-            maxlength="200"
-            placeholder="เช่น มีประสบการณ์ 1 ปีขึ้นไป"
-          >
-        </div>
-
-
-        <div class="field full">
-          <label for="skills">
-            ทักษะ / ความสามารถ
-          </label>
-
-          <textarea
-            id="skills"
-            maxlength="1000"
-            placeholder="ระบุทักษะหรือความสามารถที่ต้องการ"
-          ></textarea>
-        </div>
-
-
-        <div class="field full">
-          <label for="language">
-            ภาษา
-          </label>
-
-          <input
-            id="language"
-            maxlength="300"
-            placeholder="เช่น ไทย / อังกฤษ / จีน"
-          >
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         รายละเอียดงาน
-         ========================= -->
-
-    <section class="card section">
-
-      <div class="section-title">
-        รายละเอียดงาน
-      </div>
-
-      <div class="grid">
-
-        <div class="field full">
-          <label class="required" for="jobDescription">
-            ลักษณะงาน / หน้าที่
-          </label>
-
-          <textarea
-            id="jobDescription"
-            maxlength="3000"
-            placeholder="อธิบายหน้าที่และลักษณะงานโดยสรุป"
-            required
-          ></textarea>
-        </div>
-
-
-        <div class="field">
-          <label for="workingHours">
-            เวลาทำงาน
-          </label>
-
-          <input
-            id="workingHours"
-            maxlength="150"
-            placeholder="เช่น 08:00 - 17:00 น."
-          >
-        </div>
-
-
-        <div class="field">
-          <label for="dayOff">
-            วันหยุด
-          </label>
-
-          <input
-            id="dayOff"
-            maxlength="150"
-            placeholder="เช่น เสาร์-อาทิตย์"
-          >
-        </div>
-
-
-        <div class="field full">
-          <label for="benefits">
-            สวัสดิการ
-          </label>
-
-          <textarea
-            id="benefits"
-            maxlength="2000"
-            placeholder="เช่น ประกันสังคม / โบนัส / ค่าอาหาร / ที่พัก"
-          ></textarea>
-        </div>
-
-
-        <div class="field full">
-          <label for="additionalNotes">
-            หมายเหตุเพิ่มเติม
-          </label>
-
-          <textarea
-            id="additionalNotes"
-            maxlength="2000"
-            placeholder="ข้อมูลเพิ่มเติมที่ต้องการแจ้งให้ ATWORK ทราบ"
-          ></textarea>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         ปุ่ม
-         ========================= -->
-
-    <section class="card">
-
-      <div class="hint" style="margin-bottom:12px;">
-        เมื่อส่งข้อมูล ระบบจะเชื่อมโยงคำขอนี้กับบัญชี LINE
-        ที่ใช้เปิดแบบฟอร์ม
-      </div>
-
-      <button
-        id="submitButton"
-        class="primary"
-        type="submit"
-        disabled
-      >
-        กำลังเตรียมระบบ...
-      </button>
-
-    </section>
-
-  </form>
-
+  <section id="successCard" class="card success-box">
+    <h2>✅ ส่งความต้องการสำเร็จ</h2>
+    <div>เลขที่คำขอ</div>
+    <div id="requestId" class="request-id">-</div>
+    <div>สถานะ: <span id="requestStatus" class="status">เสร็จสิ้น</span></div>
+  </section>
 </main>
 
-
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <script>
+const LIFF_ID = '2011817085-Mqy2mWhy';
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx-at7k-HTUunIkEQbNiX_RirlV6GEGd2uBmNH_jGmCIWSxqTawgeSIxfB3R3EcJxY/exec';
+let ready = false;
+let idToken = '';
+const $ = id => document.getElementById(id);
 
-  /* ==================================================
-     CONFIG
-     ================================================== */
+function setNotice(message, type='') {
+  const box = $('formMessage');
+  box.textContent = message;
+  box.className = 'notice ' + type;
+  box.style.display = 'block';
+}
 
-  const LIFF_ID = '2011817085-Mqy2mWhy';
+function hideNotice() {
+  $('formMessage').style.display = 'none';
+  $('formMessage').textContent = '';
+}
 
+function refreshIdToken() {
+  idToken = liff.getIDToken() || '';
+  if (!idToken) throw new Error('ไม่พบข้อมูลยืนยันตัวตนจาก LINE กรุณาเปิดแบบฟอร์มใหม่จาก LINE');
+  return idToken;
+}
 
-  /* ==================================================
-     STATE
-     ================================================== */
+async function apiCall(action, data={}) {
+  const response = await fetch(GAS_WEB_APP_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify({action, idToken, data})
+  });
 
-  let ready = false;
-
-  let idToken = '';
-
-
-  /* ==================================================
-     HELPERS
-     ================================================== */
-
-  function $(id) {
-    return document.getElementById(id);
+  if (!response.ok) throw new Error('Apps Script ตอบกลับ HTTP ' + response.status);
+  const result = await response.json();
+  if (!result || result.success === false || result.ok === false) {
+    throw new Error(result?.message || 'ส่งข้อมูลไม่สำเร็จ');
   }
+  return result;
+}
 
+async function init() {
+  try {
+    await liff.init({liffId: LIFF_ID, withLoginOnExternalBrowser: true});
 
-  function setNotice(message, type) {
-
-    const box = $('formMessage');
-
-    box.textContent = message;
-
-    box.className =
-      'notice ' +
-      (type || '');
-
-    box.style.display = 'block';
-  }
-
-
-  function hideNotice() {
-
-    const box = $('formMessage');
-
-    box.style.display = 'none';
-
-    box.textContent = '';
-
-  }
-
-
-  function refreshIdToken() {
-
-    idToken = liff.getIDToken() || '';
-
-    if (!idToken) {
-
-      throw new Error(
-        'ไม่พบข้อมูลยืนยันตัวตนจาก LINE'
-      );
-
+    if (!liff.isLoggedIn()) {
+      liff.login({redirectUri: window.location.href});
+      return;
     }
 
-    return idToken;
-
+    refreshIdToken();
+    ready = true;
+    $('lineState').textContent = liff.isInClient()
+      ? '● เชื่อมต่อ LINE แล้ว'
+      : '● เชื่อมต่อ LINE แล้ว (Browser)';
+    $('submitButton').disabled = false;
+    $('submitButton').textContent = 'ส่งความต้องการบุคลากร';
+  } catch (error) {
+    console.error(error);
+    ready = false;
+    $('lineState').textContent = 'เชื่อมต่อ LINE ไม่สำเร็จ';
+    $('submitButton').disabled = true;
+    setNotice(error.message || 'ไม่สามารถเปิดระบบได้', 'danger');
   }
+}
 
+$('personnelRequestForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!ready) return;
 
-  /* ==================================================
-     LIFF INIT
-     ================================================== */
+  const button = $('submitButton');
+  button.disabled = true;
+  hideNotice();
 
-  async function init() {
+  try {
+    refreshIdToken();
 
-    try {
+    const data = {
+      companyName: $('companyName').value.trim(),
+      contactName: $('contactName').value.trim(),
+      phone: $('phone').value.trim(),
+      email: $('email').value.trim(),
+      workLocation: $('workLocation').value.trim(),
+      position: $('position').value.trim(),
+      quantity: $('quantity').value,
+      jobType: $('jobType').value,
+      salary: $('salary').value.trim(),
+      startDate: $('startDate').value,
+      ageRequirement: $('ageRequirement').value.trim(),
+      genderRequirement: $('genderRequirement').value,
+      education: $('education').value.trim(),
+      experience: $('experience').value.trim(),
+      skills: $('skills').value.trim(),
+      language: $('language').value.trim(),
+      jobDescription: $('jobDescription').value.trim(),
+      workingHours: $('workingHours').value.trim(),
+      dayOff: $('dayOff').value.trim(),
+      benefits: $('benefits').value.trim(),
+      additionalNotes: $('additionalNotes').value.trim()
+    };
 
-      await liff.init({
-        liffId: LIFF_ID,
-        withLoginOnExternalBrowser: true
-      });
+    button.textContent = 'กำลังส่งข้อมูล...';
 
+    const result = await apiCall('createPersonnelRequest', data);
 
-      if (!liff.isLoggedIn()) {
+    $('formCard').style.display = 'none';
+    $('successCard').style.display = 'block';
+    $('requestId').textContent = result.requestId || '-';
+    $('requestStatus').textContent = result.status || 'เสร็จสิ้น';
 
-        liff.login({
-          redirectUri: window.location.href
-        });
-
-        return;
-
-      }
-
-
-      refreshIdToken();
-
-      ready = true;
-
-
-      $('lineState').textContent =
-        liff.isInClient()
-          ? '● เชื่อมต่อ LINE แล้ว'
-          : '● เชื่อมต่อ LINE แล้ว (Browser)';
-
-
-      $('submitButton').disabled = false;
-
-      $('submitButton').textContent =
-        'ส่งความต้องการบุคลากร';
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      ready = false;
-
-      $('lineState').textContent =
-        'เชื่อมต่อ LINE ไม่สำเร็จ';
-
-      $('submitButton').disabled = true;
-
-      $('submitButton').textContent =
-        'ไม่สามารถใช้งานได้';
-
-      setNotice(
-        error.message ||
-        'ไม่สามารถเปิดระบบได้',
-        'danger'
-      );
-
+  } catch (error) {
+    console.error(error);
+    setNotice(error.message || 'ส่งข้อมูลไม่สำเร็จ', 'danger');
+  } finally {
+    if ($('formCard').style.display !== 'none') {
+      button.disabled = false;
+      button.textContent = 'ส่งความต้องการบุคลากร';
     }
-
   }
+});
 
-
-  /* ==================================================
-     SUBMIT
-     ตอนนี้ยังเป็น DEMO
-     ยังไม่ส่งเข้า Google Sheets
-     ================================================== */
-
-  $('personnelRequestForm')
-    .addEventListener(
-      'submit',
-      async function(event) {
-
-        event.preventDefault();
-
-        if (!ready) {
-          return;
-        }
-
-        const button =
-          $('submitButton');
-
-
-        try {
-
-          hideNotice();
-
-          refreshIdToken();
-
-
-          const data = {
-
-            companyName:
-              $('companyName').value.trim(),
-
-            contactName:
-              $('contactName').value.trim(),
-
-            phone:
-              $('phone').value.trim(),
-
-            email:
-              $('email').value.trim(),
-
-            workLocation:
-              $('workLocation').value.trim(),
-
-            position:
-              $('position').value.trim(),
-
-            quantity:
-              $('quantity').value,
-
-            jobType:
-              $('jobType').value,
-
-            salary:
-              $('salary').value.trim(),
-
-            startDate:
-              $('startDate').value,
-
-            ageRequirement:
-              $('ageRequirement').value.trim(),
-
-            genderRequirement:
-              $('genderRequirement').value,
-
-            education:
-              $('education').value.trim(),
-
-            experience:
-              $('experience').value.trim(),
-
-            skills:
-              $('skills').value.trim(),
-
-            language:
-              $('language').value.trim(),
-
-            jobDescription:
-              $('jobDescription').value.trim(),
-
-            workingHours:
-              $('workingHours').value.trim(),
-
-            dayOff:
-              $('dayOff').value.trim(),
-
-            benefits:
-              $('benefits').value.trim(),
-
-            additionalNotes:
-              $('additionalNotes').value.trim()
-
-          };
-
-
-          button.disabled = true;
-
-          button.textContent =
-            'กำลังส่งข้อมูล...';
-
-
-          /*
-           * ตอนนี้ยังไม่เรียก Apps Script
-           * STEP ถัดไปเราจะเชื่อม API
-           */
-
-          console.log(
-            'LINE User ID Token:',
-            idToken
-          );
-
-          console.log(
-            'Personnel Request:',
-            data
-          );
-
-
-          await new Promise(
-            resolve =>
-              setTimeout(resolve, 800)
-          );
-
-
-          setNotice(
-            'แบบฟอร์มพร้อมใช้งานแล้ว\n\n' +
-            'ขั้นต่อไปจะเชื่อมการบันทึกข้อมูลลง Google Sheets',
-            'success'
-          );
-
-
-        } catch (error) {
-
-          console.error(error);
-
-          setNotice(
-            error.message ||
-            'ส่งข้อมูลไม่สำเร็จ',
-            'danger'
-          );
-
-        } finally {
-
-          button.disabled = false;
-
-          button.textContent =
-            'ส่งความต้องการบุคลากร';
-
-        }
-
-      }
-    );
-
-
-  /* ==================================================
-     START
-     ================================================== */
-
-  init();
-
+init();
 </script>
-
 </body>
 </html>
