@@ -1,60 +1,100 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>ATWORK | สมัครงาน</title>
+  <title>
+    ATWORK | สมัครงาน
+  </title>
 
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <script
+    src="https://static.line-scdn.net/liff/edge/2/sdk.js">
+  </script>
+
 
   <style>
+
     :root {
+
       --navy: #173f73;
       --navy-dark: #102f58;
       --blue: #1769aa;
+
       --blue-soft: #eef6ff;
+
       --bg: #f5f7fb;
+
       --white: #ffffff;
+
       --text: #172033;
+
       --muted: #6b7280;
+
       --border: #d9e1ea;
+
       --success-bg: #eaf8ef;
       --success: #17683a;
+
       --error-bg: #fff0f0;
       --error: #a42626;
+
     }
+
 
     * {
       box-sizing: border-box;
     }
 
+
     body {
+
       margin: 0;
+
       font-family:
         Arial,
         Tahoma,
         "Noto Sans Thai",
         sans-serif;
-      background: var(--bg);
-      color: var(--text);
+
+      background:
+        var(--bg);
+
+      color:
+        var(--text);
+
     }
 
+
     .page {
+
       width: 100%;
+
       max-width: 700px;
+
       margin: 0 auto;
-      padding: 14px 12px 36px;
+
+      padding:
+        14px
+        12px
+        36px;
+
     }
+
 
     /* =========================
        HERO
     ========================= */
 
     .hero {
+
       background:
         linear-gradient(
           135deg,
@@ -63,275 +103,545 @@
         );
 
       color: #fff;
-      padding: 25px 21px;
+
+      padding:
+        25px
+        21px;
+
       border-radius: 22px;
+
       margin-bottom: 14px;
 
       box-shadow:
-        0 10px 30px rgba(16, 47, 88, 0.18);
+        0
+        10px
+        30px
+        rgba(
+          16,
+          47,
+          88,
+          .18
+        );
+
     }
+
 
     .brand {
+
       font-size: 30px;
+
       font-weight: 800;
-      letter-spacing: .4px;
+
+      letter-spacing:
+        .4px;
+
     }
+
 
     .hero-title {
+
       margin-top: 8px;
+
       font-size: 20px;
+
       font-weight: 800;
+
     }
 
+
     .hero-text {
+
       margin-top: 7px;
-      color: #e5eefb;
+
+      color:
+        #e5eefb;
+
       font-size: 13px;
+
       line-height: 1.7;
+
     }
+
 
     /* =========================
        LINE CARD
     ========================= */
 
     .line-card {
-      background: var(--white);
-      border: 1px solid #edf0f4;
-      border-radius: 18px;
-      padding: 13px 15px;
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      background:
+        var(--white);
+
+      border:
+        1px solid
+        #edf0f4;
+
+      border-radius:
+        18px;
+
+      padding:
+        13px
+        15px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
 
       gap: 10px;
-      margin-bottom: 14px;
+
+      margin-bottom:
+        14px;
+
     }
+
 
     .line-user {
-      display: flex;
-      align-items: center;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
       gap: 10px;
+
       min-width: 0;
+
     }
+
 
     .line-avatar {
+
       width: 46px;
+
       height: 46px;
-      border-radius: 50%;
-      background: #e8eef6;
-      object-fit: cover;
+
+      border-radius:
+        50%;
+
+      background:
+        #e8eef6;
+
+      object-fit:
+        cover;
+
       flex-shrink: 0;
+
     }
+
 
     .line-name {
+
       font-size: 14px;
+
       font-weight: 800;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+
+      white-space:
+        nowrap;
+
+      overflow:
+        hidden;
+
+      text-overflow:
+        ellipsis;
+
     }
+
 
     .line-status {
+
       margin-top: 3px;
+
       font-size: 12px;
-      color: #23834d;
+
+      color:
+        #23834d;
+
     }
+
 
     .connected {
-      display: inline-flex;
-      align-items: center;
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
       gap: 6px;
 
-      padding: 7px 10px;
-      border-radius: 999px;
+      padding:
+        7px
+        10px;
 
-      background: var(--success-bg);
-      color: var(--success);
+      border-radius:
+        999px;
+
+      background:
+        var(--success-bg);
+
+      color:
+        var(--success);
 
       font-size: 11px;
+
       font-weight: 800;
 
-      white-space: nowrap;
+      white-space:
+        nowrap;
+
     }
 
+
     .connected-dot {
+
       width: 7px;
+
       height: 7px;
-      border-radius: 50%;
-      background: #2e9b5b;
+
+      border-radius:
+        50%;
+
+      background:
+        #2e9b5b;
+
     }
+
 
     /* =========================
        CARD
     ========================= */
 
     .card {
-      background: var(--white);
-      border: 1px solid #edf0f4;
-      border-radius: 19px;
-      padding: 19px;
-      margin-bottom: 13px;
+
+      background:
+        var(--white);
+
+      border:
+        1px solid
+        #edf0f4;
+
+      border-radius:
+        19px;
+
+      padding:
+        19px;
+
+      margin-bottom:
+        13px;
 
       box-shadow:
-        0 4px 18px rgba(15, 23, 42, .045);
+        0
+        4px
+        18px
+        rgba(
+          15,
+          23,
+          42,
+          .045
+        );
+
     }
+
 
     .heading {
-      display: flex;
+
+      display:
+        flex;
+
       gap: 10px;
-      align-items: center;
-      margin-bottom: 17px;
+
+      align-items:
+        center;
+
+      margin-bottom:
+        17px;
+
     }
 
+
     .number {
+
       width: 30px;
+
       height: 30px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display:
+        flex;
 
-      background: var(--blue-soft);
-      color: var(--blue);
+      align-items:
+        center;
 
-      border-radius: 10px;
+      justify-content:
+        center;
+
+      background:
+        var(--blue-soft);
+
+      color:
+        var(--blue);
+
+      border-radius:
+        10px;
+
       font-size: 12px;
+
       font-weight: 900;
 
       flex-shrink: 0;
+
     }
+
 
     .heading-title {
+
       font-size: 17px;
+
       font-weight: 800;
+
     }
 
+
     .heading-sub {
+
       margin-top: 2px;
-      color: var(--muted);
+
+      color:
+        var(--muted);
+
       font-size: 12px;
+
     }
+
 
     /* =========================
        FORM
     ========================= */
 
     .field {
-      margin-bottom: 14px;
+
+      margin-bottom:
+        14px;
+
     }
+
 
     .field:last-child {
-      margin-bottom: 0;
+
+      margin-bottom:
+        0;
+
     }
+
 
     label {
+
       display: block;
-      margin-bottom: 7px;
+
+      margin-bottom:
+        7px;
 
       font-size: 13px;
+
       font-weight: 700;
+
     }
 
+
     .required {
-      color: #c62828;
+
+      color:
+        #c62828;
+
     }
+
 
     input,
     select {
+
       width: 100%;
-      padding: 12px 13px;
 
-      border: 1px solid var(--border);
-      border-radius: 11px;
+      padding:
+        12px
+        13px;
 
-      background: #fff;
-      color: var(--text);
+      border:
+        1px solid
+        var(--border);
 
-      font-size: 15px;
+      border-radius:
+        11px;
 
-      outline: none;
+      background:
+        #fff;
+
+      color:
+        var(--text);
+
+      font-size:
+        15px;
+
+      outline:
+        none;
 
       transition:
-        border-color .2s,
-        box-shadow .2s;
+        border-color
+        .2s,
+        box-shadow
+        .2s;
+
     }
+
 
     input:focus,
     select:focus {
-      border-color: #6ca8d8;
+
+      border-color:
+        #6ca8d8;
 
       box-shadow:
-        0 0 0 4px rgba(23, 105, 170, .08);
+        0
+        0
+        0
+        4px
+        rgba(
+          23,
+          105,
+          170,
+          .08
+        );
+
     }
+
 
     .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr
+        1fr;
+
+      gap:
+        12px;
+
     }
 
-    .hint {
-      margin-top: 6px;
-      font-size: 11px;
-      line-height: 1.5;
-      color: var(--muted);
-    }
 
     /* =========================
        UPLOAD
     ========================= */
 
     .upload {
-      border: 1.5px dashed #b7c7d9;
-      border-radius: 14px;
-      background: #f9fbfe;
-      padding: 18px 15px;
-      text-align: center;
+
+      border:
+        1.5px dashed
+        #b7c7d9;
+
+      border-radius:
+        14px;
+
+      background:
+        #f9fbfe;
+
+      padding:
+        18px
+        15px;
+
+      text-align:
+        center;
+
     }
+
 
     .upload-icon {
-      font-size: 29px;
-      margin-bottom: 7px;
+
+      font-size:
+        29px;
+
+      margin-bottom:
+        7px;
+
     }
+
 
     .upload-title {
-      font-size: 14px;
-      font-weight: 800;
+
+      font-size:
+        14px;
+
+      font-weight:
+        800;
+
     }
+
 
     .upload-sub {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.6;
+
+      margin-top:
+        5px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.6;
+
     }
+
 
     .file-input {
-      margin-top: 13px;
+
+      margin-top:
+        13px;
+
     }
 
+
     .file-name {
-      margin-top: 8px;
-      font-size: 12px;
-      color: #475569;
-      word-break: break-word;
+
+      margin-top:
+        8px;
+
+      font-size:
+        12px;
+
+      color:
+        #475569;
+
+      word-break:
+        break-word;
+
     }
+
 
     /* =========================
        SUBMIT
     ========================= */
 
-    .submit-area {
-      margin-top: 4px;
-    }
-
     .submit-btn {
-      width: 100%;
-      border: none;
-      border-radius: 14px;
 
-      padding: 15px 18px;
+      width:
+        100%;
+
+      border:
+        none;
+
+      border-radius:
+        14px;
+
+      padding:
+        15px
+        18px;
 
       background:
         linear-gradient(
@@ -340,115 +650,221 @@
           #205d9a
         );
 
-      color: #fff;
+      color:
+        #fff;
 
-      font-size: 16px;
-      font-weight: 800;
+      font-size:
+        16px;
 
-      cursor: pointer;
+      font-weight:
+        800;
+
+      cursor:
+        pointer;
 
       box-shadow:
-        0 8px 20px rgba(23, 105, 170, .20);
+        0
+        8px
+        20px
+        rgba(
+          23,
+          105,
+          170,
+          .20
+        );
+
     }
+
 
     .submit-btn:disabled {
-      opacity: .55;
-      cursor: wait;
+
+      opacity:
+        .55;
+
+      cursor:
+        wait;
+
     }
 
+
     /* =========================
-       STATUS UNDER BUTTON
+       STATUS
     ========================= */
 
     #submitStatus {
-      display: none;
 
-      margin-top: 11px;
-      padding: 13px 14px;
+      display:
+        none;
 
-      border-radius: 12px;
+      margin-top:
+        11px;
 
-      font-size: 13px;
-      line-height: 1.65;
+      padding:
+        13px
+        14px;
 
-      white-space: pre-line;
-      overflow-wrap: anywhere;
+      border-radius:
+        12px;
+
+      font-size:
+        13px;
+
+      line-height:
+        1.65;
+
+      white-space:
+        pre-line;
+
+      overflow-wrap:
+        anywhere;
+
     }
+
 
     #submitStatus.show {
-      display: block;
+
+      display:
+        block;
+
     }
+
 
     #submitStatus.loading {
-      background: var(--blue-soft);
-      color: #24476d;
+
+      background:
+        var(--blue-soft);
+
+      color:
+        #24476d;
+
     }
+
 
     #submitStatus.success {
-      background: var(--success-bg);
-      color: var(--success);
+
+      background:
+        var(--success-bg);
+
+      color:
+        var(--success);
+
     }
+
 
     #submitStatus.error {
-      background: var(--error-bg);
-      color: var(--error);
+
+      background:
+        var(--error-bg);
+
+      color:
+        var(--error);
+
     }
+
 
     .footer {
-      text-align: center;
-      margin-top: 14px;
 
-      color: #8a94a4;
-      font-size: 11px;
-      line-height: 1.6;
+      text-align:
+        center;
+
+      margin-top:
+        14px;
+
+      color:
+        #8a94a4;
+
+      font-size:
+        11px;
+
+      line-height:
+        1.6;
+
     }
 
-    /* =========================
-       MOBILE
-    ========================= */
 
-    @media (max-width: 480px) {
+    @media (
+      max-width: 480px
+    ) {
 
       .page {
+
         padding:
           10px
           9px
           28px;
+
       }
+
 
       .hero {
-        padding: 22px 17px;
-        border-radius: 18px;
+
+        padding:
+          22px
+          17px;
+
+        border-radius:
+          18px;
+
       }
+
 
       .brand {
-        font-size: 27px;
+
+        font-size:
+          27px;
+
       }
+
 
       .hero-title {
-        font-size: 18px;
+
+        font-size:
+          18px;
+
       }
+
 
       .card {
-        padding: 16px;
-        border-radius: 17px;
+
+        padding:
+          16px;
+
+        border-radius:
+          17px;
+
       }
+
 
       .grid {
-        grid-template-columns: 1fr;
-        gap: 0;
+
+        grid-template-columns:
+          1fr;
+
+        gap:
+          0;
+
       }
 
+
       .connected {
-        display: none;
+
+        display:
+          none;
+
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <div class="page">
+
 
   <!-- =========================
        HEADER
@@ -465,10 +881,13 @@
     </div>
 
     <div class="hero-text">
+
       กรอกข้อมูลให้ครบถ้วน
       และแนบ Resume ได้ในหน้าเดียว
-      เจ้าหน้าที่ ATWORK จะตรวจสอบข้อมูลของคุณ
+      เจ้าหน้าที่ ATWORK
+      จะตรวจสอบข้อมูลของคุณ
       และติดต่อกลับตามขั้นตอน
+
     </div>
 
   </header>
@@ -509,9 +928,12 @@
 
     </div>
 
+
     <div class="connected">
 
-      <span class="connected-dot"></span>
+      <span
+        class="connected-dot">
+      </span>
 
       LINE Connected
 
@@ -524,7 +946,9 @@
        FORM
   ========================= -->
 
-  <form id="applicationForm">
+  <form
+    id="applicationForm"
+  >
 
 
     <!-- PERSONAL -->
@@ -555,9 +979,15 @@
       <div class="field">
 
         <label for="appName">
+
           ชื่อ - นามสกุล
-          <span class="required">*</span>
+
+          <span class="required">
+            *
+          </span>
+
         </label>
+
 
         <input
           id="appName"
@@ -576,9 +1006,15 @@
         <div class="field">
 
           <label for="appPhone">
+
             เบอร์โทรศัพท์
-            <span class="required">*</span>
+
+            <span class="required">
+              *
+            </span>
+
           </label>
+
 
           <input
             id="appPhone"
@@ -597,6 +1033,7 @@
           <label for="appEmail">
             อีเมล
           </label>
+
 
           <input
             id="appEmail"
@@ -641,9 +1078,15 @@
       <div class="field">
 
         <label for="position">
+
           ตำแหน่งที่สมัคร
-          <span class="required">*</span>
+
+          <span class="required">
+            *
+          </span>
+
         </label>
+
 
         <select
           id="position"
@@ -684,6 +1127,7 @@
             เงินเดือนที่คาดหวัง
           </label>
 
+
           <input
             id="salary"
             name="expectedSalary"
@@ -701,6 +1145,7 @@
           <label for="startDate">
             วันที่เริ่มงานได้
           </label>
+
 
           <input
             id="startDate"
@@ -746,6 +1191,7 @@
           บ้านเลขที่
         </label>
 
+
         <input
           id="houseNo"
           name="houseNo"
@@ -763,6 +1209,7 @@
             หมู่
           </label>
 
+
           <input
             id="moo"
             name="moo"
@@ -777,6 +1224,7 @@
           <label for="road">
             ถนน
           </label>
+
 
           <input
             id="road"
@@ -797,6 +1245,7 @@
             ตำบล / แขวง
           </label>
 
+
           <input
             id="subdistrict"
             name="subdistrict"
@@ -811,6 +1260,7 @@
           <label for="district">
             อำเภอ / เขต
           </label>
+
 
           <input
             id="district"
@@ -831,6 +1281,7 @@
             จังหวัด
           </label>
 
+
           <input
             id="appProvince"
             name="province"
@@ -845,6 +1296,7 @@
           <label for="postalCode">
             รหัสไปรษณีย์
           </label>
+
 
           <input
             id="postalCode"
@@ -877,7 +1329,8 @@
           </div>
 
           <div class="heading-sub">
-            แนบ Resume เพื่อให้เจ้าหน้าที่พิจารณา
+            แนบ Resume
+            เพื่อให้เจ้าหน้าที่พิจารณา
           </div>
 
         </div>
@@ -896,9 +1349,13 @@
         </div>
 
         <div class="upload-sub">
-          PDF, JPG หรือ PNG
+
+          รองรับ PDF, JPG และ PNG
+
           <br>
+
           ขนาดไม่เกิน 5 MB
+
         </div>
 
 
@@ -922,7 +1379,7 @@
 
     <!-- SUBMIT -->
 
-    <div class="submit-area">
+    <section>
 
       <button
         id="submitButton"
@@ -934,23 +1391,24 @@
 
 
       <!--
-        สถานะทั้งหมดอยู่ตรงนี้
-        ใต้ปุ่มส่งใบสมัคร
+        สถานะอยู่ใต้ปุ่ม
       -->
 
       <div
         id="submitStatus"
       ></div>
 
-    </div>
+    </section>
 
 
   </form>
 
 
   <div class="footer">
-    ข้อมูลของคุณจะถูกบันทึกในสถานะ
+
+    ข้อมูลที่ส่งจะมีสถานะ
     <strong>รอตรวจสอบ</strong>
+
   </div>
 
 </div>
@@ -991,6 +1449,7 @@
 
 <script>
 
+
   /* ========================================
      CONFIG
   ======================================== */
@@ -998,27 +1457,29 @@
   const LIFF_ID =
     "2011817085-Mqy2mWhy";
 
+
   const APPS_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
+
 
   const MAX_FILE_SIZE =
     5 * 1024 * 1024;
 
 
-  let lineReady = false;
-  let idToken = "";
-  let profile = null;
+  let lineReady =
+    false;
+
+
+  let profile =
+    null;
 
 
   /* ========================================
-     ELEMENTS
+     ELEMENT HELPER
   ======================================== */
 
   const $ = id =>
     document.getElementById(id);
-
-  const applicationForm =
-    $("applicationForm");
 
 
   /* ========================================
@@ -1033,8 +1494,10 @@
     const box =
       $("submitStatus");
 
+
     box.textContent =
       text;
+
 
     box.className =
       "show " + type;
@@ -1047,8 +1510,10 @@
     const box =
       $("submitStatus");
 
+
     box.textContent =
       "";
+
 
     box.className =
       "";
@@ -1057,7 +1522,7 @@
 
 
   /* ========================================
-     LIFF
+     LIFF INIT
   ======================================== */
 
   async function initLIFF() {
@@ -1070,17 +1535,19 @@
 
 
       await liff.init({
-        liffId: LIFF_ID
+
+        liffId:
+          LIFF_ID,
+
+        withLoginOnExternalBrowser:
+          true
+
       });
 
 
       if (
         !liff.isLoggedIn()
       ) {
-
-        /*
-         * External Browser
-         */
 
         if (
           !liff.isInClient()
@@ -1106,18 +1573,26 @@
       }
 
 
-      idToken =
-        liff.getIDToken();
+      /*
+       * ดึง Access Token
+       */
+
+      const accessToken =
+        liff.getAccessToken();
 
 
-      if (!idToken) {
+      if (!accessToken) {
 
         throw new Error(
-          "ไม่พบ LINE ID Token"
+          "ไม่พบ LINE Access Token"
         );
 
       }
 
+
+      /*
+       * Profile
+       */
 
       try {
 
@@ -1167,6 +1642,7 @@
         .textContent =
         "เชื่อมต่อ LINE สำเร็จ";
 
+
     } catch (error) {
 
       console.error(
@@ -1198,19 +1674,48 @@
   function createRequestId() {
 
     return (
+
       "REQ_" +
+
       Date.now() +
+
       "_" +
+
       Math.random()
         .toString(36)
         .slice(2, 10)
+
     );
 
   }
 
 
   /* ========================================
-     SEND TO APPS SCRIPT
+     GET CURRENT ACCESS TOKEN
+  ======================================== */
+
+  function getCurrentAccessToken() {
+
+    const accessToken =
+      liff.getAccessToken();
+
+
+    if (!accessToken) {
+
+      throw new Error(
+        "ไม่พบ LINE Access Token กรุณาเปิดหน้า ATWORK ใหม่"
+      );
+
+    }
+
+
+    return accessToken;
+
+  }
+
+
+  /* ========================================
+     SEND TO BACKEND
   ======================================== */
 
   function sendToBackend(
@@ -1224,12 +1729,36 @@
         reject
       ) {
 
+
+        let accessToken;
+
+
+        try {
+
+          /*
+           * ดึง token ใหม่จาก LIFF
+           * ทุกครั้งที่กดส่ง
+           */
+
+          accessToken =
+            getCurrentAccessToken();
+
+        } catch (error) {
+
+          reject(error);
+
+          return;
+
+        }
+
+
         const requestId =
           createRequestId();
 
 
-        payload.idToken =
-          idToken;
+        payload.accessToken =
+          accessToken;
+
 
         payload.requestId =
           requestId;
@@ -1272,7 +1801,7 @@
 
 
   /* ========================================
-     POLL STATUS
+     POLL RESULT
   ======================================== */
 
   function pollStatus(
@@ -1283,7 +1812,7 @@
   ) {
 
     if (
-      attempt >= 25
+      attempt >= 30
     ) {
 
       reject(
@@ -1331,6 +1860,7 @@
             1000
           );
 
+
           return;
 
         }
@@ -1342,8 +1872,10 @@
         ) {
 
           resolve(
-            data.result || {}
+            data.result ||
+            {}
           );
+
 
           return;
 
@@ -1352,10 +1884,14 @@
 
         reject(
           new Error(
+
             data &&
             data.error
+
               ? data.error
+
               : "ไม่สามารถบันทึกข้อมูลได้"
+
           )
         );
 
@@ -1369,17 +1905,25 @@
 
 
     script.src =
+
       APPS_SCRIPT_URL +
+
       "?action=status" +
+
       "&requestId=" +
+
       encodeURIComponent(
         requestId
       ) +
+
       "&callback=" +
+
       encodeURIComponent(
         callbackName
       ) +
+
       "&t=" +
+
       Date.now();
 
 
@@ -1495,7 +2039,7 @@
 
 
   /* ========================================
-     FILE CHANGE
+     FILE NAME
   ======================================== */
 
   $("resumeFile")
@@ -1509,9 +2053,12 @@
 
         $("fileName")
           .textContent =
+
           file
+
             ? "ไฟล์ที่เลือก: " +
               file.name
+
             : "";
 
       }
@@ -1522,7 +2069,7 @@
      SUBMIT
   ======================================== */
 
-  applicationForm
+  $("applicationForm")
     .addEventListener(
       "submit",
       async function(event) {
@@ -1534,8 +2081,7 @@
 
 
         if (
-          !lineReady ||
-          !idToken
+          !lineReady
         ) {
 
           showStatus(
@@ -1570,7 +2116,7 @@
         try {
 
           /* ==========================
-             1. APPLICATION
+             APPLICATION
           ========================== */
 
           showStatus(
@@ -1581,11 +2127,18 @@
 
           const applicationPayload =
             Object.fromEntries(
+
               new FormData(
                 this
               ).entries()
+
             );
 
+
+          /*
+           * ไม่ส่ง input type=file
+           * ไปใน Application payload
+           */
 
           delete applicationPayload
             .resumeFile;
@@ -1593,8 +2146,11 @@
 
           const applicationResult =
             await sendToBackend(
+
               "application",
+
               applicationPayload
+
             );
 
 
@@ -1605,7 +2161,7 @@
 
 
           /* ==========================
-             2. RESUME
+             RESUME
           ========================== */
 
           const file =
@@ -1614,6 +2170,7 @@
 
 
           if (file) {
+
 
             if (
               file.size >
@@ -1628,9 +2185,13 @@
 
 
             const allowedTypes = [
+
               "application/pdf",
+
               "image/jpeg",
+
               "image/png"
+
             ];
 
 
@@ -1648,8 +2209,12 @@
 
 
             showStatus(
-              "สมัครงานเรียบร้อยแล้ว\nกำลังส่ง Resume...",
+
+              "สมัครงานเรียบร้อยแล้ว\n" +
+              "กำลังส่ง Resume...",
+
               "loading"
+
             );
 
 
@@ -1694,8 +2259,11 @@
 
             const resumeResult =
               await sendToBackend(
+
                 "resume",
+
                 resumePayload
+
               );
 
 
@@ -1706,39 +2274,62 @@
 
 
             showStatus(
+
               "ส่งใบสมัครและ Resume สำเร็จแล้ว\n" +
-              "เลขที่ใบสมัคร: " +
-              applicationId +
+
               (
-                candidateId
-                  ? "\nเลขที่ผู้สมัคร: " +
-                    candidateId
+                applicationId
+                  ? "เลขที่ใบสมัคร: " +
+                    applicationId +
+                    "\n"
                   : ""
               ) +
-              "\nสถานะ: รอตรวจสอบ",
+
+              (
+                candidateId
+                  ? "เลขที่ผู้สมัคร: " +
+                    candidateId +
+                    "\n"
+                  : ""
+              ) +
+
+              "สถานะ: รอตรวจสอบ",
+
               "success"
+
             );
 
 
           } else {
+
 
             /* ==========================
                APPLICATION ONLY
             ========================== */
 
             showStatus(
+
               "ส่งใบสมัครสำเร็จแล้ว\n" +
-              "เลขที่ใบสมัคร: " +
-              applicationId +
-              "\nสถานะ: รอตรวจสอบ",
+
+              (
+                applicationId
+                  ? "เลขที่ใบสมัคร: " +
+                    applicationId +
+                    "\n"
+                  : ""
+              ) +
+
+              "สถานะ: รอตรวจสอบ",
+
               "success"
+
             );
 
           }
 
 
           /*
-           * Reset form
+           * Reset
            */
 
           this.reset();
@@ -1787,7 +2378,7 @@
 
 
   /* ========================================
-     START LIFF
+     START
   ======================================== */
 
   initLIFF();
