@@ -77,57 +77,51 @@
 </div>
 
 <script>
+  const LIFF_ID = "2011817085-Mqy2mWhy";
 
-const LIFF_ID = "2011817085-Mqy2mWhy";
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
+  const APPS_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
 
-async function startLIFF() {
-  try {
-
-    await liff.init({
-      liffId: LIFF_ID,
-      withLoginOnExternalBrowser: true
-    });
-
-    console.log("LIFF initialized");
-    console.log("isInClient:", liff.isInClient());
-    console.log("isLoggedIn:", liff.isLoggedIn());
-
-    if (!liff.isLoggedIn()) {
-
-      document.getElementById("status").textContent =
-        "กรุณาเข้าสู่ระบบ LINE...";
-
-      liff.login();
-
-      return;
-    }
-
-    const profile = await liff.getProfile();
-
-    document.getElementById("status").textContent =
-      "เชื่อมต่อ LINE สำเร็จ";
-
-    document.getElementById("profile").style.display = "block";
-
-    document.getElementById("profileImage").src =
-      profile.pictureUrl || "";
-
-    document.getElementById("profileName").textContent =
-      profile.displayName || "ผู้ใช้ LINE";
-
-  } catch (error) {
-
-    console.error("LIFF ERROR:", error);
-
-    document.getElementById("status").textContent =
-      "เกิดข้อผิดพลาด: " + (error.message || error);
-
+  // โค้ด LIFF เดิมของคุณอยู่ตรงนี้
+  async function startLIFF() {
+    // ...
   }
-}
 
-startLIFF();
+  // ✅ เอาข้อ 3 มาวางตรงนี้
+  async function sendApplication() {
+    try {
+      const idToken = liff.getIDToken();
 
+      if (!idToken) {
+        throw new Error("ไม่พบ LINE ID Token");
+      }
+
+      const payload = {
+        idToken: idToken,
+        name: document.getElementById("name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        jobType: document.getElementById("jobType").value,
+        province: document.getElementById("province").value
+      };
+
+      const form = document.getElementById("applicationSubmitForm");
+
+      form.action = APPS_SCRIPT_URL;
+
+      document.getElementById("applicationPayload").value =
+        JSON.stringify(payload);
+
+      form.submit();
+
+      alert("กำลังส่งใบสมัคร...");
+
+    } catch (error) {
+      console.error(error);
+      alert("ส่งใบสมัครไม่สำเร็จ: " + error.message);
+    }
+  }
+
+  startLIFF();
 </script>
 
 <iframe
