@@ -79,6 +79,7 @@
 <script>
 
 const LIFF_ID = "2011817085-Mqy2mWhy";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
 
 async function startLIFF() {
   try {
@@ -128,6 +129,23 @@ async function startLIFF() {
 startLIFF();
 
 </script>
+
+<iframe
+  name="atworkBackend"
+  id="atworkBackend"
+  style="display:none;">
+</iframe>
+
+<form
+  id="applicationSubmitForm"
+  method="POST"
+  target="atworkBackend"
+  style="display:none;">
+
+  <input type="hidden" name="action" value="application">
+  <input type="hidden" name="payload" id="applicationPayload">
+
+</form>
 
 </body>
 </html>
