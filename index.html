@@ -17,147 +17,350 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #6b7280;
+      --line: #e5e9f0;
+      --primary: #1f4fd8;
+      --primary-dark: #173da8;
+      --success-bg: #ecfdf3;
+      --success-text: #067647;
+      --info-bg: #eef4ff;
+      --info-text: #1d4ed8;
+      --error-bg: #fff1f2;
+      --error-text: #be123c;
+      --shadow: 0 12px 35px rgba(25, 42, 70, .08);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Tahoma,
-        Arial,
-        sans-serif;
-      background: #f5f7fb;
-      color: #1f2937;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(31,79,216,.07), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
     }
 
     .container {
-      width: min(720px, 100%);
+      width: min(760px, 100%);
       margin: 0 auto;
-      padding: 20px 14px 40px;
+      padding: 18px 14px 42px;
     }
 
     .header {
-      background: white;
-      border-radius: 18px;
-      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #173da8, #2f63df);
+      color: #fff;
+      border-radius: 24px;
+      padding: 24px 20px 20px;
       margin-bottom: 14px;
-      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+      box-shadow: 0 16px 40px rgba(31,79,216,.22);
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      right: -65px;
+      top: -85px;
+      background: rgba(255,255,255,.10);
+    }
+
+    .brand-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     .brand {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 800;
-      letter-spacing: .5px;
+      letter-spacing: .6px;
+    }
+
+    .brand-badge {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.2);
+      font-size: 12px;
+      white-space: nowrap;
     }
 
     .subtitle {
+      position: relative;
+      z-index: 1;
       margin-top: 5px;
-      color: #6b7280;
       font-size: 14px;
+      color: rgba(255,255,255,.9);
+    }
+
+    .header-note {
+      position: relative;
+      z-index: 1;
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.92);
+      font-size: 13px;
+      line-height: 1.55;
     }
 
     .line-user {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 11px;
       margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.16);
     }
 
     .line-user img {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       object-fit: cover;
       border-radius: 50%;
-      background: #eee;
+      background: rgba(255,255,255,.18);
+      border: 2px solid rgba(255,255,255,.55);
+      flex: 0 0 auto;
+    }
+
+    #lineDisplayName {
+      font-weight: 700;
+      font-size: 14px;
     }
 
     .card {
-      background: white;
-      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid rgba(229,233,240,.92);
+      border-radius: 22px;
       padding: 20px;
       margin-bottom: 14px;
-      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+      box-shadow: var(--shadow);
+    }
+
+    .form-intro {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 17px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .intro-icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #edf3ff;
+      color: var(--primary);
+      font-size: 18px;
+      flex: 0 0 auto;
     }
 
     .section-title {
       font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 16px;
+      font-weight: 800;
+      margin: 0;
+      color: var(--text);
     }
 
-    .field {
-      margin-bottom: 13px;
+    .section-subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
     }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-      font-weight: 600;
+    .form-section + .form-section {
+      margin-top: 24px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
     }
 
-    input,
-    select {
-      width: 100%;
-      height: 46px;
-      padding: 0 13px;
-      border: 1px solid #d7dce5;
-      border-radius: 10px;
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 14px;
       font-size: 15px;
-      background: white;
-      outline: none;
+      font-weight: 800;
     }
 
-    input:focus,
-    select:focus {
-      border-color: #2563eb;
+    .section-heading span {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: #f1f5ff;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 800;
     }
 
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 14px;
+    }
+
+    .field {
+      margin-bottom: 0;
     }
 
     .full {
       grid-column: 1 / -1;
     }
 
+    label {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #344054;
+    }
+
     .required {
-      color: #dc2626;
+      color: #e11d48;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 48px;
+      padding: 0 13px;
+      border: 1px solid #d8dee8;
+      border-radius: 12px;
+      font-size: 15px;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+
+    input::placeholder {
+      color: #98a2b3;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(31,79,216,.7);
+      box-shadow: 0 0 0 4px rgba(31,79,216,.10);
+      background: #fff;
+    }
+
+    select {
+      cursor: pointer;
     }
 
     .hint {
-      margin-top: 5px;
-      color: #6b7280;
+      margin-top: 6px;
+      color: #7a8596;
       font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .file-box {
+      border: 1px dashed #c8d2e2;
+      border-radius: 14px;
+      padding: 15px;
+      background: #f8faff;
+    }
+
+    .file-box input[type="file"] {
+      height: auto;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      font-size: 13px;
+    }
+
+    .file-box input[type="file"]::file-selector-button {
+      margin-right: 10px;
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 10px;
+      background: #eaf0ff;
+      color: #1f4fd8;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .submit-wrap {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
     }
 
     .submit-button {
       width: 100%;
-      min-height: 50px;
+      min-height: 54px;
       border: 0;
-      border-radius: 12px;
-      background: #111827;
-      color: white;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), #2f63df);
+      color: #fff;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: .1px;
       cursor: pointer;
-      margin-top: 4px;
+      box-shadow: 0 10px 24px rgba(31,79,216,.20);
+      transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+    }
+
+    .submit-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(31,79,216,.26);
+    }
+
+    .submit-button:active:not(:disabled) {
+      transform: translateY(0);
     }
 
     .submit-button:disabled {
       opacity: .55;
       cursor: wait;
+      box-shadow: none;
+    }
+
+    .submit-note {
+      margin-top: 8px;
+      text-align: center;
+      color: #7a8596;
+      font-size: 12px;
+      line-height: 1.45;
     }
 
     .status {
       margin-top: 12px;
-      padding: 13px;
-      border-radius: 10px;
+      padding: 13px 14px;
+      border-radius: 12px;
       display: none;
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.55;
+      font-weight: 600;
     }
 
     .status.show {
@@ -165,39 +368,59 @@
     }
 
     .status.info {
-      background: #eff6ff;
-      color: #1d4ed8;
+      background: var(--info-bg);
+      color: var(--info-text);
     }
 
     .status.success {
-      background: #ecfdf5;
-      color: #047857;
+      background: var(--success-bg);
+      color: var(--success-text);
     }
 
     .status.error {
-      background: #fef2f2;
-      color: #b91c1c;
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+
+    .connection {
+      font-size: 12px;
+      margin-top: 3px;
+      color: rgba(255,255,255,.82);
     }
 
     .hidden {
       display: none !important;
     }
 
-    .connection {
-      font-size: 13px;
-      margin-top: 10px;
-    }
-
-    .file-box {
-      border: 1px dashed #cbd5e1;
-      border-radius: 12px;
-      padding: 15px;
-      background: #f8fafc;
-    }
-
     @media (max-width: 600px) {
+      .container {
+        padding: 12px 10px 30px;
+      }
+
+      .header,
+      .card {
+        border-radius: 18px;
+      }
+
+      .header {
+        padding: 20px 16px 17px;
+      }
+
+      .brand {
+        font-size: 27px;
+      }
+
+      .brand-badge {
+        display: none;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
       .grid {
         grid-template-columns: 1fr;
+        gap: 13px;
       }
 
       .full {
@@ -213,12 +436,17 @@
 
   <div class="header">
 
-    <div class="brand">
-      ATWORK
+    <div class="brand-row">
+      <div class="brand">ATWORK</div>
+      <div class="brand-badge">สมัครงานออนไลน์</div>
     </div>
 
     <div class="subtitle">
-      สมัครงานและฝาก Resume
+      แบบฟอร์มสมัครงานสำหรับผู้สมัครผ่าน LINE
+    </div>
+
+    <div class="header-note">
+      กรอกข้อมูลให้ครบ แล้วกด “ส่งใบสมัคร” ด้านล่าง ทีมงาน ATWORK จะตรวจสอบข้อมูลและติดต่อกลับตามลำดับ
     </div>
 
     <div
@@ -228,12 +456,11 @@
       <img
         id="linePicture"
         src=""
-        alt=""
+        alt="รูปโปรไฟล์ LINE"
       >
 
       <div>
         <div id="lineDisplayName"></div>
-
         <div
           id="connectionStatus"
           class="connection"
@@ -246,273 +473,256 @@
   </div>
 
 
-  <!-- =========================================
-       APPLICATION FORM
-       ========================================= -->
-
   <form
     id="applicationForm"
     class="card"
   >
 
-    <div class="section-title">
-      สมัครงาน
+    <div class="form-intro">
+      <div class="intro-icon">✓</div>
+      <div>
+        <div class="section-title">สมัครงานกับ ATWORK</div>
+        <div class="section-subtitle">กรุณากรอกข้อมูลพื้นฐานสำหรับให้เจ้าหน้าที่ตรวจสอบและติดต่อกลับ</div>
+      </div>
     </div>
 
 
-    <div class="grid">
+    <!-- ข้อมูลส่วนตัว -->
+    <div class="form-section">
 
-      <div class="field full">
-        <label>
-          ชื่อ-นามสกุล
-          <span class="required">*</span>
-        </label>
-
-        <input
-          id="appName"
-          name="name"
-          required
-        >
+      <div class="section-heading">
+        <span>1</span>
+        ข้อมูลส่วนตัว
       </div>
 
+      <div class="grid">
 
-      <div class="field">
+        <div class="field full">
+          <label for="appName">
+            ชื่อ-นามสกุล <span class="required">*</span>
+          </label>
 
-        <label>
-          เบอร์โทรศัพท์
-          <span class="required">*</span>
-        </label>
+          <input
+            id="appName"
+            name="name"
+            autocomplete="name"
+            placeholder="กรอกชื่อและนามสกุล"
+            required
+          >
+        </div>
 
-        <input
-          id="appPhone"
-          name="phone"
-          type="tel"
-          required
-        >
+        <div class="field">
+          <label for="appPhone">
+            เบอร์โทรศัพท์ <span class="required">*</span>
+          </label>
 
-      </div>
+          <input
+            id="appPhone"
+            name="phone"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="08x-xxx-xxxx"
+            required
+          >
+        </div>
 
+        <div class="field">
+          <label for="appEmail">Email</label>
 
-      <div class="field">
-
-        <label>
-          Email
-        </label>
-
-        <input
-          id="appEmail"
-          name="email"
-          type="email"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          ตำแหน่งที่สมัคร
-          <span class="required">*</span>
-        </label>
-
-        <input
-          id="position"
-          name="position"
-          required
-        >
+          <input
+            id="appEmail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="example@email.com"
+          >
+        </div>
 
       </div>
-
-
-      <div class="field">
-
-        <label>
-          เงินเดือนที่คาดหวัง
-        </label>
-
-        <input
-          id="salary"
-          name="expectedSalary"
-          type="number"
-          min="0"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          วันที่พร้อมเริ่มงาน
-        </label>
-
-        <input
-          id="startDate"
-          name="startDate"
-          type="date"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          บ้านเลขที่
-        </label>
-
-        <input
-          id="houseNo"
-          name="houseNo"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          หมู่
-        </label>
-
-        <input
-          id="moo"
-          name="moo"
-        >
-
-      </div>
-
-
-      <div class="field full">
-
-        <label>
-          ถนน
-        </label>
-
-        <input
-          id="road"
-          name="road"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          ตำบล / แขวง
-        </label>
-
-        <input
-          id="subdistrict"
-          name="subdistrict"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          อำเภอ / เขต
-        </label>
-
-        <input
-          id="district"
-          name="district"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          จังหวัด
-        </label>
-
-        <input
-          id="appProvince"
-          name="province"
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          รหัสไปรษณีย์
-        </label>
-
-        <input
-          id="postalCode"
-          name="postalCode"
-          inputmode="numeric"
-        >
-
-      </div>
-
     </div>
 
 
-    <!-- =====================================
-         RESUME
-         ===================================== -->
+    <!-- ข้อมูลการสมัครงาน -->
+    <div class="form-section">
 
-    <div
-      style="
-        border-top:1px solid #e5e7eb;
-        margin:20px 0;
-        padding-top:20px;
-      "
-    >
-
-      <div class="section-title">
-        ฝาก Resume
+      <div class="section-heading">
+        <span>2</span>
+        ข้อมูลการสมัครงาน
       </div>
 
+      <div class="grid">
+
+        <div class="field">
+          <label for="position">
+            ตำแหน่งที่สมัคร <span class="required">*</span>
+          </label>
+
+          <!-- แก้/เพิ่มตำแหน่งได้ตรงรายการ option นี้ -->
+          <select
+            id="position"
+            name="position"
+            required
+          >
+            <option value="" selected disabled>เลือกตำแหน่งที่สมัคร</option>
+            <option value="ช่างเทคนิค">ช่างเทคนิค</option>
+            <option value="พนักงานฝ่ายผลิต">พนักงานฝ่ายผลิต</option>
+            <option value="พนักงานโรงงาน">พนักงานโรงงาน</option>
+            <option value="พนักงานคลังสินค้า">พนักงานคลังสินค้า</option>
+            <option value="พนักงานออฟฟิศ">พนักงานออฟฟิศ</option>
+            <option value="พนักงานทั่วไป">พนักงานทั่วไป</option>
+            <option value="อื่น ๆ">อื่น ๆ</option>
+          </select>
+
+        </div>
+
+        <div class="field">
+          <label for="salary">เงินเดือนที่คาดหวัง</label>
+
+          <input
+            id="salary"
+            name="expectedSalary"
+            type="number"
+            min="0"
+            inputmode="numeric"
+            placeholder="เช่น 15000"
+          >
+        </div>
+
+        <div class="field full">
+          <label for="startDate">วันที่พร้อมเริ่มงาน</label>
+
+          <input
+            id="startDate"
+            name="startDate"
+            type="date"
+          >
+
+          <div class="hint">เลือกวันที่เร็วที่สุดที่สามารถเริ่มงานได้</div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ที่อยู่ -->
+    <div class="form-section">
+
+      <div class="section-heading">
+        <span>3</span>
+        ที่อยู่ปัจจุบัน
+      </div>
+
+      <div class="grid">
+
+        <div class="field">
+          <label for="houseNo">บ้านเลขที่</label>
+          <input
+            id="houseNo"
+            name="houseNo"
+            autocomplete="street-address"
+            placeholder="เช่น 99/12"
+          >
+        </div>
+
+        <div class="field">
+          <label for="moo">หมู่</label>
+          <input
+            id="moo"
+            name="moo"
+            placeholder="เช่น 5"
+          >
+        </div>
+
+        <div class="field full">
+          <label for="road">ถนน</label>
+          <input
+            id="road"
+            name="road"
+            placeholder="ชื่อถนน"
+          >
+        </div>
+
+        <div class="field">
+          <label for="subdistrict">ตำบล / แขวง</label>
+          <input
+            id="subdistrict"
+            name="subdistrict"
+            placeholder="ตำบล / แขวง"
+          >
+        </div>
+
+        <div class="field">
+          <label for="district">อำเภอ / เขต</label>
+          <input
+            id="district"
+            name="district"
+            placeholder="อำเภอ / เขต"
+          >
+        </div>
+
+        <div class="field">
+          <label for="appProvince">จังหวัด</label>
+          <input
+            id="appProvince"
+            name="province"
+            autocomplete="address-level1"
+            placeholder="จังหวัด"
+          >
+        </div>
+
+        <div class="field">
+          <label for="postalCode">รหัสไปรษณีย์</label>
+          <input
+            id="postalCode"
+            name="postalCode"
+            inputmode="numeric"
+            autocomplete="postal-code"
+            placeholder="เช่น 10110"
+          >
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Resume -->
+    <div class="form-section">
+
+      <div class="section-heading">
+        <span>4</span>
+        Resume / เอกสารประวัติ
+      </div>
 
       <div class="field">
-
-        <label>
-          ประเภทงานที่สนใจ
-          <span class="required">*</span>
+        <label for="jobType">
+          ประเภทงานที่สนใจ <span class="required">*</span>
         </label>
 
         <input
           id="jobType"
           name="jobType"
-          placeholder="เช่น พนักงานออฟฟิศ / ช่าง / โรงงาน"
+          placeholder="เช่น งานช่าง / งานโรงงาน / งานออฟฟิศ"
           required
         >
-
       </div>
 
-
-      <div class="field">
-
-        <label>
-          จังหวัดที่ต้องการทำงาน
-        </label>
+      <div class="field" style="margin-top:14px;">
+        <label for="resumeProvince">จังหวัดที่ต้องการทำงาน</label>
 
         <input
           id="resumeProvince"
           name="resumeProvince"
+          placeholder="เช่น กรุงเทพมหานคร / ชลบุรี"
         >
-
       </div>
 
-
-      <div class="field">
-
-        <label>
-          Resume
-          <span class="required">*</span>
+      <div class="field" style="margin-top:14px;">
+        <label for="resumeFile">
+          Resume <span class="required">*</span>
         </label>
 
         <div class="file-box">
-
           <input
             id="resumeFile"
             type="file"
@@ -520,31 +730,34 @@
             required
           >
 
-          <div class="hint">
-            รองรับ JPG / JPEG / PNG ขนาดไม่เกิน 10 MB
-          </div>
-
+          <div class="hint">รองรับ JPG / JPEG / PNG ขนาดไม่เกิน 10 MB</div>
         </div>
-
       </div>
 
     </div>
 
 
-    <button
-      id="submitButton"
-      class="submit-button"
-      type="submit"
-      disabled
-    >
-      เชื่อมต่อ LINE...
-    </button>
+    <div class="submit-wrap">
 
+      <button
+        id="submitButton"
+        class="submit-button"
+        type="submit"
+        disabled
+      >
+        เชื่อมต่อ LINE...
+      </button>
 
-    <div
-      id="status"
-      class="status"
-    ></div>
+      <div class="submit-note">
+        เมื่อส่งแล้ว ข้อมูลจะเข้าสู่ขั้นตอนตรวจสอบของทีมงาน ATWORK
+      </div>
+
+      <div
+        id="status"
+        class="status"
+      ></div>
+
+    </div>
 
   </form>
 
