@@ -1741,91 +1741,59 @@
      SEND BACKEND
   ======================================== */
 
-  function sendToBackend(
-    action,
-    payload
-  ) {
+ function sendToBackend(action, payload) {
 
-    return new Promise(
-      function(
-        resolve,
-        reject
-      ) {
+  return new Promise(function(resolve, reject) {
 
-        let accessToken;
+    const idToken = liff.getIDToken();
 
+    if (!idToken) {
+      reject(
+        new Error(
+          "ไม่พบ LINE ID Token กรุณาปิดหน้า ATWORK แล้วเปิดใหม่จาก LINE"
+        )
+      );
+      return;
+    }
 
-        try {
+    const requestId =
+      "REQ_" +
+      Date.now() +
+      "_" +
+      Math.random()
+        .toString(36)
+        .slice(2, 10);
 
-          /*
-           * สำคัญ:
-           * ดึง Access Token
-           * ใหม่ทุกครั้งก่อนส่ง
-           */
+    payload.idToken = idToken;
+    payload.requestId = requestId;
 
-          accessToken =
-            getCurrentAccessToken();
+    document.getElementById(
+      "backendAction"
+    ).value = action;
 
-        } catch (error) {
+    document.getElementById(
+      "backendPayload"
+    ).value =
+      JSON.stringify(payload);
 
-          reject(error);
+    const form =
+      document.getElementById(
+        "backendForm"
+      );
 
-          return;
+    form.action =
+      APPS_SCRIPT_URL;
 
-        }
+    form.submit();
 
-
-        const requestId =
-          createRequestId();
-
-
-        payload.accessToken =
-          accessToken;
-
-
-        payload.requestId =
-          requestId;
-
-
-        $("backendAction")
-          .value =
-          action;
-
-
-        $("backendPayload")
-          .value =
-          JSON.stringify(
-            payload
-          );
-
-
-        const form =
-          $("backendForm");
-
-
-        form.action =
-          APPS_SCRIPT_URL;
-
-
-        form.submit();
-
-
-        /*
-         * ตรวจผล
-         */
-
-        pollStatus(
-          requestId,
-          resolve,
-          reject,
-          0
-        );
-
-      }
+    pollStatus(
+      requestId,
+      resolve,
+      reject,
+      0
     );
-
-  }
-
+  });
+}
 
   /* ========================================
      POLL STATUS
