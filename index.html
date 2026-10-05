@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#f6f8fc">
-  <title>ATWORK | สมัครงาน</title>
+  <title> @attwork | สมัครงาน</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
@@ -159,7 +159,7 @@
       <div class="hero-main">
         <div>
           <div class="brand-kicker">Recruitment</div>
-          <div class="brand">ATWORK</div>
+          <div class="brand">@attwork</div>
           <div class="hero-copy">กรอกข้อมูลสมัครงานและแนบ Resume ของคุณ เพื่อให้เจ้าหน้าที่ติดต่อกลับได้สะดวก</div>
         </div>
         <div class="online-badge"><span class="online-dot"></span>สมัครงานออนไลน์</div>
@@ -190,7 +190,7 @@
             <label for="appName">ชื่อ-นามสกุล <span class="required">*</span></label>
             <input id="appName" name="name" autocomplete="name" placeholder="กรอกชื่อ-นามสกุล" required>
           </div>
-\          <div class="field">
+          <div class="field">
             <label for="appPhone">เบอร์โทรศัพท์ <span class="required">*</span></label>
             <input id="appPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="เช่น 0812345678" required>
           </div>
@@ -206,7 +206,7 @@
           <div class="section-number">02</div>
           <div>
             <h2 class="section-title">รายละเอียดการสมัคร</h2>
-            <div class="section-desc">เลือกตำแหน่งและระบุข้อมูลที่เกี่ยวข้องกับการเริ่มงาน</div>
+            <div class="section-desc">เลือกตำแหน่ง</div>
           </div>
         </div>
 
@@ -221,7 +221,6 @@
               <option value="พนักงานออฟฟิศ">พนักงานออฟฟิศ</option>
               <option value="เจ้าหน้าที่ธุรการ">เจ้าหน้าที่ธุรการ</option>
               <option value="พนักงานบริการลูกค้า">พนักงานบริการลูกค้า</option>
-              <option value="อื่น ๆ">อื่น ๆ</option>
             </select>
             <div class="hint">เลือกตำแหน่งที่ตรงกับงานที่ต้องการสมัคร</div>
           </div>
@@ -285,7 +284,7 @@
             <div class="section-desc">แนบประวัติของคุณเพื่อให้เจ้าหน้าที่พิจารณาข้อมูลได้รวดเร็วยิ่งขึ้น</div>
           </div>
         </div>
-\        <div class="resume-box">
+        <div class="resume-box">
           <div class="field">
             <label for="resumeFile">Resume <span class="required">*</span></label>
             <div class="upload-box">
@@ -299,7 +298,7 @@
       <div class="submit-wrap">
         <button id="submitButton" class="submit-button" type="submit" disabled>กำลังเชื่อมต่อ LINE...</button>
         <div id="status" class="status" role="status" aria-live="polite"></div>
-        <div class="submit-note">ข้อมูลของคุณจะถูกส่งให้เจ้าหน้าที่ ATWORK เพื่อตรวจสอบและติดต่อกลับ</div>
+        <div class="submit-note">ข้อมูลของคุณจะถูกส่งให้เจ้าหน้าที่ @attwork เพื่อตรวจสอบและติดต่อกลับ</div>
       </div>
     </form>
   </div>
@@ -312,7 +311,7 @@
         </div>
       </div>
       <h2 id="successTitle" class="success-title">ส่งสมัครสำเร็จ</h2>
-      <p class="success-subtitle">ข้อมูลของคุณถูกส่งให้เจ้าหน้าที่ ATWORK เรียบร้อยแล้ว</p>
+      <p class="success-subtitle">ข้อมูลของคุณถูกส่งให้เจ้าหน้าที่ @attwork เรียบร้อยแล้ว</p>
 
       <div class="success-ids">
         <div class="success-id-card">
@@ -320,17 +319,15 @@
             <span class="success-id-label">ใบสมัครหมายเลข</span>
             <strong id="successApplicationId" class="success-id-value">-</strong>
           </div>
-          <button class="copy-btn" type="button" data-copy-target="successApplicationId">คัดลอก</button>
         </div>
-\        <div class="success-id-card">
+        <div class="success-id-card">
           <div>
             <span class="success-id-label">ใบสมัคร Resume หมายเลข</span>
             <strong id="successResumeId" class="success-id-value">-</strong>
           </div>
-          <button class="copy-btn" type="button" data-copy-target="successResumeId">คัดลอก</button>
         </div>
       </div>
-\      <button id="successCloseButton" class="success-close" type="button">ปิดหน้าต่าง</button>
+    <button id="successCloseButton" class="success-close" type="button">ปิดหน้าต่าง</button>
     </div>
   </div>
 
