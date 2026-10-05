@@ -1112,150 +1112,70 @@
        BACKEND RESPONSE
     ===================================================== */
 
-    window.addEventListener(
-      "message",
-      function(event) {
+   window.addEventListener(
+  "message",
+  function(event) {
 
-        const data =
-          event.data;
+    const message =
+      document.getElementById(
+        "applicationMessage"
+      );
 
-        if (
-          !data ||
-          data.source !== "ATWORK"
-        ) {
-          return;
-        }
+    const button =
+      document.getElementById(
+        "applicationSubmitButton"
+      );
 
+    if (
+      !event.data ||
+      event.data.source !== "ATWORK"
+    ) {
+      return;
+    }
 
-        const result =
-          data.result || {};
+    const data =
+      event.data.data || {};
 
+    button.disabled = false;
 
-        if (data.success) {
+    if (data.success) {
 
-          if (
-            result.applicationId ||
-            result.ApplicationID
-          ) {
+      const result =
+        data.result || {};
 
-            const id =
-              result.applicationId ||
-              result.ApplicationID;
+      const applicationId =
+        result.applicationId ||
+        result.ApplicationID ||
+        "-";
 
-            const message =
-              document.getElementById(
-                "applicationMessage"
-              );
+      showMessage(
+        message,
+        "success",
+        "ส่งใบสมัครสำเร็จ<br>" +
+        "เลขที่ใบสมัคร: <strong>" +
+        escapeHtml(
+          String(applicationId)
+        ) +
+        "</strong><br>" +
+        "สถานะ: รอตรวจสอบ"
+      );
 
-            document.getElementById(
-              "applicationSubmitButton"
-            ).disabled = false;
+      clearApplicationForm();
 
-            showMessage(
-              message,
-              "success",
-              "ส่งใบสมัครสำเร็จ<br>" +
-              "เลขที่ใบสมัคร: <strong>" +
-              escapeHtml(String(id)) +
-              "</strong><br>" +
-              "สถานะ: รอตรวจสอบ"
-            );
+    } else {
 
-            clearApplicationForm();
-
-            return;
-          }
-
-
-          if (
-            result.candidateId ||
-            result.CandidateID
-          ) {
-
-            const id =
-              result.candidateId ||
-              result.CandidateID;
-
-            const message =
-              document.getElementById(
-                "resumeMessage"
-              );
-
-            document.getElementById(
-              "resumeSubmitButton"
-            ).disabled = false;
-
-            showMessage(
-              message,
-              "success",
-              "ส่ง Resume สำเร็จ<br>" +
-              "เลขที่ผู้สมัคร: <strong>" +
-              escapeHtml(String(id)) +
-              "</strong><br>" +
-              "สถานะ: รอตรวจสอบ"
-            );
-
-            clearResumeForm();
-
-            return;
-          }
-
-
-          // กรณี backend คืนค่ามาแต่ไม่มี ID
-          showMessage(
-            document.getElementById(
-              "applicationMessage"
-            ),
-            "success",
-            "ส่งข้อมูลสำเร็จ"
-          );
-
-          document.getElementById(
-            "applicationSubmitButton"
-          ).disabled = false;
-
-          document.getElementById(
-            "resumeSubmitButton"
-          ).disabled = false;
-
-        } else {
-
-          document.getElementById(
-            "applicationSubmitButton"
-          ).disabled = false;
-
-          document.getElementById(
-            "resumeSubmitButton"
-          ).disabled = false;
-
-
-          const errorText =
-            data.error ||
-            "เกิดข้อผิดพลาดจาก Apps Script";
-
-
-          const activeMessage =
-            document
-              .getElementById("applicationTab")
-              .classList.contains("active")
-              ? document.getElementById(
-                  "applicationMessage"
-                )
-              : document.getElementById(
-                  "resumeMessage"
-                );
-
-
-          showMessage(
-            activeMessage,
-            "error",
-            errorText
-          );
-        }
-      }
-    );
-
-
+      showMessage(
+        message,
+        "error",
+        "ส่งใบสมัครไม่สำเร็จ<br>" +
+        escapeHtml(
+          data.error ||
+          "ไม่ทราบสาเหตุ"
+        )
+      );
+    }
+  }
+);
     /* =====================================================
        UI HELPERS
     ===================================================== */
