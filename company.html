@@ -115,20 +115,58 @@ function refreshIdToken() {
   return idToken;
 }
 
-async function apiCall(action, data={}) {
-  const response = await fetch(GAS_WEB_APP_URL, {
-    method: 'POST',
-    headers: {'Content-Type': 'text/plain;charset=utf-8'},
-    body: JSON.stringify({action, idToken, data})
-  });
+function submitPersonnelByForm(data) {
+  return new Promise(function(resolve, reject) {
+    var iframeName = 'atworkPersonnelFrame_' + Date.now();
+    var iframe = document.createElement('iframe');
+    iframe.name = iframeName;
+    iframe.id = iframeName;
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
 
-  if (!response.ok) throw new Error('Apps Script ตอบกลับ HTTP ' + response.status);
-  const result = await response.json();
-  if (!result || result.success === false || result.ok === false) {
-    throw new Error(result?.message || 'ส่งข้อมูลไม่สำเร็จ');
-  }
-  console.log('ATWORK API result:', result);
-  return result;
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = GAS_WEB_APP_URL;
+    form.target = iframeName;
+    form.style.display = 'none';
+
+    function add(name, value) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value == null ? '' : String(value);
+      form.appendChild(input);
+    }
+
+    add('action', 'createPersonnelRequest');
+    add('idToken', idToken);
+    add('data', JSON.stringify(data));
+
+    document.body.appendChild(form);
+
+    var timer = setTimeout(function() {
+      cleanup();
+      reject(new Error('ระบบใช้เวลานานเกินไป กรุณาลองใหม่อีกครั้ง'));
+    }, 30000);
+
+    function cleanup() {
+      clearTimeout(timer);
+      window.removeEventListener('message', onMessage);
+      if (form.parentNode) form.parentNode.removeChild(form);
+      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    }
+
+    function onMessage(event) {
+      var result = event.data;
+      if (!result || result.type !== 'ATWORK_PERSONNEL_RESULT') return;
+      cleanup();
+      if (result.ok) resolve(result);
+      else reject(new Error(result.message || 'ส่งข้อมูลไม่สำเร็จ'));
+    }
+
+    window.addEventListener('message', onMessage);
+    form.submit();
+  });
 }
 
 async function init() {
@@ -193,11 +231,10 @@ $('personnelRequestForm').addEventListener('submit', async event => {
 
     button.textContent = 'กำลังส่งข้อมูล...';
 
-    const result = await apiCall('createPersonnelRequest', data);
+    const result = await submitPersonnelByForm(data);
 
     if (!result.requestId) {
-      console.error('Personnel request response:', result);
-      throw new Error('ระบบบันทึกข้อมูลแล้ว แต่ไม่ได้รับเลขที่คำขอกลับมา กรุณาอัปเดต Web App เป็นเวอร์ชันล่าสุด');
+      throw new Error('ส่งข้อมูลสำเร็จแต่ไม่พบเลขที่คำขอ');
     }
 
     $('formCard').style.display = 'none';
