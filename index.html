@@ -368,8 +368,7 @@ const lineDisplayName =
 const connectionStatus =
   document.getElementById('connectionStatus');
 
-const resumeFile =
-  document.getElementById('resumeFile');
+const resumeFile = document.getElementById('resumeFile');
 
 const successOverlay =
   document.getElementById('successOverlay');
@@ -857,82 +856,65 @@ async function fileToBase64(file) {
 }
 
 
+function valueOf(id) {
+  const el = document.getElementById(id);
+  return el ? String(el.value || '').trim() : '';
+}
+
+function fileOf(id) {
+  const el = document.getElementById(id);
+  return el && el.files && el.files.length ? el.files[0] : null;
+}
+
 function getApplicationPayload() {
 
   return {
 
     name:
-      document.getElementById(
-        'appName'
-      ).value.trim(),
+      valueOf('appName'),
 
     phone:
-      document.getElementById(
-        'appPhone'
-      ).value.trim(),
+      valueOf('appPhone'),
 
     email:
-      document.getElementById(
-        'appEmail'
-      ).value.trim(),
+      valueOf('appEmail'),
 
     position:
-      document.getElementById(
-        'position'
-      ).value.trim(),
+      valueOf('position'),
 
     expectedSalary:
-      document.getElementById(
-        'salary'
-      ).value.trim(),
+      valueOf('salary'),
 
     startDate:
-      document.getElementById(
-        'startDate'
-      ).value.trim(),
+      valueOf('startDate'),
 
     houseNo:
-      document.getElementById(
-        'houseNo'
-      ).value.trim(),
+      valueOf('houseNo'),
 
     moo:
-      document.getElementById(
-        'moo'
-      ).value.trim(),
+      valueOf('moo'),
 
     road:
-      document.getElementById(
-        'road'
-      ).value.trim(),
+      valueOf('road'),
 
     subdistrict:
-      document.getElementById(
-        'subdistrict'
-      ).value.trim(),
+      valueOf('subdistrict'),
 
     district:
-      document.getElementById(
-        'district'
-      ).value.trim(),
+      valueOf('district'),
 
     province:
-      document.getElementById(
-        'appProvince'
-      ).value.trim(),
+      valueOf('appProvince'),
 
     postalCode:
-      document.getElementById(
-        'postalCode'
-      ).value.trim()
+      valueOf('postalCode')
   };
 }
 
 
 async function getResumePayload() {
 
-  const file =
-    resumeFile.files[0];
+  const file = fileOf('resumeFile');
 
   if (!file) {
     return null;
@@ -964,26 +946,18 @@ async function getResumePayload() {
   return {
 
     name:
-      document.getElementById(
-        'appName'
-      ).value.trim(),
+      valueOf('appName'),
 
     phone:
-      document.getElementById(
-        'appPhone'
-      ).value.trim(),
+      valueOf('appPhone'),
 
     // ใช้ตำแหน่งที่สมัครและจังหวัดปัจจุบันจากฟอร์มหลัก
     // เพราะหน้า UI เวอร์ชันนี้ไม่มีช่อง jobType / resumeProvince แยกแล้ว
     jobType:
-      document.getElementById(
-        'position'
-      ).value.trim(),
+      valueOf('position'),
 
     province:
-      document.getElementById(
-        'appProvince'
-      ).value.trim(),
+      valueOf('appProvince'),
 
     fileName:
       file.name,
