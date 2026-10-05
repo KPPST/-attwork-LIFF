@@ -561,806 +561,730 @@
 
 <script>
 
-  /* =========================================
-   * CONFIG
-   * ========================================= */
+const LIFF_ID =
+  '2011817085-Mqy2mWhy';
 
-  const LIFF_ID =
-    '2011817085-Mqy2mWhy';
+const SCRIPT_URL =
+  'https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec';
 
-  const SCRIPT_URL =
-    'https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec';
+let liffReady = false;
+let submitting = false;
 
+const form =
+  document.getElementById('applicationForm');
 
-  let liffReady = false;
-  let submitting = false;
+const button =
+  document.getElementById('submitButton');
 
+const statusBox =
+  document.getElementById('status');
 
-  /* =========================================
-   * DOM
-   * ========================================= */
+const lineUser =
+  document.getElementById('lineUser');
 
-  const applicationForm =
-    document.getElementById('applicationForm');
+const linePicture =
+  document.getElementById('linePicture');
 
-  const submitButton =
-    document.getElementById('submitButton');
+const lineDisplayName =
+  document.getElementById('lineDisplayName');
 
-  const statusBox =
-    document.getElementById('status');
+const connectionStatus =
+  document.getElementById('connectionStatus');
 
-  const lineUser =
-    document.getElementById('lineUser');
-
-  const linePicture =
-    document.getElementById('linePicture');
-
-  const lineDisplayName =
-    document.getElementById('lineDisplayName');
-
-  const connectionStatus =
-    document.getElementById('connectionStatus');
+const resumeFile =
+  document.getElementById('resumeFile');
 
 
-  /* =========================================
-   * STATUS
-   * ========================================= */
+function showStatus(text, type) {
+  statusBox.textContent = text;
+  statusBox.className = 'status show ' + type;
+}
 
-  function showStatus(message, type) {
 
-    statusBox.textContent = message;
+function createRequestId() {
+  return Date.now().toString(36) +
+    '_' +
+    Math.random().toString(36).slice(2);
+}
 
-    statusBox.className =
-      'status show ' + type;
+
+function getTokenExpiry(token) {
+  try {
+    const part = token.split('.')[1];
+
+    const base64 =
+      part.replace(/-/g, '+').replace(/_/g, '/');
+
+    const json =
+      decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(function(c) {
+            return '%' +
+              ('00' +
+                c.charCodeAt(0).toString(16))
+                .slice(-2);
+          })
+          .join('')
+      );
+
+    return JSON.parse(json).exp || 0;
+
+  } catch (e) {
+    return 0;
   }
+}
 
 
-  function clearStatus() {
+function handleTokenExpired() {
 
-    statusBox.textContent = '';
-
-    statusBox.className = 'status';
-  }
-
-
-  /* =========================================
-   * INIT LIFF
-   * ========================================= */
-
-  async function initLIFF() {
+  if (!liff.isInClient()) {
 
     try {
+      liff.logout();
+    } catch (e) {}
 
-      await liff.init({
-        liffId: LIFF_ID,
-        withLoginOnExternalBrowser: true
-      });
+    liff.login({
+      redirectUri: window.location.href
+    });
 
-
-      /*
-       * In LIFF browser:
-       * login happens automatically during init.
-       *
-       * In external browser:
-       * withLoginOnExternalBrowser=true
-       * automatically starts login.
-       */
-
-      if (!liff.isLoggedIn()) {
-
-        if (!liff.isInClient()) {
-
-          liff.login({
-            redirectUri: window.location.href
-          });
-
-          return;
-        }
-
-        throw new Error(
-          'ยังไม่ได้เข้าสู่ระบบ LINE'
-        );
-      }
-
-
-      /*
-       * Get profile only for UI.
-       *
-       * IMPORTANT:
-       * We do NOT send this profile to server
-       * for authentication.
-       */
-
-      let profile = null;
-
-      try {
-        profile = await liff.getProfile();
-      } catch (profileError) {
-        console.warn(
-          'getProfile failed',
-          profileError
-        );
-      }
-
-
-      if (profile) {
-
-        lineUser.classList.remove('hidden');
-
-        lineDisplayName.textContent =
-          profile.displayName || 'ผู้ใช้ LINE';
-
-        if (profile.pictureUrl) {
-
-          linePicture.src =
-            profile.pictureUrl;
-        }
-      }
-
-
-      connectionStatus.textContent =
-        'เชื่อมต่อ LINE สำเร็จ';
-
-      submitButton.disabled = false;
-
-      submitButton.textContent =
-        'ส่งใบสมัคร';
-
-      liffReady = true;
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      connectionStatus.textContent =
-        'เชื่อมต่อ LINE ไม่สำเร็จ';
-
-      submitButton.disabled = true;
-
-      submitButton.textContent =
-        'ไม่สามารถส่งข้อมูลได้';
-
-      showStatus(
-        'ไม่สามารถเชื่อมต่อ LINE ได้ กรุณาเปิด LIFF ใหม่อีกครั้ง',
-        'error'
-      );
-    }
+    return;
   }
 
 
-  /* =========================================
-   * JWT EXPIRY CHECK
-   * ========================================= */
-
-  function getTokenExpiry(idToken) {
-
-    try {
-
-      const parts =
-        idToken.split('.');
-
-      if (parts.length !== 3) {
-        return 0;
-      }
-
-      const payload =
-        parts[1]
-          .replace(/-/g, '+')
-          .replace(/_/g, '/');
-
-      const json =
-        decodeURIComponent(
-          atob(payload)
-            .split('')
-            .map(function(c) {
-              return '%' +
-                ('00' + c.charCodeAt(0).toString(16))
-                  .slice(-2);
-            })
-            .join('')
-        );
-
-      return JSON.parse(json).exp || 0;
-
-    } catch (error) {
-
-      return 0;
-    }
-  }
-
-
-  /* =========================================
-   * GET ID TOKEN
-   * ========================================= */
-
-  async function getCurrentIdToken() {
-
-    if (!liffReady) {
-      throw new Error(
-        'LIFF ยังเชื่อมต่อไม่เสร็จ'
-      );
-    }
-
-
-    const idToken =
-      liff.getIDToken();
-
-
-    if (!idToken) {
-
-      throw new Error(
-        'ไม่พบ LINE ID Token'
-      );
-    }
-
-
-    const exp =
-      getTokenExpiry(idToken);
-
-    const now =
-      Math.floor(Date.now() / 1000);
-
-
-    /*
-     * เหลือน้อยกว่า 60 วินาที
-     * ถือว่าใกล้หมดอายุแล้ว
-     */
-    if (exp && exp <= now + 60) {
-
-      throw new Error(
-        'ID_TOKEN_EXPIRED_CLIENT'
-      );
-    }
-
-
-    return idToken;
-  }
-
-
-  /* =========================================
-   * HANDLE EXPIRED TOKEN
-   * ========================================= */
-
-  function handleTokenExpired() {
-
-    /*
-     * ถ้าเปิดจาก external browser
-     * สามารถ logout แล้ว login ใหม่ได้
-     */
-    if (!liff.isInClient()) {
-
-      try {
-
-        liff.logout();
-
-      } catch (error) {
-
-        console.warn(error);
-      }
-
-
-      liff.login({
-        redirectUri: window.location.href
-      });
-
-      return;
-    }
-
-
-    /*
-     * ถ้าเปิดใน LIFF browser
-     * liff.login() ใช้ไม่ได้
-     *
-     * ลอง reload 1 ครั้งเพื่อให้ LIFF init
-     * สร้าง authentication state ใหม่
-     */
-    const reloaded =
-      sessionStorage.getItem(
-        'ATWORK_TOKEN_RELOAD'
-      );
-
-
-    if (!reloaded) {
-
-      sessionStorage.setItem(
-        'ATWORK_TOKEN_RELOAD',
-        '1'
-      );
-
-      location.reload();
-
-      return;
-    }
-
-
-    sessionStorage.removeItem(
+  const alreadyReloaded =
+    sessionStorage.getItem(
       'ATWORK_TOKEN_RELOAD'
     );
 
 
-    showStatus(
-      'เซสชัน LINE หมดอายุแล้ว กรุณาปิดหน้านี้ แล้วเปิดแบบฟอร์ม ATWORK จาก LINE ใหม่อีกครั้ง',
-      'error'
+  if (!alreadyReloaded) {
+
+    sessionStorage.setItem(
+      'ATWORK_TOKEN_RELOAD',
+      '1'
+    );
+
+    location.reload();
+
+    return;
+  }
+
+
+  sessionStorage.removeItem(
+    'ATWORK_TOKEN_RELOAD'
+  );
+
+
+  showStatus(
+    'เซสชัน LINE หมดอายุแล้ว กรุณาปิดหน้านี้ แล้วเปิดแบบฟอร์ม ATWORK จาก LINE ใหม่',
+    'error'
+  );
+}
+
+
+async function getCurrentIdToken() {
+
+  const token =
+    liff.getIDToken();
+
+  if (!token) {
+    throw new Error(
+      'ไม่พบ LINE ID Token'
     );
   }
 
 
-  /* =========================================
-   * CREATE REQUEST ID
-   * ========================================= */
+  const exp =
+    getTokenExpiry(token);
 
-  function createRequestId() {
+  const now =
+    Math.floor(Date.now() / 1000);
 
-    return (
-      Date.now().toString(36) +
-      '_' +
-      Math.random()
-        .toString(36)
-        .slice(2)
+
+  if (exp && exp <= now + 60) {
+    throw new Error(
+      'ID_TOKEN_EXPIRED_CLIENT'
     );
   }
 
 
-  /* =========================================
-   * SUBMIT TO APPS SCRIPT
-   * ========================================= */
+  return token;
+}
 
-  function postToAppsScript(
-    action,
-    payload,
-    idToken
+
+function addHidden(form, name, value) {
+
+  const input =
+    document.createElement('input');
+
+  input.type = 'hidden';
+  input.name = name;
+  input.value =
+    value == null ? '' : String(value);
+
+  form.appendChild(input);
+}
+
+
+function postToServer(
+  action,
+  payload,
+  idToken
+) {
+
+  return new Promise(function(
+    resolve,
+    reject
   ) {
 
-    return new Promise(function(
-      resolve,
-      reject
-    ) {
+    const requestId =
+      createRequestId();
 
-      const requestId =
-        createRequestId();
+    const form =
+      document.createElement('form');
 
+    form.method = 'POST';
+    form.action = SCRIPT_URL;
+    form.target = 'atworkPostFrame';
+    form.style.display = 'none';
 
-      const iframe =
-        document.getElementById('postFrame');
+    addHidden(
+      form,
+      'action',
+      action
+    );
 
+    addHidden(
+      form,
+      'requestId',
+      requestId
+    );
 
-      iframe.name = 'postFrame';
+    addHidden(
+      form,
+      'idToken',
+      idToken
+    );
 
+    addHidden(
+      form,
+      'payload',
+      JSON.stringify(payload)
+    );
 
-      const form =
-        document.createElement('form');
-
-
-      form.method = 'POST';
-
-      form.action = SCRIPT_URL;
-
-      form.target = 'postFrame';
-
-      form.style.display = 'none';
-
-
-      addHidden(
-        form,
-        'action',
-        action
-      );
-
-      addHidden(
-        form,
-        'requestId',
-        requestId
-      );
-
-      addHidden(
-        form,
-        'idToken',
-        idToken
-      );
-
-      addHidden(
-        form,
-        'payload',
-        JSON.stringify(payload)
-      );
+    document.body.appendChild(form);
 
 
-      document.body.appendChild(form);
+    let finished = false;
+    let attempts = 0;
 
 
-      let finished = false;
+    const timeout =
+      setTimeout(function() {
 
-      const timeout =
-        setTimeout(function() {
+        if (!finished) {
 
-          if (!finished) {
+          finished = true;
 
-            finished = true;
+          form.remove();
 
-            cleanup();
-
-            reject(
-              new Error(
-                'การเชื่อมต่อ Server หมดเวลา'
-              )
-            );
-          }
-
-        }, 45000);
-
-
-      form.submit();
-
-
-      /*
-       * ไม่ใช้ response จาก POST
-       *
-       * Poll ด้วย JSONP แทน
-       * เพื่อหลีกเลี่ยง CORS
-       */
-
-      let pollCount = 0;
-
-
-      function poll() {
-
-        if (finished) {
-          return;
+          reject(
+            new Error(
+              'Server ตอบกลับช้าเกินไป'
+            )
+          );
         }
 
-
-        pollCount++;
-
-
-        const callbackName =
-          '__atwork_' +
-          Date.now() +
-          '_' +
-          Math.floor(
-            Math.random() * 10000
-          );
+      }, 60000);
 
 
-        window[callbackName] =
-          function(result) {
-
-            cleanupJsonp(
-              callbackName,
-              script
-            );
+    form.submit();
 
 
-            if (!result || result.pending) {
+    function poll() {
 
-              if (pollCount < 30) {
+      if (finished) {
+        return;
+      }
 
-                setTimeout(
-                  poll,
-                  1000
-                );
-
-              }
-
-              return;
-            }
+      attempts++;
 
 
-            finished = true;
-
-            clearTimeout(timeout);
-
-            cleanup();
-
-
-            resolve(result);
-          };
+      const callbackName =
+        '__atworkCallback_' +
+        Date.now() +
+        '_' +
+        Math.floor(
+          Math.random() * 100000
+        );
 
 
-        const script =
-          document.createElement('script');
+      const script =
+        document.createElement('script');
 
 
-        script.src =
-          SCRIPT_URL +
-          '?action=status' +
-          '&requestId=' +
-          encodeURIComponent(requestId) +
-          '&callback=' +
-          encodeURIComponent(callbackName);
+      window[callbackName] =
+        function(result) {
+
+          try {
+            delete window[callbackName];
+          } catch (e) {}
+
+          script.remove();
 
 
-        script.onerror =
-          function() {
+          if (result && result.pending) {
 
-            cleanupJsonp(
-              callbackName,
-              script
-            );
-
-
-            if (!finished &&
-                pollCount < 30) {
+            if (attempts < 60) {
 
               setTimeout(
                 poll,
                 1000
               );
             }
-          };
-
-
-        document.body.appendChild(
-          script
-        );
-      }
-
-
-      function cleanupJsonp(
-        callbackName,
-        script
-      ) {
-
-        try {
-          delete window[callbackName];
-        } catch (error) {}
-
-        if (
-          script &&
-          script.parentNode
-        ) {
-          script.parentNode.removeChild(
-            script
-          );
-        }
-      }
-
-
-      function cleanup() {
-
-        clearTimeout(timeout);
-
-        if (
-          form &&
-          form.parentNode
-        ) {
-          form.parentNode.removeChild(
-            form
-          );
-        }
-      }
-
-
-      poll();
-    });
-  }
-
-
-  function addHidden(
-    form,
-    name,
-    value
-  ) {
-
-    const input =
-      document.createElement('input');
-
-    input.type = 'hidden';
-
-    input.name = name;
-
-    input.value =
-      value == null
-        ? ''
-        : String(value);
-
-    form.appendChild(input);
-  }
-
-
-  /* =========================================
-   * APPLICATION PAYLOAD
-   * ========================================= */
-
-  function getApplicationPayload() {
-
-    return {
-
-      name:
-        document.getElementById(
-          'appName'
-        ).value.trim(),
-
-      phone:
-        document.getElementById(
-          'appPhone'
-        ).value.trim(),
-
-      email:
-        document.getElementById(
-          'appEmail'
-        ).value.trim(),
-
-      position:
-        document.getElementById(
-          'position'
-        ).value.trim(),
-
-      expectedSalary:
-        document.getElementById(
-          'salary'
-        ).value.trim(),
-
-      startDate:
-        document.getElementById(
-          'startDate'
-        ).value.trim(),
-
-      houseNo:
-        document.getElementById(
-          'houseNo'
-        ).value.trim(),
-
-      moo:
-        document.getElementById(
-          'moo'
-        ).value.trim(),
-
-      road:
-        document.getElementById(
-          'road'
-        ).value.trim(),
-
-      subdistrict:
-        document.getElementById(
-          'subdistrict'
-        ).value.trim(),
-
-      district:
-        document.getElementById(
-          'district'
-        ).value.trim(),
-
-      province:
-        document.getElementById(
-          'appProvince'
-        ).value.trim(),
-
-      postalCode:
-        document.getElementById(
-          'postalCode'
-        ).value.trim()
-    };
-  }
-
-
-  /* =========================================
-   * RESUME FILE -> BASE64
-   * ========================================= */
-
-  function fileToBase64(file) {
-
-    return new Promise(function(
-      resolve,
-      reject
-    ) {
-
-      const reader =
-        new FileReader();
-
-
-      reader.onload =
-        function() {
-
-          const result =
-            String(reader.result || '');
-
-          const comma =
-            result.indexOf(',');
-
-
-          if (comma === -1) {
-
-            reject(
-              new Error(
-                'อ่านไฟล์ Resume ไม่สำเร็จ'
-              )
-            );
 
             return;
           }
 
 
-          resolve(
-            result.substring(
-              comma + 1
-            )
-          );
+          finished = true;
+
+          clearTimeout(timeout);
+
+          form.remove();
+
+          resolve(result);
         };
 
 
-      reader.onerror =
+      script.src =
+        SCRIPT_URL +
+        '?action=status' +
+        '&requestId=' +
+        encodeURIComponent(requestId) +
+        '&callback=' +
+        encodeURIComponent(callbackName);
+
+
+      script.onerror =
         function() {
 
-          reject(
-            new Error(
-              'ไม่สามารถอ่านไฟล์ Resume ได้'
-            )
-          );
+          try {
+            delete window[callbackName];
+          } catch (e) {}
+
+          script.remove();
+
+
+          if (attempts < 60) {
+
+            setTimeout(
+              poll,
+              1000
+            );
+          }
         };
 
 
-      reader.readAsDataURL(file);
+      document.body.appendChild(
+        script
+      );
+    }
+
+
+    poll();
+  });
+}
+
+
+async function initLIFF() {
+
+  try {
+
+    await liff.init({
+      liffId: LIFF_ID,
+      withLoginOnExternalBrowser: true
     });
-  }
 
 
-  /* =========================================
-   * APPLICATION SUBMIT
-   * ========================================= */
+    if (!liff.isLoggedIn()) {
 
-  applicationForm.addEventListener(
-    'submit',
-    async function(event) {
+      if (!liff.isInClient()) {
 
-      event.preventDefault();
+        liff.login({
+          redirectUri:
+            window.location.href
+        });
 
-
-      if (submitting) {
         return;
       }
 
+      throw new Error(
+        'ยังไม่ได้เข้าสู่ระบบ LINE'
+      );
+    }
 
-      submitting = true;
 
-      submitButton.disabled = true;
+    try {
 
-      submitButton.textContent =
-        'กำลังส่ง...';
+      const profile =
+        await liff.getProfile();
 
-      clearStatus();
+      lineUser.classList.remove(
+        'hidden'
+      );
+
+      lineDisplayName.textContent =
+        profile.displayName ||
+        'ผู้ใช้ LINE';
+
+      if (profile.pictureUrl) {
+        linePicture.src =
+          profile.pictureUrl;
+      }
+
+    } catch (e) {}
+
+
+    connectionStatus.textContent =
+      'เชื่อมต่อ LINE สำเร็จ';
+
+    button.disabled = false;
+
+    button.textContent =
+      'ส่งใบสมัคร';
+
+    liffReady = true;
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    connectionStatus.textContent =
+      'เชื่อมต่อ LINE ไม่สำเร็จ';
+
+    showStatus(
+      'ไม่สามารถเชื่อมต่อ LINE ได้ กรุณาเปิด LIFF ใหม่',
+      'error'
+    );
+  }
+}
+
+
+async function fileToBase64(file) {
+
+  return new Promise(function(
+    resolve,
+    reject
+  ) {
+
+    const reader =
+      new FileReader();
+
+    reader.onload =
+      function() {
+
+        const result =
+          String(reader.result || '');
+
+        const comma =
+          result.indexOf(',');
+
+        if (comma === -1) {
+
+          reject(
+            new Error(
+              'อ่านไฟล์ไม่สำเร็จ'
+            )
+          );
+
+          return;
+        }
+
+        resolve(
+          result.substring(
+            comma + 1
+          )
+        );
+      };
+
+
+    reader.onerror =
+      function() {
+
+        reject(
+          new Error(
+            'ไม่สามารถอ่านไฟล์ได้'
+          )
+        );
+      };
+
+
+    reader.readAsDataURL(file);
+  });
+}
+
+
+function getApplicationPayload() {
+
+  return {
+
+    name:
+      document.getElementById(
+        'appName'
+      ).value.trim(),
+
+    phone:
+      document.getElementById(
+        'appPhone'
+      ).value.trim(),
+
+    email:
+      document.getElementById(
+        'appEmail'
+      ).value.trim(),
+
+    position:
+      document.getElementById(
+        'position'
+      ).value.trim(),
+
+    expectedSalary:
+      document.getElementById(
+        'salary'
+      ).value.trim(),
+
+    startDate:
+      document.getElementById(
+        'startDate'
+      ).value.trim(),
+
+    houseNo:
+      document.getElementById(
+        'houseNo'
+      ).value.trim(),
+
+    moo:
+      document.getElementById(
+        'moo'
+      ).value.trim(),
+
+    road:
+      document.getElementById(
+        'road'
+      ).value.trim(),
+
+    subdistrict:
+      document.getElementById(
+        'subdistrict'
+      ).value.trim(),
+
+    district:
+      document.getElementById(
+        'district'
+      ).value.trim(),
+
+    province:
+      document.getElementById(
+        'appProvince'
+      ).value.trim(),
+
+    postalCode:
+      document.getElementById(
+        'postalCode'
+      ).value.trim()
+  };
+}
+
+
+async function getResumePayload() {
+
+  const file =
+    resumeFile.files[0];
+
+  if (!file) {
+    return null;
+  }
+
+
+  if (
+    file.type !== 'image/jpeg' &&
+    file.type !== 'image/png'
+  ) {
+
+    throw new Error(
+      'Resume ต้องเป็น JPG / JPEG / PNG'
+    );
+  }
+
+
+  if (
+    file.size >
+    10 * 1024 * 1024
+  ) {
+
+    throw new Error(
+      'Resume ต้องมีขนาดไม่เกิน 10 MB'
+    );
+  }
+
+
+  return {
+
+    name:
+      document.getElementById(
+        'appName'
+      ).value.trim(),
+
+    phone:
+      document.getElementById(
+        'appPhone'
+      ).value.trim(),
+
+    jobType:
+      document.getElementById(
+        'jobType'
+      ).value.trim(),
+
+    province:
+      document.getElementById(
+        'resumeProvince'
+      ).value.trim(),
+
+    fileName:
+      file.name,
+
+    mimeType:
+      file.type,
+
+    fileSize:
+      file.size,
+
+    fileData:
+      await fileToBase64(file)
+  };
+}
+
+
+form.addEventListener(
+  'submit',
+  async function(event) {
+
+    event.preventDefault();
+
+
+    if (
+      submitting ||
+      !liffReady
+    ) {
+      return;
+    }
+
+
+    submitting = true;
+
+    button.disabled = true;
+
+    button.textContent =
+      'กำลังส่ง...';
+
+
+    try {
+
+      let idToken;
 
 
       try {
 
-        let idToken;
+        idToken =
+          await getCurrentIdToken();
 
+      } catch (e) {
 
-        try {
+        if (
+          e.message ===
+          'ID_TOKEN_EXPIRED_CLIENT'
+        ) {
 
-          idToken =
-            await getCurrentIdToken();
+          handleTokenExpired();
 
-        } catch (tokenError) {
-
-          if (
-            tokenError.message ===
-            'ID_TOKEN_EXPIRED_CLIENT'
-          ) {
-
-            handleTokenExpired();
-
-            return;
-          }
-
-          throw tokenError;
+          return;
         }
 
+        throw e;
+      }
 
-        const payload =
-          getApplicationPayload();
+
+      const applicationPayload =
+        getApplicationPayload();
 
 
-        const result =
-          await postToAppsScript(
-            'application',
-            payload,
+      const resumePayload =
+        await getResumePayload();
+
+
+      /*
+       * 1. ส่ง Application
+       */
+
+      showStatus(
+        'กำลังบันทึกข้อมูลใบสมัคร...',
+        'info'
+      );
+
+
+      const applicationResult =
+        await postToServer(
+          'application',
+          applicationPayload,
+          idToken
+        );
+
+
+      if (
+        applicationResult.code ===
+        'AUTH_EXPIRED'
+      ) {
+
+        handleTokenExpired();
+
+        return;
+      }
+
+
+      if (!applicationResult.ok) {
+
+        throw new Error(
+          applicationResult.message ||
+          'บันทึกใบสมัครไม่สำเร็จ'
+        );
+      }
+
+
+      /*
+       * 2. ถ้ามี Resume ให้ส่งต่อ
+       */
+
+      if (resumePayload) {
+
+        showStatus(
+          'ใบสมัครบันทึกแล้ว กำลังอัปโหลด Resume...',
+          'info'
+        );
+
+
+        const resumeResult =
+          await postToServer(
+            'resume',
+            resumePayload,
             idToken
           );
 
 
         if (
-          result.code ===
+          resumeResult.code ===
           'AUTH_EXPIRED'
         ) {
 
@@ -1370,191 +1294,77 @@
         }
 
 
-        if (!result.ok) {
+        if (!resumeResult.ok) {
 
           throw new Error(
-            result.message ||
-            'ไม่สามารถส่งใบสมัครได้'
+            resumeResult.message ||
+            'อัปโหลด Resume ไม่สำเร็จ'
           );
         }
 
 
         showStatus(
-          result.message ||
-          'ส่งใบสมัครสำเร็จ',
+          applicationResult.message +
+          ' และ ' +
+          resumeResult.message,
           'success'
         );
 
-
-        applicationForm.reset();
-
-
-      } catch (error) {
-
-        console.error(error);
+      } else {
 
         showStatus(
-          error.message ||
-          'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
-          'error'
+          applicationResult.message,
+          'success'
         );
-
-      } finally {
-
-        submitting = false;
-
-        submitButton.disabled =
-          !liffReady;
-
-        submitButton.textContent =
-          'ส่งใบสมัคร';
       }
-    }
-  );
 
 
-  /* =========================================
-   * RESUME SUBMIT
-   *
-   * Resume is sent together with
-   * the same "ส่งใบสมัคร" button.
-   * ========================================= */
-
-  const resumeFile =
-    document.getElementById(
-      'resumeFile'
-    );
+      form.reset();
 
 
-  async function getResumePayload() {
+    } catch (error) {
 
-    const file =
-      resumeFile.files[0];
+      console.error(error);
 
-
-    if (!file) {
-      return null;
-    }
-
-
-    if (
-      file.type !== 'image/jpeg' &&
-      file.type !== 'image/png'
-    ) {
-
-      throw new Error(
-        'รองรับเฉพาะ JPG / JPEG / PNG'
+      showStatus(
+        error.message ||
+        'เกิดข้อผิดพลาด กรุณาลองใหม่',
+        'error'
       );
+
+    } finally {
+
+      submitting = false;
+
+      button.disabled =
+        !liffReady;
+
+      button.textContent =
+        'ส่งใบสมัคร';
     }
 
-
-    if (
-      file.size >
-      10 * 1024 * 1024
-    ) {
-
-      throw new Error(
-        'ไฟล์ Resume ต้องมีขนาดไม่เกิน 10 MB'
-      );
-    }
-
-
-    const base64 =
-      await fileToBase64(file);
-
-
-    return {
-
-      name:
-        document.getElementById(
-          'appName'
-        ).value.trim(),
-
-      phone:
-        document.getElementById(
-          'appPhone'
-        ).value.trim(),
-
-      jobType:
-        document.getElementById(
-          'jobType'
-        ).value.trim(),
-
-      province:
-        document.getElementById(
-          'resumeProvince'
-        ).value.trim(),
-
-      fileName:
-        file.name,
-
-      mimeType:
-        file.type,
-
-      fileSize:
-        file.size,
-
-      fileData:
-        base64
-    };
   }
+);
 
 
-  /*
-   * เพิ่มการส่ง Resume หลังจาก Application
-   * ด้วยปุ่มเดียว
-   */
+initLIFF();
 
-  const originalSubmit =
-    applicationForm.onsubmit;
+</script>
 
+<script>
+/*
+ * Hidden target iframe
+ */
+const frame =
+  document.createElement('iframe');
 
-  applicationForm.addEventListener(
-    'submit',
-    function() {},
-    true
-  );
+frame.name = 'atworkPostFrame';
 
+frame.id = 'atworkPostFrame';
 
-  /*
-   * เราจัดการ Resume ก่อนการส่ง Application
-   * ใน event handler เดียวด้านล่าง
-   */
+frame.style.display = 'none';
 
-  applicationForm.addEventListener(
-    'submit',
-    async function(event) {
-
-      /*
-       * event นี้หยุดไว้เฉย ๆ
-       * เพื่อไม่ให้มี handler ที่สองส่งซ้ำ
-       */
-    },
-    true
-  );
-
-
-  /* =========================================
-   * REPLACE MAIN SUBMIT HANDLER
-   * ========================================= */
-
-  applicationForm.addEventListener(
-    'submit',
-    function(event) {
-
-      // ป้องกัน handler ซ้อน
-      event.stopImmediatePropagation();
-
-    },
-    false
-  );
-
-
-  /*
-   * เรียก init
-   */
-  initLIFF();
-
+document.body.appendChild(frame);
 </script>
 
 </body>
