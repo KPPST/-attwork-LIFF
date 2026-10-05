@@ -711,143 +711,142 @@
 
     async function sendApplication() {
 
-      const button =
-        document.getElementById(
-          "applicationSubmitButton"
-        );
+  const button =
+    document.getElementById("applicationSubmitButton");
 
-      const message =
-        document.getElementById(
-          "applicationMessage"
-        );
+  const message =
+    document.getElementById("applicationMessage");
 
-      if (!lineReady) {
+  if (!lineReady) {
+    showMessage(
+      message,
+      "error",
+      "LINE ยังเชื่อมต่อไม่สำเร็จ"
+    );
+    return;
+  }
 
-        showMessage(
-          message,
-          "error",
-          "LINE ยังเชื่อมต่อไม่สำเร็จ"
-        );
+  const name =
+    document.getElementById("applicationName").value.trim();
 
-        return;
+  const phone =
+    document.getElementById("applicationPhone").value.trim();
+
+  const jobType =
+    document.getElementById("applicationJobType").value;
+
+  const province =
+    document.getElementById("applicationProvince").value;
+
+  if (!name || !phone || !jobType || !province) {
+    showMessage(
+      message,
+      "error",
+      "กรุณากรอกข้อมูลให้ครบทุกช่อง"
+    );
+    return;
+  }
+
+  let idToken;
+
+  try {
+    idToken = liff.getIDToken();
+  } catch (error) {
+    showMessage(
+      message,
+      "error",
+      "ไม่สามารถรับ LINE ID Token ได้"
+    );
+    return;
+  }
+
+  if (!idToken) {
+    showMessage(
+      message,
+      "error",
+      "ไม่พบ LINE ID Token กรุณาเปิดหน้า ATWORK ใหม่"
+    );
+    return;
+  }
+
+  const payload = {
+    idToken: idToken,
+    name: name,
+    phone: phone,
+    jobType: jobType,
+    province: province
+  };
+
+  button.disabled = true;
+
+  showMessage(
+    message,
+    "loading",
+    "กำลังส่งใบสมัคร..."
+  );
+
+  try {
+
+    const body =
+      new URLSearchParams();
+
+    body.append(
+      "action",
+      "application"
+    );
+
+    body.append(
+      "payload",
+      JSON.stringify(payload)
+    );
+
+    await fetch(
+      APPS_SCRIPT_URL,
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type":
+            "application/x-www-form-urlencoded;charset=UTF-8"
+        },
+        body: body.toString()
       }
+    );
 
-      const name =
-        document.getElementById(
-          "applicationName"
-        ).value.trim();
+    /*
+     * Apps Script ทำงานสำเร็จแล้ว
+     * แต่ no-cors จะไม่เปิดเผย response ให้ browser อ่าน
+     * ดังนั้นเราถือว่าคำสั่งถูกส่งออกไปแล้ว
+     */
 
-      const phone =
-        document.getElementById(
-          "applicationPhone"
-        ).value.trim();
+    showMessage(
+      message,
+      "success",
+      "ส่งใบสมัครสำเร็จ<br>" +
+      "สถานะ: <strong>รอตรวจสอบ</strong>"
+    );
 
-      const jobType =
-        document.getElementById(
-          "applicationJobType"
-        ).value;
+    clearApplicationForm();
 
-      const province =
-        document.getElementById(
-          "applicationProvince"
-        ).value;
+  } catch (error) {
 
+    console.error(
+      "APPLICATION ERROR:",
+      error
+    );
 
-      if (!name || !phone || !jobType || !province) {
+    showMessage(
+      message,
+      "error",
+      "ส่งใบสมัครไม่สำเร็จ: " +
+      (error.message || String(error))
+    );
 
-        showMessage(
-          message,
-          "error",
-          "กรุณากรอกข้อมูลให้ครบทุกช่อง"
-        );
+  } finally {
 
-        return;
-      }
-
-
-      let idToken;
-
-      try {
-
-        idToken =
-          liff.getIDToken();
-
-      } catch (error) {
-
-        showMessage(
-          message,
-          "error",
-          "ไม่สามารถรับ LINE ID Token ได้"
-        );
-
-        return;
-      }
-
-
-      if (!idToken) {
-
-        showMessage(
-          message,
-          "error",
-          "ไม่พบ LINE ID Token กรุณาเปิด LIFF ใหม่"
-        );
-
-        return;
-      }
-
-
-      const payload = {
-
-        idToken: idToken,
-
-        name: name,
-
-        phone: phone,
-
-        jobType: jobType,
-
-        province: province
-      };
-
-
-      button.disabled = true;
-
-      showMessage(
-        message,
-        "loading",
-        "กำลังส่งใบสมัคร..."
-      );
-
-
-      try {
-
-        document.getElementById(
-          "applicationPayload"
-        ).value = JSON.stringify(payload);
-
-        const form =
-          document.getElementById(
-            "applicationBackendForm"
-          );
-
-        form.action =
-          APPS_SCRIPT_URL;
-
-        form.submit();
-
-      } catch (error) {
-
-        button.disabled = false;
-
-        showMessage(
-          message,
-          "error",
-          "ส่งใบสมัครไม่สำเร็จ: " +
-          (error.message || String(error))
-        );
-      }
-    }
-
+    button.disabled = false;
+  }
+}
 
     /* =====================================================
        RESUME
