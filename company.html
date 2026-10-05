@@ -193,10 +193,15 @@ $('personnelRequestForm').addEventListener('submit', async event => {
 
     const result = await apiCall('createPersonnelRequest', data);
 
+    if (!result.requestId) {
+      console.error('Personnel request response:', result);
+      throw new Error('ระบบบันทึกข้อมูลแล้ว แต่ไม่ได้รับเลขที่คำขอกลับมา กรุณาอัปเดต Web App เป็นเวอร์ชันล่าสุด');
+    }
+
     $('formCard').style.display = 'none';
     $('successCard').style.display = 'block';
-    $('requestId').textContent = result.requestId || '-';
-    $('requestStatus').textContent = result.status || 'เสร็จสิ้น';
+    $('requestId').textContent = String(result.requestId);
+    $('requestStatus').textContent = String(result.status || 'เสร็จสิ้น');
 
   } catch (error) {
     console.error(error);
