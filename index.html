@@ -709,7 +709,7 @@
        APPLICATION
     ===================================================== */
 
-    async function sendApplication() {
+    function sendApplication() {
 
   const button =
     document.getElementById("applicationSubmitButton");
@@ -727,45 +727,42 @@
   }
 
   const name =
-    document.getElementById("applicationName").value.trim();
+    document.getElementById("applicationName")
+      .value.trim();
 
   const phone =
-    document.getElementById("applicationPhone").value.trim();
+    document.getElementById("applicationPhone")
+      .value.trim();
 
   const jobType =
-    document.getElementById("applicationJobType").value;
+    document.getElementById("applicationJobType")
+      .value;
 
   const province =
-    document.getElementById("applicationProvince").value;
+    document.getElementById("applicationProvince")
+      .value;
 
   if (!name || !phone || !jobType || !province) {
+
     showMessage(
       message,
       "error",
       "กรุณากรอกข้อมูลให้ครบทุกช่อง"
     );
+
     return;
   }
 
-  let idToken;
-
-  try {
-    idToken = liff.getIDToken();
-  } catch (error) {
-    showMessage(
-      message,
-      "error",
-      "ไม่สามารถรับ LINE ID Token ได้"
-    );
-    return;
-  }
+  const idToken = liff.getIDToken();
 
   if (!idToken) {
+
     showMessage(
       message,
       "error",
       "ไม่พบ LINE ID Token กรุณาเปิดหน้า ATWORK ใหม่"
     );
+
     return;
   }
 
@@ -777,6 +774,18 @@
     province: province
   };
 
+  const body = new URLSearchParams();
+
+  body.append(
+    "action",
+    "application"
+  );
+
+  body.append(
+    "payload",
+    JSON.stringify(payload)
+  );
+
   button.disabled = true;
 
   showMessage(
@@ -787,42 +796,27 @@
 
   try {
 
-    const body =
-      new URLSearchParams();
+    const queued =
+      navigator.sendBeacon(
+        APPS_SCRIPT_URL,
+        body
+      );
 
-    body.append(
-      "action",
-      "application"
-    );
-
-    body.append(
-      "payload",
-      JSON.stringify(payload)
-    );
-
-    await fetch(
-      APPS_SCRIPT_URL,
-      {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type":
-            "application/x-www-form-urlencoded;charset=UTF-8"
-        },
-        body: body.toString()
-      }
-    );
+    if (!queued) {
+      throw new Error(
+        "ไม่สามารถส่งข้อมูลเข้าสู่ระบบได้"
+      );
+    }
 
     /*
-     * Apps Script ทำงานสำเร็จแล้ว
-     * แต่ no-cors จะไม่เปิดเผย response ให้ browser อ่าน
-     * ดังนั้นเราถือว่าคำสั่งถูกส่งออกไปแล้ว
+     * sendBeacon ส่งข้อมูลแบบเบื้องหลัง
+     * หน้าเว็บไม่ต้องรอ response จาก Apps Script
      */
 
     showMessage(
       message,
       "success",
-      "ส่งใบสมัครสำเร็จ<br>" +
+      "ระบบรับใบสมัครแล้ว<br>" +
       "สถานะ: <strong>รอตรวจสอบ</strong>"
     );
 
@@ -831,7 +825,7 @@
   } catch (error) {
 
     console.error(
-      "APPLICATION ERROR:",
+      "SEND APPLICATION ERROR:",
       error
     );
 
@@ -839,12 +833,13 @@
       message,
       "error",
       "ส่งใบสมัครไม่สำเร็จ: " +
-      (error.message || String(error))
+      error.message
     );
 
   } finally {
 
     button.disabled = false;
+
   }
 }
 
