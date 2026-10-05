@@ -792,18 +792,20 @@
   }
 
   const payload = {
+  requestId: requestId,
 
-    idToken: idToken,
+  idToken: idToken,
 
-    name: name,
+  name: name,
 
-    phone: phone,
+  phone: phone,
 
-    jobType: jobType,
+  position: jobType,
 
-    province: province
-  };
+  jobType: jobType,
 
+  province: province
+};
   button.disabled = true;
 
   showMessage(
