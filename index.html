@@ -973,14 +973,16 @@ async function getResumePayload() {
         'appPhone'
       ).value.trim(),
 
+    // ใช้ตำแหน่งที่สมัครและจังหวัดปัจจุบันจากฟอร์มหลัก
+    // เพราะหน้า UI เวอร์ชันนี้ไม่มีช่อง jobType / resumeProvince แยกแล้ว
     jobType:
       document.getElementById(
-        'jobType'
+        'position'
       ).value.trim(),
 
     province:
       document.getElementById(
-        'resumeProvince'
+        'appProvince'
       ).value.trim(),
 
     fileName:
