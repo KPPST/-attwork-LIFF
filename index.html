@@ -169,93 +169,8 @@
   .success-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
   .success-modal{width:min(430px,100%);padding:29px 20px 19px;border:1px solid rgba(255,255,255,.72);border-radius:27px;background:rgba(255,255,255,.98);box-shadow:0 30px 90px rgba(15,23,42,.24);text-align:center;transform:translateY(14px) scale(.97);transition:transform .22s cubic-bezier(.2,.8,.2,1)}
   .success-overlay.show .success-modal{transform:none}
-  .success-check-wrap{width:78px;height:78px;margin:0 auto 16px;display:grid;place-items:center;border-radius:50%;background:#eaf8ef}
-  .success-check{width:60px;height:60px;display:grid;place-items:center;border-radius:50%;background:var(--green);color:#fff;box-shadow:0 10px 22px rgba(22,163,74,.22);animation:checkIn .42s ease-out both}
-  .success-check svg{width:31px;height:31px}
-  .success-title{margin:0;color:#0f172a;font-size:22px;line-height:1.25;font-weight:950;letter-spacing:-.03em}
-  .success-subtitle{margin:7px auto 19px;max-width:330px;color:var(--muted);font-size:12.5px;line-height:1.65}
-  .success-ids{display:grid;gap:9px;text-align:left}
-  .success-id-card{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:12px 13px;border:1px solid #e6edf4;border-radius:15px;background:#f8fafc}
-  .success-id-label{display:block;color:#7b8796;font-size:10.5px;line-height:1.4}
-  .success-id-value{display:block;margin-top:3px;color:#0f172a;font-size:13.5px;font-weight:950;line-height:1.45;word-break:break-word}
-  .copy-btn{min-height:34px;padding:0 10px;border:1px solid #dbe3ed;border-radius:9px;background:#fff;color:#334155;font-size:10.5px;font-weight:850;cursor:pointer}
-  .copy-btn:hover{border-color:#b7c6d8;background:#fbfdff}
-  .copy-btn:active{transform:translateY(1px)}
-  .success-close{width:100%;min-height:48px;margin-top:15px;border:0;border-radius:12px;background:#111827;color:#fff;font-size:13.5px;font-weight:900;cursor:pointer}
-  .success-close:hover{background:#1f2937}
-  @keyframes checkIn{0%{transform:scale(.55);opacity:0}65%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
-
-  /* ==========================================================
-     FORM COMPLETION / FIELD CHECKS
-     ========================================================== */
-  .progress-overview{
-    margin-top:12px;padding:14px 15px 13px;border:1px solid #e5ebf3;border-radius:18px;
-    background:rgba(255,255,255,.78);box-shadow:var(--shadow-sm);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)
-  }
-  .progress-overview-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .progress-overview-title{font-size:11px;font-weight:900;color:#334155}
-  .progress-overview-percent{font-size:12px;font-weight:950;color:var(--blue-2)}
-  .overview-track{height:7px;margin-top:10px;overflow:hidden;border-radius:999px;background:#e8eef6}
-  .overview-bar{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#2563eb,#60a5fa);transition:width .28s ease}
-  .overview-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}
-  .overview-step{display:flex;align-items:center;gap:6px;min-width:0;color:#94a3b8;font-size:9.5px;font-weight:800}
-  .overview-dot{width:19px;height:19px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;border:1px solid #d8e1eb;background:#fff;color:#94a3b8;font-size:9px;font-weight:950;transition:all .18s ease}
-  .overview-step.done{color:#15803d}.overview-step.done .overview-dot{border-color:#bbf7d0;background:#ecfdf5;color:#16a34a}
-  .overview-step.active{color:#1d4ed8}.overview-step.active .overview-dot{border-color:#bfdbfe;background:#eff6ff;color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
-  .field-label{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%}
-  .field-label-main{display:flex;align-items:center;gap:4px;min-width:0}
-  .field-check{width:18px;height:18px;display:grid;place-items:center;flex:0 0 auto;border-radius:50%;border:1px solid #dbe3ed;background:#fff;color:transparent;opacity:.65;transition:all .18s ease}
-  .field-check svg{width:11px;height:11px}
-  .field-check.done{border-color:#bbf7d0;background:#ecfdf5;color:var(--green);opacity:1;box-shadow:0 4px 10px rgba(22,163,74,.10);animation:fieldCheckIn .24s ease-out}
-  .field.invalid .field-check{border-color:#fecaca;background:#fff;color:#ef4444;opacity:1}
-  .field.validated input,.field.validated select{border-color:#c8e9d2;background:#fbfffc}
-
-  /* ==========================================================
-     LOADING / UPLOAD PROGRESS
-     ========================================================== */
-  .section-head{position:relative}
-  .section-progress{
-    margin-left:auto;flex:0 0 auto;min-width:30px;height:30px;
-    display:grid;place-items:center;border:1px solid #e2e8f0;border-radius:50%;
-    background:#fff;color:#94a3b8;opacity:.82;transition:all .2s ease;
-  }
-  .section-progress svg{width:17px;height:17px}
-  .section.is-complete .section-progress{
-    border-color:#bbf7d0;background:var(--green-soft);color:var(--green);opacity:1;
-    box-shadow:0 6px 14px rgba(22,163,74,.10);
-  }
-  .section.is-active .section-progress{border-color:#bfdbfe;background:var(--blue-soft);color:var(--blue);opacity:1}
-  .section-progress .progress-spin{width:14px;height:14px;border:2px solid #bfdbfe;border-top-color:var(--blue);border-radius:50%;animation:spin .72s linear infinite}
-
-  .loading-overlay{
-    position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:18px;
-    background:rgba(15,23,42,.52);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease;
-  }
-  .loading-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
-  .loading-modal{
-    width:min(430px,100%);padding:24px 19px 20px;border:1px solid rgba(255,255,255,.78);
-    border-radius:23px;background:rgba(255,255,255,.98);box-shadow:0 30px 90px rgba(15,23,42,.24);
-  }
-  .loading-top{display:flex;align-items:center;gap:14px}
-  .loading-ring{
-    --progress:0;position:relative;width:58px;height:58px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;
-    background:conic-gradient(var(--blue) calc(var(--progress) * 1%), #e7eef7 0);
-    box-shadow:0 10px 22px rgba(37,99,235,.12);
-  }
-  .loading-ring::before{content:"";position:absolute;inset:5px;border-radius:50%;background:#fff}
-  .loading-ring-center{position:relative;z-index:1;color:#1d4ed8;font-size:11px;font-weight:950}
-  .loading-ring.indeterminate{animation:spin .86s linear infinite}
-  .loading-ring.indeterminate .loading-ring-center{animation:spinReverse .86s linear infinite}
-  .loading-copy{min-width:0}
-  .loading-title{margin:0;color:#0f172a;font-size:16px;font-weight:950;line-height:1.35}
-  .loading-stage{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.5}
-  .loading-progress-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px}
-  .loading-progress-track{height:10px;flex:1;overflow:hidden;border-radius:999px;background:#e8eef6}
-  .loading-progress-bar{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#2563eb,#3b82f6,#60a5fa);transition:width .2s ease}
-  .loading-percent{min-width:46px;text-align:right;color:#0f172a;font-size:15px;font-weight:950}
-  .loading-detail{margin-top:10px;text-align:center;color:#7c8a9a;font-size:10.5px;line-height:1.5}
-  .loading-overlay.indeterminate .loading-progress-bar{width:34% !important;animation:loadingSlide 1.15s ease-in-out infinite}
+  .success-check-wrap{width:78px;height:78px;margin:0 auto 16px;display:grid;place-items:center;border-radius:50%;background:#eef3f8}
+  .success-badge-dot{width:18px;height:18px;border-radius:50%;background:#2563eb;box-shadow:0 0 0 10px rgba(37,99,235,.08)}
 
   .file-selected{
     display:none;align-items:center;gap:10px;margin-top:11px;padding:10px 11px;
@@ -274,10 +189,7 @@
   .inline-check.show{display:block}
   .inline-check svg{width:19px;height:19px}
 
-  @keyframes fieldCheckIn{0%{transform:scale(.7);opacity:.35}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes spinReverse{to{transform:rotate(-360deg)}}
-  @keyframes loadingSlide{0%{transform:translateX(-130%)}50%{transform:translateX(120%)}100%{transform:translateX(310%)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
   .hidden{display:none !important}
 
@@ -325,20 +237,6 @@
 
 
 
-    <div class="progress-overview" aria-live="polite">
-      <div class="progress-overview-top">
-        <div class="progress-overview-title">ความคืบหน้าใบสมัคร</div>
-        <div id="overviewPercent" class="progress-overview-percent">0%</div>
-      </div>
-      <div class="overview-track" aria-hidden="true"><div id="overviewBar" class="overview-bar"></div></div>
-      <div class="overview-steps">
-        <div class="overview-step" id="overviewStep1"><span class="overview-dot">1</span><span>ข้อมูลผู้สมัคร</span></div>
-        <div class="overview-step" id="overviewStep2"><span class="overview-dot">2</span><span>รายละเอียดงาน</span></div>
-        <div class="overview-step" id="overviewStep3"><span class="overview-dot">3</span><span>ที่อยู่</span></div>
-        <div class="overview-step" id="overviewStep4"><span class="overview-dot">4</span><span>Resume</span></div>
-      </div>
-    </div>
-
     <form id="applicationForm" class="form-card">
       <section class="section">
         <div class="section-head">
@@ -347,20 +245,19 @@
             <h1 class="section-title">ข้อมูลผู้สมัคร</h1>
             <div class="section-desc">ข้อมูลพื้นฐานสำหรับการสมัครงาน</div>
           </div>
-          <div class="section-progress" id="sectionProgress1" aria-label="ยังไม่ได้ส่งข้อมูล"></div>
         </div>
 
         <div class="grid">
           <div class="field full">
-            <label for="appName" class="field-label"><span class="field-label-main">ชื่อ-นามสกุล <span class="required">*</span></span><span class="field-check" id="checkAppName" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="appName" class="field-label"><span class="field-label-main">ชื่อ-นามสกุล <span class="required">*</span></span></label>
             <input id="appName" name="name" autocomplete="name" placeholder="กรอกชื่อ-นามสกุล" required>
           </div>
           <div class="field">
-            <label for="appPhone" class="field-label"><span class="field-label-main">เบอร์โทรศัพท์ <span class="required">*</span></span><span class="field-check" id="checkAppPhone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="appPhone" class="field-label"><span class="field-label-main">เบอร์โทรศัพท์ <span class="required">*</span></span></label>
             <input id="appPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="เช่น 0812345678" required>
           </div>
           <div class="field">
-            <label for="appEmail" class="field-label"><span class="field-label-main">Email <span class="required">*</span></span><span class="field-check" id="checkAppEmail" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="appEmail" class="field-label"><span class="field-label-main">Email <span class="required">*</span></span></label>
             <input id="appEmail" name="email" type="email" autocomplete="email" placeholder="example@email.com" required>
           </div>
         </div>
@@ -373,12 +270,11 @@
             <h2 class="section-title">รายละเอียดการสมัคร</h2>
             <div class="section-desc">เลือกตำแหน่งและข้อมูลที่เกี่ยวข้องกับการเริ่มงาน</div>
           </div>
-          <div class="section-progress" id="sectionProgress2" aria-label="ยังไม่ได้ส่งข้อมูล"></div>
         </div>
 
         <div class="grid">
           <div class="field full">
-            <label for="position" class="field-label"><span class="field-label-main">ตำแหน่งที่สมัคร <span class="required">*</span></span><span class="field-check" id="checkPosition" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="position" class="field-label"><span class="field-label-main">ตำแหน่งที่สมัคร <span class="required">*</span></span></label>
             <select id="position" name="position" required>
               <option value="" selected disabled>เลือกตำแหน่งที่สมัคร</option>
               <option value="พนักงานฝ่ายผลิต">พนักงานฝ่ายผลิต</option>
@@ -391,11 +287,11 @@
             <div class="hint">เลือกตำแหน่งที่ตรงกับงานที่ต้องการสมัคร</div>
           </div>
           <div class="field">
-            <label for="salary" class="field-label"><span class="field-label-main">เงินเดือนที่คาดหวัง <span class="required">*</span></span><span class="field-check" id="checkSalary" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="salary" class="field-label"><span class="field-label-main">เงินเดือนที่คาดหวัง <span class="required">*</span></span></label>
             <input id="salary" name="expectedSalary" type="number" min="1" inputmode="numeric" placeholder="เช่น 15000" required>
           </div>
           <div class="field">
-            <label for="startDate" class="field-label"><span class="field-label-main">วันที่พร้อมเริ่มงาน <span class="required">*</span></span><span class="field-check" id="checkStartDate" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="startDate" class="field-label"><span class="field-label-main">วันที่พร้อมเริ่มงาน <span class="required">*</span></span></label>
             <input id="startDate" name="startDate" type="date" required>
           </div>
         </div>
@@ -408,12 +304,11 @@
             <h2 class="section-title">ที่อยู่ปัจจุบัน</h2>
             <div class="section-desc">ใช้สำหรับข้อมูลประกอบและการติดต่อในขั้นตอนถัดไป</div>
           </div>
-          <div class="section-progress" id="sectionProgress3" aria-label="ยังไม่ได้ส่งข้อมูล"></div>
         </div>
 
         <div class="grid">
           <div class="field">
-            <label for="houseNo" class="field-label"><span class="field-label-main">บ้านเลขที่ <span class="required">*</span></span><span class="field-check" id="checkHouseNo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="houseNo" class="field-label"><span class="field-label-main">บ้านเลขที่ <span class="required">*</span></span></label>
             <input id="houseNo" name="houseNo" autocomplete="street-address" placeholder="เช่น 123/45" required>
           </div>
           <div class="field">
@@ -425,19 +320,19 @@
             <input id="road" name="road" placeholder="ชื่อถนน">
           </div>
           <div class="field">
-            <label for="subdistrict" class="field-label"><span class="field-label-main">ตำบล / แขวง <span class="required">*</span></span><span class="field-check" id="checkSubdistrict" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="subdistrict" class="field-label"><span class="field-label-main">ตำบล / แขวง <span class="required">*</span></span></label>
             <input id="subdistrict" name="subdistrict" placeholder="ตำบล / แขวง" required>
           </div>
           <div class="field">
-            <label for="district" class="field-label"><span class="field-label-main">อำเภอ / เขต <span class="required">*</span></span><span class="field-check" id="checkDistrict" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="district" class="field-label"><span class="field-label-main">อำเภอ / เขต <span class="required">*</span></span></label>
             <input id="district" name="district" placeholder="อำเภอ / เขต" required>
           </div>
           <div class="field">
-            <label for="appProvince" class="field-label"><span class="field-label-main">จังหวัด <span class="required">*</span></span><span class="field-check" id="checkProvince" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="appProvince" class="field-label"><span class="field-label-main">จังหวัด <span class="required">*</span></span></label>
             <input id="appProvince" name="province" placeholder="จังหวัด" required>
           </div>
           <div class="field">
-            <label for="postalCode" class="field-label"><span class="field-label-main">รหัสไปรษณีย์ <span class="required">*</span></span><span class="field-check" id="checkPostalCode" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="postalCode" class="field-label"><span class="field-label-main">รหัสไปรษณีย์ <span class="required">*</span></span></label>
             <input id="postalCode" name="postalCode" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="เช่น 10110" required>
           </div>
         </div>
@@ -450,11 +345,10 @@
             <h2 class="section-title">แนบ Resume</h2>
             <div class="section-desc">แนบประวัติของคุณเพื่อให้เจ้าหน้าที่พิจารณาข้อมูลได้รวดเร็วยิ่งขึ้น</div>
           </div>
-          <div class="section-progress" id="sectionProgress4" aria-label="ยังไม่ได้อัปโหลด Resume"></div>
         </div>
         <div class="resume-box">
           <div class="field">
-            <label for="resumeFile" class="field-label"><span class="field-label-main">Resume <span class="required">*</span></span><span class="field-check" id="checkResume" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></label>
+            <label for="resumeFile" class="field-label"><span class="field-label-main">Resume <span class="required">*</span></span></label>
             <div class="upload-box">
               <input id="resumeFile" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required>
               <div class="hint">รองรับ JPG / JPEG / PNG • ขนาดไม่เกิน 50 MB • แนะนำไฟล์ที่อ่านง่ายและเห็นข้อมูลครบ</div>
@@ -464,9 +358,6 @@
               <div class="file-selected-copy">
                 <span id="selectedFileName" class="file-selected-name">-</span>
                 <span id="selectedFileState" class="file-selected-state">เลือกไฟล์แล้ว แต่ยังไม่ได้อัปโหลด</span>
-              </div>
-              <div id="selectedFileCheck" class="inline-check" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>
               </div>
             </div>
           </div>
@@ -483,16 +374,10 @@
 
   <div id="loadingOverlay" class="loading-overlay" role="dialog" aria-modal="true" aria-live="polite" aria-label="กำลังส่งข้อมูล">
     <div class="loading-modal">
-      <div class="loading-top">
-        <div id="loadingRing" class="loading-ring" style="--progress:0" aria-hidden="true"><span id="loadingRingText" class="loading-ring-center">0%</span></div>
-        <div class="loading-copy">
-          <h2 id="loadingTitle" class="loading-title">กำลังส่งข้อมูล</h2>
-          <div id="loadingStage" class="loading-stage">กำลังเตรียมระบบ...</div>
-        </div>
-      </div>
-      <div class="loading-progress-row">
-        <div class="loading-progress-track" aria-hidden="true"><div id="loadingProgressBar" class="loading-progress-bar"></div></div>
-        <div id="loadingPercent" class="loading-percent">0%</div>
+      <div class="loading-spinner" aria-hidden="true"></div>
+      <div class="loading-copy">
+        <h2 id="loadingTitle" class="loading-title">กำลังส่งข้อมูล</h2>
+        <div id="loadingStage" class="loading-stage">กำลังเตรียมระบบ...</div>
       </div>
       <div id="loadingDetail" class="loading-detail">กรุณาอย่าปิดหน้านี้ระหว่างส่งข้อมูล</div>
     </div>
@@ -500,11 +385,7 @@
 
   <div id="successOverlay" class="success-overlay" role="dialog" aria-modal="true" aria-labelledby="successTitle">
     <div class="success-modal">
-      <div class="success-check-wrap">
-        <div class="success-check" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>
-        </div>
-      </div>
+      <div class="success-check-wrap" aria-hidden="true"><span class="success-badge-dot"></span></div>
       <h2 id="successTitle" class="success-title">ส่งสมัครสำเร็จ</h2>
       <p class="success-subtitle">ข้อมูลของคุณถูกส่งให้เจ้าหน้าที่ @attwork เรียบร้อยแล้ว</p>
 
@@ -557,160 +438,34 @@
   const loadingOverlay = document.getElementById('loadingOverlay');
   const loadingTitle = document.getElementById('loadingTitle');
   const loadingStage = document.getElementById('loadingStage');
-  const loadingProgressBar = document.getElementById('loadingProgressBar');
-  const loadingPercent = document.getElementById('loadingPercent');
   const loadingDetail = document.getElementById('loadingDetail');
   const selectedFile = document.getElementById('selectedFile');
   const selectedFileName = document.getElementById('selectedFileName');
   const selectedFileState = document.getElementById('selectedFileState');
   const selectedFileIcon = document.getElementById('selectedFileIcon');
-  const selectedFileCheck = document.getElementById('selectedFileCheck');
-  const loadingRing = document.getElementById('loadingRing');
-  const loadingRingText = document.getElementById('loadingRingText');
-  const overviewBar = document.getElementById('overviewBar');
-  const overviewPercent = document.getElementById('overviewPercent');
-  const overviewSteps = [1,2,3,4].map(function(n){ return document.getElementById('overviewStep' + n); });
-  const fieldCheckIds = {
-    appName:'checkAppName', appPhone:'checkAppPhone', appEmail:'checkAppEmail',
-    position:'checkPosition', salary:'checkSalary', startDate:'checkStartDate',
-    houseNo:'checkHouseNo', subdistrict:'checkSubdistrict', district:'checkDistrict',
-    appProvince:'checkProvince', postalCode:'checkPostalCode', resumeFile:'checkResume'
-  };
-  const sectionFieldIds = {
-    1:['appName','appPhone','appEmail'],
-    2:['position','salary','startDate'],
-    3:['houseNo','subdistrict','district','appProvince','postalCode']
-  };
-  const sectionProgress1 = document.getElementById('sectionProgress1');
-  const sectionProgress2 = document.getElementById('sectionProgress2');
-  const sectionProgress3 = document.getElementById('sectionProgress3');
-  const sectionProgress4 = document.getElementById('sectionProgress4');
-  const sections = Array.from(document.querySelectorAll('.form-card .section'));
-
   function setStatus(element, text, type) {
     element.textContent = text || '';
     element.className = text ? 'status show ' + type : 'status';
   }
 
-  const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
   const FILE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
 
-  function setSectionProgress(sectionIndex, state) {
-    const card = sections[sectionIndex - 1];
-    const icon = sectionIndex === 1 ? sectionProgress1 : sectionIndex === 2 ? sectionProgress2 : sectionIndex === 3 ? sectionProgress3 : sectionProgress4;
-    if (!card || !icon) return;
 
-    card.classList.remove('is-active', 'is-complete');
 
-    if (state === 'active') {
-      card.classList.add('is-active');
-      icon.innerHTML = '<span class="progress-spin" aria-hidden="true"></span>';
-      icon.setAttribute('aria-label', 'กำลังส่งข้อมูล');
-    } else if (state === 'complete') {
-      card.classList.add('is-complete');
-      icon.innerHTML = CHECK_SVG;
-      icon.setAttribute('aria-label', 'ส่งข้อมูลแล้ว');
-    } else {
-      icon.innerHTML = '';
-      icon.setAttribute('aria-label', 'ยังไม่ได้ส่งข้อมูล');
-    }
-  }
-
-  function resetSectionProgress() {
-    setSectionProgress(1, 'idle');
-    setSectionProgress(2, 'idle');
-    setSectionProgress(3, 'idle');
-    setSectionProgress(4, 'idle');
-  }
-
-  function setOverview(percent, activeStep, doneSteps) {
-    const value = Math.max(0, Math.min(100, Number(percent) || 0));
-    overviewBar.style.width = value + '%';
-    overviewPercent.textContent = Math.round(value) + '%';
-    const done = doneSteps || [];
-    overviewSteps.forEach(function(el, idx){
-      const step = idx + 1;
-      el.classList.toggle('done', done.includes(step));
-      el.classList.toggle('active', activeStep === step && !done.includes(step));
-      const dot = el.querySelector('.overview-dot');
-      if (done.includes(step)) dot.innerHTML = CHECK_SVG.replace('<svg','<svg style="width:11px;height:11px"');
-      else dot.textContent = String(step);
-    });
-  }
-
-  function updateFieldChecks() {
-    Object.keys(fieldCheckIds).forEach(function(fieldId){
-      const input = document.getElementById(fieldId);
-      const check = document.getElementById(fieldCheckIds[fieldId]);
-      if (!input || !check) return;
-      let valid = false;
-      if (fieldId === 'resumeFile') {
-        const file = fileOf('resumeFile');
-        valid = resumeUploaded === true;
-        if (valid && file) {
-          try { validateResumeFile(file); valid = true; } catch(e) { valid = false; }
-        }
-      } else {
-        valid = input.checkValidity() && String(input.value || '').trim() !== '';
-        if (fieldId === 'appPhone') valid = /^0\d{9}$/.test(String(input.value || '').replace(/\s|-/g,''));
-        if (fieldId === 'postalCode') valid = /^\d{5}$/.test(String(input.value || '').trim());
-        if (fieldId === 'salary') valid = Number(input.value) > 0;
-      }
-      check.classList.toggle('done', valid);
-      const field = input.closest('.field');
-      if (field) field.classList.toggle('validated', valid);
-    });
-
-    [1,2,3].forEach(function(sectionIndex){
-      const allValid = sectionFieldIds[sectionIndex].every(function(id){
-        const el = document.getElementById(id);
-        return !!el && el.checkValidity() && String(el.value || '').trim() !== '' &&
-          (id !== 'appPhone' || /^0\d{9}$/.test(String(el.value || '').replace(/\s|-/g,''))) &&
-          (id !== 'postalCode' || /^\d{5}$/.test(String(el.value || '').trim())) &&
-          (id !== 'salary' || Number(el.value) > 0);
-      });
-      const card = sections[sectionIndex - 1];
-      if (allValid && !submitting) setSectionProgress(sectionIndex, 'complete');
-      else if (!submitting) setSectionProgress(sectionIndex, 'idle');
-    });
-
-    const s1 = sectionFieldIds[1].every(function(id){const e=document.getElementById(id); return e && e.checkValidity() && String(e.value||'').trim()!=='';});
-    const s2 = sectionFieldIds[2].every(function(id){const e=document.getElementById(id); return e && e.checkValidity() && String(e.value||'').trim()!=='';});
-    const s3 = sectionFieldIds[3].every(function(id){const e=document.getElementById(id); return e && e.checkValidity() && String(e.value||'').trim()!=='';});
-    const fileReady = resumeUploaded === true;
-    let doneCount = [s1,s2,s3].filter(Boolean).length + (fileReady ? 1 : 0);
-    setOverview(Math.round((doneCount / 4) * 100), !s1 ? 1 : !s2 ? 2 : !s3 ? 3 : !fileReady ? 4 : null, [1,2,3].filter(function(x){return [s1,s2,s3][x-1];}).concat(fileReady ? [4] : []));
-  }
-
-  function showLoading(title, stage, percent, detail, indeterminate) {
+  function showLoading(title, stage, detail) {
     loadingTitle.textContent = title || 'กำลังส่งข้อมูล';
     loadingStage.textContent = stage || '';
     loadingDetail.textContent = detail || '';
-    const value = Math.max(0, Math.min(100, Number(percent) || 0));
-    loadingPercent.textContent = Math.round(value) + '%';
-    loadingProgressBar.style.width = value + '%';
-    loadingRing.style.setProperty('--progress', value);
-    loadingRingText.textContent = Math.round(value) + '%';
-    loadingRing.classList.toggle('indeterminate', !!indeterminate);
-    loadingOverlay.classList.toggle('indeterminate', !!indeterminate);
     loadingOverlay.classList.add('show');
   }
 
-  function updateLoading(percent, stage, detail, activeStep, doneSteps) {
-    const value = Math.max(0, Math.min(100, Number(percent) || 0));
-    loadingProgressBar.style.width = value + '%';
-    loadingPercent.textContent = Math.round(value) + '%';
-    loadingRing.style.setProperty('--progress', value);
-    loadingRingText.textContent = Math.round(value) + '%';
-    loadingRing.classList.remove('indeterminate');
-    loadingOverlay.classList.remove('indeterminate');
+  function updateLoading(stage, detail) {
     if (stage != null) loadingStage.textContent = stage;
     if (detail != null) loadingDetail.textContent = detail;
   }
 
   function hideLoading() {
-    loadingOverlay.classList.remove('show', 'indeterminate');
-    loadingRing.classList.remove('indeterminate');
+    loadingOverlay.classList.remove('show');
   }
 
   function showSelectedFile(file, uploaded) {
@@ -719,7 +474,6 @@
       selectedFileName.textContent = '-';
       selectedFileState.textContent = 'ยังไม่ได้เลือกไฟล์';
       selectedFileIcon.innerHTML = '';
-      selectedFileCheck.classList.remove('show');
       return;
     }
 
@@ -728,7 +482,6 @@
     selectedFileName.textContent = file.name;
     selectedFileState.textContent = uploaded ? 'อัปโหลดสำเร็จแล้ว' : 'เลือกไฟล์แล้ว • รออัปโหลดเมื่อกดส่งใบสมัคร';
     selectedFileIcon.innerHTML = FILE_SVG;
-    selectedFileCheck.classList.toggle('show', !!uploaded);
   }
 
   function createRequestId() {
@@ -948,8 +701,7 @@
     validateResumeFile(file);
 
     const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
-    showLoading('กำลังส่งข้อมูล', 'กำลังเตรียมอัปโหลด Resume...', 30, 'ตรวจสอบไฟล์และสร้างช่องทางอัปโหลด', true);
-    setSectionProgress(4, 'active');
+    showLoading('กำลังส่งข้อมูล', 'กำลังเตรียมอัปโหลด Resume...', 'ตรวจสอบไฟล์และสร้างช่องทางอัปโหลด');
 
     const prepareResult = await postFormApi(
       'prepareApplicationResumeUpload',
@@ -997,11 +749,8 @@
       const ratio = Math.min(1, Math.max(0, uploadedBytes / file.size));
       const percent = 30 + Math.round(ratio * 68);
       updateLoading(
-        percent,
-        'กำลังอัปโหลด Resume... ' + Math.round(ratio * 100) + '%',
-        (index + 1) + '/' + totalChunks + ' ส่วน • ' + formatBytes(uploadedBytes) + ' / ' + formatBytes(file.size),
-        4,
-        [1,2,3]
+        'กำลังอัปโหลด Resume...',
+        'อัปโหลดไปแล้ว ' + (index + 1) + '/' + totalChunks + ' ส่วน'
       );
 
       setStatus(submitStatus, 'กำลังอัปโหลด Resume... ' + Math.round(ratio * 100) + '%', 'info');
@@ -1011,11 +760,11 @@
       }
 
       if (result.status === 'COMPLETE') {
-        updateLoading(100, 'อัปโหลด Resume สำเร็จ', 'ไฟล์ถูกแนบกับใบสมัครเรียบร้อยแล้ว', 4, [1,2,3,4]);
-        setSectionProgress(4, 'complete');
+        updateLoading('อัปโหลด Resume สำเร็จ', 'ไฟล์ถูกแนบกับใบสมัครเรียบร้อยแล้ว');
+
         resumeUploaded = true;
         showSelectedFile(file, true);
-        updateFieldChecks();
+
         return result;
       }
     }
@@ -1023,13 +772,6 @@
     throw new Error('การอัปโหลด Resume ไม่จบสมบูรณ์');
   }
 
-  function formatBytes(bytes) {
-    const value = Number(bytes) || 0;
-    if (value < 1024) return value + ' B';
-    if (value < 1024 * 1024) return (value / 1024).toFixed(1) + ' KB';
-    if (value < 1024 * 1024 * 1024) return (value / (1024 * 1024)).toFixed(1) + ' MB';
-    return (value / (1024 * 1024 * 1024)).toFixed(1) + ' GB';
-  }
 
   function showSuccessPopup(applicationId, resumeId) {
     successApplicationId.textContent = applicationId || '-';
@@ -1080,13 +822,12 @@
       resumeUploaded = false;
       showSelectedFile(file, false);
       setStatus(submitStatus, 'เลือก Resume แล้ว: ' + file.name, 'info');
-      setSectionProgress(4, 'active');
-      updateFieldChecks();
+
     } catch (error) {
       resumeFile.value = '';
       resumeUploaded = false;
       showSelectedFile(null, false);
-      setSectionProgress(4, 'idle');
+
       setStatus(submitStatus, error.message, 'error');
     }
   });
@@ -1110,14 +851,12 @@
       return;
     }
 
-    updateFieldChecks();
     submitting = true;
     submitButton.disabled = true;
     submitButton.textContent = 'กำลังส่ง...';
     setStatus(submitStatus, '', 'info');
-    setSectionProgress(1, 'active');
-    showLoading('กำลังส่งข้อมูล', 'กำลังตรวจสอบข้อมูลผู้สมัคร...', 5, 'กรุณาอย่าปิดหน้านี้ระหว่างส่งข้อมูล', true);
-    setOverview(5, 1, []);
+
+    showLoading('กำลังส่งข้อมูล', 'กำลังตรวจสอบข้อมูลผู้สมัคร...', 'กรุณาอย่าปิดหน้านี้ระหว่างส่งข้อมูล');
 
     try {
       let idToken;
@@ -1134,10 +873,9 @@
 
       const applicationPayload = getApplicationPayload();
 
-      setSectionProgress(1, 'active');
-      setSectionProgress(2, 'active');
-      setSectionProgress(3, 'active');
-      updateLoading(12, 'กำลังบันทึกข้อมูลใบสมัคร...', 'ส่งข้อมูลผู้สมัคร งานที่ต้องการ และที่อยู่', 1, []);
+
+
+      updateLoading('กำลังบันทึกข้อมูลใบสมัคร...', 'ส่งข้อมูลผู้สมัคร งานที่ต้องการ และที่อยู่');
       setStatus(submitStatus, 'กำลังบันทึกข้อมูลใบสมัคร...', 'info');
 
       const applicationResult = await postFormApi(
@@ -1155,30 +893,27 @@
       let resumeId = '';
 
       // ใบสมัครถูกบันทึกแล้ว → ติ๊กถูกหัวข้อ 01–03 ทันที
-      setSectionProgress(1, 'complete');
-      setSectionProgress(2, 'complete');
-      setSectionProgress(3, 'complete');
-      updateLoading(file ? 30 : 100, file ? 'บันทึกข้อมูลสมัครงานสำเร็จ' : 'ส่งข้อมูลทั้งหมดสำเร็จ', file ? 'กำลังเตรียมแนบ Resume...' : 'ข้อมูลผู้สมัครถูกบันทึกเรียบร้อยแล้ว', file ? 4 : null, [1,2,3]);
-      setOverview(file ? 75 : 100, file ? 4 : null, file ? [1,2,3] : [1,2,3,4]);
+
+
+
+      updateLoading(file ? 'บันทึกข้อมูลสมัครงานสำเร็จ' : 'ส่งข้อมูลทั้งหมดสำเร็จ', file ? 'กำลังเตรียมแนบ Resume...' : 'ข้อมูลผู้สมัครถูกบันทึกเรียบร้อยแล้ว');
 
       if (file) {
         resumeId = await uploadResume(applicationId, file, idToken);
       } else {
-        setSectionProgress(4, 'complete');
-        updateLoading(100, 'ส่งข้อมูลทั้งหมดสำเร็จ', 'ไม่มีไฟล์ Resume ที่ต้องอัปโหลด', 4, [1,2,3,4]);
+
+        updateLoading('ส่งข้อมูลทั้งหมดสำเร็จ', 'ไม่มีไฟล์ Resume ที่ต้องอัปโหลด');
       }
 
       setStatus(submitStatus, 'ส่งข้อมูลเรียบร้อยแล้ว', 'success');
       showSuccessPopup(applicationId, resumeId);
       form.reset();
       showSelectedFile(null, false);
-      resetSectionProgress();
-      updateFieldChecks();
 
     } catch (error) {
       console.error(error);
       hideLoading();
-      resetSectionProgress();
+
       setStatus(submitStatus, error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
     } finally {
       submitting = false;
@@ -1222,14 +957,6 @@
       setStatus(submitStatus, 'ไม่สามารถเชื่อมต่อ LINE ได้ กรุณาเปิด LIFF ใหม่', 'error');
     }
   }
-
-  Array.from(form.querySelectorAll('input, select')).forEach(function(input){
-    input.addEventListener('input', updateFieldChecks);
-    input.addEventListener('change', updateFieldChecks);
-    input.addEventListener('blur', updateFieldChecks);
-  });
-  updateFieldChecks();
-  setOverview(0, 1, []);
 
   initLIFF();
 </script>
