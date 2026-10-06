@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#f6f8fc">
-  <title>@attwork | สมัครงานและตรวจสอบสถานะ</title>
+  <title>@attwork | สมัครงาน</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
@@ -75,11 +75,6 @@
     #lineDisplayName{font-size:14px;font-weight:800}
     .connection{margin-top:3px;color:var(--success);font-size:12px;font-weight:600}
 
-    /* Navigation */
-    .nav-card{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;padding:7px;border:1px solid #e5eaf1;border-radius:18px;background:rgba(255,255,255,.9);box-shadow:var(--shadow)}
-    .nav-button{min-height:45px;border:0;border-radius:12px;background:transparent;color:#475467;font-size:13px;font-weight:850;cursor:pointer}
-    .nav-button.active{background:#eef4ff;color:var(--accent)}
-
     /* Generic card */
     .panel-card{margin-top:14px;padding:20px 22px;border:1px solid rgba(229,231,235,.96);border-radius:26px;background:var(--surface);box-shadow:var(--shadow)}
     .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:15px}
@@ -129,27 +124,6 @@
     .status.success{border:1px solid #bbf7d0;background:var(--success-soft);color:#15803d}
     .status.error{border:1px solid #fecaca;background:var(--danger-soft);color:#b91c1c}
 
-    /* Status section */
-    .status-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .refresh-button{min-height:39px;padding:0 12px;border:1px solid #dbe3ed;border-radius:10px;background:#fff;color:#344054;font-size:12px;font-weight:850;cursor:pointer}
-    .refresh-button:disabled{opacity:.55;cursor:wait}
-    .status-list{display:grid;gap:12px}
-    .status-empty{padding:22px 16px;border:1px dashed #d7dee8;border-radius:16px;background:#fafbfd;text-align:center;color:var(--muted);font-size:13px;line-height:1.6}
-    .status-card{padding:16px;border:1px solid #e8edf3;border-radius:17px;background:linear-gradient(180deg,#fff,#fbfcfe)}
-    .status-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .status-id{font-size:11px;color:#98a2b3}
-    .status-position{margin-top:4px;font-size:15px;font-weight:900}
-    .status-date{margin-top:5px;color:#667085;font-size:11.5px}
-    .status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:0 10px;border-radius:999px;font-size:11px;font-weight:900;white-space:nowrap;border:1px solid #dbe3ed;background:#f8fafc;color:#475467}
-    .status-pill.review{border-color:#bfdbfe;background:#eff6ff;color:#1d4ed8}
-    .status-pill.done{border-color:#bbf7d0;background:#ecfdf3;color:#15803d}
-    .status-pill.problem{border-color:#fecaca;background:#fef2f2;color:#b91c1c}
-    .status-pill.uploading{border-color:#fed7aa;background:#fff7ed;color:#c2410c}
-    .status-details{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
-    .status-detail{padding:11px 12px;border-radius:12px;background:#f8fafc}
-    .status-detail-label{font-size:10.5px;color:#98a2b3}
-    .status-detail-value{margin-top:3px;font-size:12.5px;font-weight:800;color:#344054;word-break:break-word}
-
     /* Success popup */
     .success-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:rgba(15,23,42,.45);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
     .success-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
@@ -194,9 +168,9 @@
         <div>
           <div class="brand-kicker">Recruitment</div>
           <div class="brand">@attwork</div>
-          <div class="hero-copy">กรอกข้อมูลสมัครงานและแนบ Resume ของคุณ หรือกลับมาตรวจสอบสถานะใบสมัครและ Resume ได้จากหน้านี้</div>
+          <div class="hero-copy">กรอกข้อมูลสมัครงานและแนบ Resume ของคุณ เพื่อให้เจ้าหน้าที่ติดต่อกลับได้สะดวก</div>
         </div>
-        <div class="online-badge"><span class="online-dot"></span>ระบบสมัครงานออนไลน์</div>
+        <div class="online-badge"><span class="online-dot"></span>สมัครงานออนไลน์</div>
       </div>
 
       <div id="lineUser" class="line-user hidden">
@@ -208,27 +182,9 @@
       </div>
     </header>
 
-    <nav class="nav-card" aria-label="เมนูระบบ">
-      <button id="navApply" class="nav-button active" type="button">📝 สมัครงาน / แนบ Resume</button>
-      <button id="navStatus" class="nav-button" type="button">🔎 ตรวจสอบสถานะ</button>
-    </nav>
 
-    <section id="statusPanel" class="panel-card hidden">
-      <div class="panel-head">
-        <div>
-          <h2 class="panel-title">ตรวจสอบสถานะของคุณ</h2>
-          <div class="panel-desc">แสดงเฉพาะใบสมัครที่ผูกกับบัญชี LINE ที่กำลังใช้งาน</div>
-        </div>
-        <div class="status-toolbar">
-          <button id="refreshStatusButton" class="refresh-button" type="button" disabled>รีเฟรช</button>
-        </div>
-      </div>
 
-      <div id="statusPanelMessage" class="status" role="status" aria-live="polite"></div>
-      <div id="statusList" class="status-list">
-        <div class="status-empty">กำลังโหลดสถานะ...</div>
-      </div>
-    </section>
+
 
     <form id="applicationForm" class="form-card">
       <section class="section">
@@ -398,7 +354,6 @@
 
   let liffReady = false;
   let submitting = false;
-  let statusLoading = false;
 
   const form = document.getElementById('applicationForm');
   const submitButton = document.getElementById('submitButton');
@@ -414,12 +369,6 @@
   const successCloseButton = document.getElementById('successCloseButton');
   const copyApplicationId = document.getElementById('copyApplicationId');
   const copyResumeId = document.getElementById('copyResumeId');
-  const navApply = document.getElementById('navApply');
-  const navStatus = document.getElementById('navStatus');
-  const statusPanel = document.getElementById('statusPanel');
-  const refreshStatusButton = document.getElementById('refreshStatusButton');
-  const statusPanelMessage = document.getElementById('statusPanelMessage');
-  const statusList = document.getElementById('statusList');
 
   function setStatus(element, text, type) {
     element.textContent = text || '';
@@ -696,118 +645,6 @@
     return uploadId;
   }
 
-  function statusClass(value) {
-    const text = String(value || '').trim();
-    if (/เสร็จ|อนุมัติ|สำเร็จ|ผ่าน/.test(text)) return 'done';
-    if (/ไม่สำเร็จ|ผิดพลาด|ยกเลิก|ปฏิเสธ/.test(text)) return 'problem';
-    if (/อัปโหลด|กำลัง/.test(text)) return 'uploading';
-    return 'review';
-  }
-
-  function escapeHtml(value) {
-    return String(value == null ? '' : value)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  function renderApplications(applications) {
-    if (!applications || !applications.length) {
-      statusList.innerHTML = '<div class="status-empty">ยังไม่พบใบสมัครที่ผูกกับบัญชี LINE นี้</div>';
-      return;
-    }
-
-    const sorted = applications.slice().reverse();
-
-    statusList.innerHTML = sorted.map(function(app) {
-      const appStatus = String(app.status || 'รอตรวจสอบ');
-      const resumeStatus = String(app.resumeStatus || 'ไม่มีไฟล์แนบ');
-      const resumeName = app.resumeName ? escapeHtml(app.resumeName) : 'ไม่มีไฟล์แนบ';
-      const appId = escapeHtml(app.applicationId || '-');
-      const position = escapeHtml(app.position || '-');
-      const appliedDate = escapeHtml(app.appliedDate || '-');
-      const updatedAt = escapeHtml(app.updatedAt || '-');
-
-      return '' +
-        '<article class="status-card">' +
-          '<div class="status-card-top">' +
-            '<div>' +
-              '<div class="status-id">Application ID</div>' +
-              '<div class="status-position">' + appId + '</div>' +
-              '<div class="status-date">ตำแหน่ง: ' + position + '<br>สมัครเมื่อ: ' + appliedDate + '</div>' +
-            '</div>' +
-            '<span class="status-pill ' + statusClass(appStatus) + '">' + escapeHtml(appStatus) + '</span>' +
-          '</div>' +
-          '<div class="status-details">' +
-            '<div class="status-detail">' +
-              '<div class="status-detail-label">สถานะ Resume</div>' +
-              '<div class="status-detail-value">' + escapeHtml(resumeStatus) + '</div>' +
-            '</div>' +
-            '<div class="status-detail">' +
-              '<div class="status-detail-label">ไฟล์ Resume</div>' +
-              '<div class="status-detail-value">' + resumeName + '</div>' +
-            '</div>' +
-            '<div class="status-detail">' +
-              '<div class="status-detail-label">อัปเดตล่าสุด</div>' +
-              '<div class="status-detail-value">' + updatedAt + '</div>' +
-            '</div>' +
-          '</div>' +
-        '</article>';
-    }).join('');
-  }
-
-  async function loadStatus(showLoading) {
-    if (!liffReady || statusLoading) return;
-    statusLoading = true;
-    refreshStatusButton.disabled = true;
-
-    if (showLoading) {
-      setStatus(statusPanelMessage, 'กำลังตรวจสอบสถานะ...', 'info');
-    }
-
-    try {
-      const idToken = await getCurrentIdToken();
-      const result = await postFormApi('getMyApplications', {}, idToken, 120000);
-
-      if (!result.ok) {
-        throw new Error(result.message || 'ตรวจสอบสถานะไม่สำเร็จ');
-      }
-
-      renderApplications(result.applications || []);
-      setStatus(statusPanelMessage, 'อัปเดตสถานะล่าสุดเรียบร้อยแล้ว', 'success');
-    } catch (error) {
-      if (error.message === 'ID_TOKEN_EXPIRED_CLIENT') {
-        handleTokenExpired();
-        return;
-      }
-
-      console.error(error);
-      setStatus(statusPanelMessage, error.message || 'ตรวจสอบสถานะไม่สำเร็จ', 'error');
-    } finally {
-      statusLoading = false;
-      refreshStatusButton.disabled = !liffReady;
-    }
-  }
-
-  function showApplyPanel() {
-    navApply.classList.add('active');
-    navStatus.classList.remove('active');
-    statusPanel.classList.add('hidden');
-    form.classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function showStatusPanel() {
-    navApply.classList.remove('active');
-    navStatus.classList.add('active');
-    form.classList.add('hidden');
-    statusPanel.classList.remove('hidden');
-    loadStatus(true);
-    statusPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
   function showSuccessPopup(applicationId, resumeId) {
     successApplicationId.textContent = applicationId || '-';
     successResumeId.textContent = resumeId || 'ไม่มี Resume';
@@ -850,9 +687,6 @@
     copyText(copyResumeId.dataset.value || '', copyResumeId);
   });
 
-  navApply.addEventListener('click', showApplyPanel);
-  navStatus.addEventListener('click', showStatusPanel);
-  refreshStatusButton.addEventListener('click', function() { loadStatus(true); });
 
   form.addEventListener('submit', async function(event) {
     event.preventDefault();
@@ -917,10 +751,6 @@
       showSuccessPopup(applicationId, resumeId);
       form.reset();
 
-      // อัปเดตสถานะจากข้อมูลล่าสุดทันที
-      setTimeout(function() {
-        loadStatus(false);
-      }, 300);
     } catch (error) {
       console.error(error);
       setStatus(submitStatus, error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
@@ -956,11 +786,7 @@
       connectionStatus.textContent = 'เชื่อมต่อ LINE สำเร็จ';
       submitButton.disabled = false;
       submitButton.textContent = 'ส่งใบสมัคร';
-      refreshStatusButton.disabled = false;
       liffReady = true;
-
-      // ตรวจสอบสถานะเบื้องต้นไว้ล่วงหน้า
-      loadStatus(false);
     } catch (error) {
       console.error(error);
       connectionStatus.textContent = 'เชื่อมต่อ LINE ไม่สำเร็จ';
