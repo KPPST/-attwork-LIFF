@@ -189,7 +189,54 @@
   .inline-check.show{display:block}
   .inline-check svg{width:19px;height:19px}
 
-    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-overlay{
+    position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:18px;
+    background:rgba(15,23,42,.42);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease;
+  }
+  .loading-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
+  .loading-modal{
+    width:min(390px,100%);padding:28px 20px 20px;border:1px solid rgba(255,255,255,.76);
+    border-radius:26px;background:rgba(255,255,255,.98);box-shadow:0 28px 90px rgba(15,23,42,.24);
+    text-align:center;transform:translateY(12px) scale(.98);transition:transform .22s cubic-bezier(.2,.8,.2,1);
+  }
+  .loading-overlay.show .loading-modal{transform:none}
+  .loading-visual{width:116px;height:116px;margin:0 auto 18px;position:relative;display:grid;place-items:center}
+  .loading-spinner{
+    width:52px;height:52px;border:5px solid #e7edf5;border-top-color:var(--blue);
+    border-radius:50%;animation:spin .85s linear infinite;
+  }
+  .upload-progress{position:absolute;inset:0;display:grid;place-items:center}
+  .progress-ring{width:116px;height:116px;transform:rotate(-90deg);overflow:visible}
+  .progress-ring-track{fill:none;stroke:#e8eef6;stroke-width:8}
+  .progress-ring-value{fill:none;stroke:var(--blue);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .24s ease}
+  .progress-percent{position:absolute;inset:0;display:grid;place-items:center;line-height:1}
+  .progress-percent strong{display:block;font-size:25px;font-weight:950;letter-spacing:-.04em}
+  .progress-percent span{display:block;margin-top:5px;color:#8b9aab;font-size:10px;font-weight:800;letter-spacing:.03em}
+  .loading-title{margin:0;color:#0f172a;font-size:18px;font-weight:950;letter-spacing:-.02em}
+  .loading-stage{margin-top:7px;color:#475569;font-size:12.5px;line-height:1.55;font-weight:750}
+  .loading-detail{margin-top:9px;color:#94a3b8;font-size:10.5px;line-height:1.5}
+  .loading-meta{display:none;align-items:center;justify-content:center;gap:8px;margin-top:12px;color:#64748b;font-size:10.5px;font-weight:800}
+  .loading-meta.show{display:flex}
+  .loading-meta-pill{padding:6px 9px;border-radius:999px;background:#f4f7fb;border:1px solid #e6edf5}
+  .section{scroll-margin-top:14px}
+  .field-label{min-height:18px}
+  .upload-box{position:relative}
+  .upload-box::before{
+    content:"";position:absolute;top:10px;right:12px;width:7px;height:7px;border-radius:50%;
+    background:#cbd5e1;box-shadow:0 0 0 5px #f8fafc;pointer-events:none;
+  }
+  .upload-box:focus-within{border-color:#8db2e2;background:#fcfdff;box-shadow:0 0 0 4px rgba(37,99,235,.06)}
+  .file-selected{box-shadow:0 6px 18px rgba(15,23,42,.03)}
+  .file-selected.done{border-color:#cdd8e6;background:#f8fafc}
+  .file-selected.done .file-selected-icon{background:#eef2f7;color:#64748b}
+  .file-selected.done .file-selected-state{color:#64748b;font-weight:750}
+  .form-card{overflow:hidden}
+  @media(max-width:620px){
+    .loading-modal{padding:24px 16px 18px;border-radius:23px}
+    .loading-visual,.progress-ring{width:108px;height:108px}
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
 
   .hidden{display:none !important}
 
@@ -374,12 +421,30 @@
 
   <div id="loadingOverlay" class="loading-overlay" role="dialog" aria-modal="true" aria-live="polite" aria-label="กำลังส่งข้อมูล">
     <div class="loading-modal">
-      <div class="loading-spinner" aria-hidden="true"></div>
+      <div class="loading-visual" aria-hidden="true">
+        <div id="loadingSpinner" class="loading-spinner"></div>
+        <div id="uploadProgress" class="upload-progress" hidden>
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="progress-ring-track" cx="60" cy="60" r="52"></circle>
+            <circle id="progressRingValue" class="progress-ring-value" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="progress-percent">
+            <div>
+              <strong id="uploadPercent">0%</strong>
+              <span>อัปโหลด</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="loading-copy">
         <h2 id="loadingTitle" class="loading-title">กำลังส่งข้อมูล</h2>
         <div id="loadingStage" class="loading-stage">กำลังเตรียมระบบ...</div>
       </div>
       <div id="loadingDetail" class="loading-detail">กรุณาอย่าปิดหน้านี้ระหว่างส่งข้อมูล</div>
+      <div id="loadingMeta" class="loading-meta" aria-live="polite">
+        <span id="loadingChunk" class="loading-meta-pill">0/0 ส่วน</span>
+        <span id="loadingSize" class="loading-meta-pill">0 MB / 0 MB</span>
+      </div>
     </div>
   </div>
 
@@ -439,6 +504,13 @@
   const loadingTitle = document.getElementById('loadingTitle');
   const loadingStage = document.getElementById('loadingStage');
   const loadingDetail = document.getElementById('loadingDetail');
+  const loadingSpinner = document.getElementById('loadingSpinner');
+  const uploadProgress = document.getElementById('uploadProgress');
+  const progressRingValue = document.getElementById('progressRingValue');
+  const uploadPercent = document.getElementById('uploadPercent');
+  const loadingMeta = document.getElementById('loadingMeta');
+  const loadingChunk = document.getElementById('loadingChunk');
+  const loadingSize = document.getElementById('loadingSize');
   const selectedFile = document.getElementById('selectedFile');
   const selectedFileName = document.getElementById('selectedFileName');
   const selectedFileState = document.getElementById('selectedFileState');
@@ -450,9 +522,49 @@
 
   const FILE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
 
+  const PROGRESS_RADIUS = 52;
+  const PROGRESS_CIRCUMFERENCE = 2 * Math.PI * PROGRESS_RADIUS;
+  progressRingValue.style.strokeDasharray = PROGRESS_CIRCUMFERENCE.toFixed(2);
+  progressRingValue.style.strokeDashoffset = PROGRESS_CIRCUMFERENCE.toFixed(2);
+
+  function bytesToMB(bytes) {
+    return (Number(bytes || 0) / (1024 * 1024)).toFixed(1);
+  }
+
+  function resetUploadProgress() {
+    uploadPercent.textContent = '0%';
+    progressRingValue.style.strokeDashoffset = PROGRESS_CIRCUMFERENCE.toFixed(2);
+    loadingChunk.textContent = '0/0 ส่วน';
+    loadingSize.textContent = '0 MB / 0 MB';
+    loadingMeta.classList.remove('show');
+  }
+
+  function setUploadProgress(percent, uploadedBytes, totalBytes, chunkIndex, totalChunks) {
+    const safePercent = Math.max(0, Math.min(100, Math.round(Number(percent) || 0)));
+    const offset = PROGRESS_CIRCUMFERENCE * (1 - safePercent / 100);
+    uploadPercent.textContent = safePercent + '%';
+    progressRingValue.style.strokeDashoffset = offset.toFixed(2);
+    loadingChunk.textContent = String(chunkIndex || 0) + '/' + String(totalChunks || 0) + ' ส่วน';
+    loadingSize.textContent = bytesToMB(uploadedBytes) + ' MB / ' + bytesToMB(totalBytes) + ' MB';
+    loadingMeta.classList.add('show');
+  }
+
+  function showUploadProgressMode() {
+    loadingSpinner.hidden = true;
+    uploadProgress.hidden = false;
+    resetUploadProgress();
+  }
+
+  function showSpinnerMode() {
+    uploadProgress.hidden = true;
+    loadingSpinner.hidden = false;
+    resetUploadProgress();
+  }
+
 
 
   function showLoading(title, stage, detail) {
+    showSpinnerMode();
     loadingTitle.textContent = title || 'กำลังส่งข้อมูล';
     loadingStage.textContent = stage || '';
     loadingDetail.textContent = detail || '';
@@ -478,7 +590,6 @@
     }
 
     selectedFile.classList.add('show');
-    selectedFile.classList.toggle('done', !!uploaded);
     selectedFileName.textContent = file.name;
     selectedFileState.textContent = uploaded ? 'อัปโหลดสำเร็จแล้ว' : 'เลือกไฟล์แล้ว • รออัปโหลดเมื่อกดส่งใบสมัคร';
     selectedFileIcon.innerHTML = FILE_SVG;
@@ -747,19 +858,23 @@
 
       const uploadedBytes = Number(result.uploadedBytes || endByte);
       const ratio = Math.min(1, Math.max(0, uploadedBytes / file.size));
-      const percent = 30 + Math.round(ratio * 68);
+      const percent = Math.round(ratio * 100);
+
+      if (index === 0) showUploadProgressMode();
+      setUploadProgress(percent, uploadedBytes, file.size, Math.min(index + 1, totalChunks), totalChunks);
       updateLoading(
         'กำลังอัปโหลด Resume...',
-        'อัปโหลดไปแล้ว ' + (index + 1) + '/' + totalChunks + ' ส่วน'
+        'อัปโหลดไปแล้ว ' + percent + '%'
       );
 
-      setStatus(submitStatus, 'กำลังอัปโหลด Resume... ' + Math.round(ratio * 100) + '%', 'info');
+      setStatus(submitStatus, 'กำลังอัปโหลด Resume...', 'info');
 
       if (!result.ok) {
         throw new Error(result.message || 'อัปโหลด Resume ไม่สำเร็จ');
       }
 
       if (result.status === 'COMPLETE') {
+        setUploadProgress(100, file.size, file.size, totalChunks, totalChunks);
         updateLoading('อัปโหลด Resume สำเร็จ', 'ไฟล์ถูกแนบกับใบสมัครเรียบร้อยแล้ว');
 
         resumeUploaded = true;
@@ -891,10 +1006,6 @@
 
       const applicationId = applicationResult.applicationId || (applicationResult.data && applicationResult.data.applicationId) || '';
       let resumeId = '';
-
-      // ใบสมัครถูกบันทึกแล้ว → ติ๊กถูกหัวข้อ 01–03 ทันที
-
-
 
       updateLoading(file ? 'บันทึกข้อมูลสมัครงานสำเร็จ' : 'ส่งข้อมูลทั้งหมดสำเร็จ', file ? 'กำลังเตรียมแนบ Resume...' : 'ข้อมูลผู้สมัครถูกบันทึกเรียบร้อยแล้ว');
 
