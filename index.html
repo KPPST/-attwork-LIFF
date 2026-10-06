@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#f6f8fc">
-  <title>@attwork | สมัครงานเท่านั้น</title>
+  <title>@attwork | สมัครงานและตรวจสอบสถานะ</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
@@ -238,6 +238,173 @@
   }
   @keyframes spin{to{transform:rotate(360deg)}}
 
+
+  /* =========================
+     APPLICATION STATUS
+  ========================= */
+  .status-panel{
+    margin-top:15px;
+    padding:9px;
+    border:1px solid rgba(226,232,240,.98);
+    border-radius:30px;
+    background:rgba(255,255,255,.88);
+    box-shadow:var(--shadow);
+  }
+  .status-panel-inner{
+    padding:22px 20px 20px;
+  }
+  .status-panel-head{
+    display:flex;
+    align-items:flex-start;
+    gap:13px;
+    margin-bottom:16px;
+  }
+  .status-panel-icon{
+    width:40px;
+    height:40px;
+    display:grid;
+    place-items:center;
+    flex:0 0 auto;
+    border-radius:13px;
+    background:linear-gradient(145deg,#eff6ff,#dbeafe);
+    color:var(--blue-2);
+    font-size:19px;
+    font-weight:950;
+    box-shadow:inset 0 0 0 1px rgba(37,99,235,.10);
+  }
+  .status-panel-title{
+    margin:0;
+    font-size:18px;
+    line-height:1.3;
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+  .status-panel-desc{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.6;
+  }
+  .status-check-button{
+    width:100%;
+    min-height:52px;
+    border:1px solid #cbd5e1;
+    border-radius:14px;
+    background:#fff;
+    color:#0f172a;
+    font-size:14px;
+    font-weight:900;
+    cursor:pointer;
+    transition:transform .16s ease,box-shadow .16s ease,opacity .16s ease,border-color .16s ease;
+  }
+  .status-check-button:not(:disabled):hover{
+    transform:translateY(-1px);
+    border-color:#93b4de;
+    box-shadow:0 12px 24px rgba(37,99,235,.08);
+  }
+  .status-check-button:disabled{
+    opacity:.52;
+    cursor:wait;
+  }
+  .status-result{
+    display:none;
+    margin-top:14px;
+  }
+  .status-result.show{display:block}
+  .status-result-message{
+    padding:12px 14px;
+    border-radius:13px;
+    font-size:12px;
+    line-height:1.55;
+  }
+  .status-result-message.info{
+    border:1px solid #bfdbfe;
+    background:var(--blue-soft);
+    color:#1d4ed8;
+  }
+  .status-result-message.success{
+    border:1px solid #bbf7d0;
+    background:var(--green-soft);
+    color:#15803d;
+  }
+  .status-result-message.error{
+    border:1px solid #fecaca;
+    background:var(--red-soft);
+    color:#b91c1c;
+  }
+  .application-status-list{
+    display:grid;
+    gap:10px;
+  }
+  .application-status-card{
+    padding:14px;
+    border:1px solid #e2e8f0;
+    border-radius:16px;
+    background:linear-gradient(180deg,#fbfdff,#f7faff);
+  }
+  .application-status-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .application-status-position{
+    margin:0;
+    color:#0f172a;
+    font-size:14px;
+    font-weight:900;
+    line-height:1.45;
+  }
+  .application-status-id{
+    margin-top:4px;
+    color:#94a3b8;
+    font-size:10.5px;
+    line-height:1.4;
+    word-break:break-all;
+  }
+  .application-status-badge{
+    flex:0 0 auto;
+    padding:6px 9px;
+    border-radius:999px;
+    background:#eff6ff;
+    border:1px solid #dbeafe;
+    color:#1d4ed8;
+    font-size:10.5px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+  .application-status-meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:12px;
+  }
+  .application-status-meta-item{
+    padding:9px 10px;
+    border-radius:12px;
+    background:#fff;
+    border:1px solid #edf2f7;
+  }
+  .application-status-meta-label{
+    display:block;
+    color:#94a3b8;
+    font-size:9.5px;
+    font-weight:800;
+  }
+  .application-status-meta-value{
+    display:block;
+    margin-top:3px;
+    color:#334155;
+    font-size:11.5px;
+    font-weight:850;
+    word-break:break-word;
+  }
+  @media(max-width:620px){
+    .status-panel{padding:7px;border-radius:24px}
+    .status-panel-inner{padding:19px 14px 18px}
+    .application-status-meta{grid-template-columns:1fr}
+  }
+
   .hidden{display:none !important}
 
   @media(max-width:620px){
@@ -266,7 +433,7 @@
         <div>
           <div class="brand-kicker">Recruitment</div>
           <div class="brand">@attwork</div>
-          <div class="hero-copy">กรอกข้อมูลสมัครงานและแนบ Resume เพื่อให้เจ้าหน้าที่ @attwork ตรวจสอบและติดต่อกลับได้สะดวก</div>
+          <div class="hero-copy">กรอกข้อมูลสมัครงานและแนบ Resume พร้อมตรวจสอบสถานะใบสมัครของคุณได้ในหน้าเดียว</div>
         </div>
         <div class="online-badge"><span class="online-dot"></span>สมัครงานออนไลน์</div>
       </div>
@@ -283,6 +450,25 @@
 
 
 
+
+
+    <section class="status-panel" aria-labelledby="statusPanelTitle">
+      <div class="status-panel-inner">
+        <div class="status-panel-head">
+          <div class="status-panel-icon" aria-hidden="true">✓</div>
+          <div>
+            <h2 id="statusPanelTitle" class="status-panel-title">เช็กสถานะการสมัคร</h2>
+            <div class="status-panel-desc">ดูเฉพาะใบสมัครที่เชื่อมกับบัญชี LINE ที่กำลังใช้งานอยู่</div>
+          </div>
+        </div>
+
+        <button id="refreshStatusButton" class="status-check-button" type="button" disabled>
+          กำลังเชื่อมต่อ LINE...
+        </button>
+
+        <div id="statusResult" class="status-result" aria-live="polite"></div>
+      </div>
+    </section>
 
     <form id="applicationForm" class="form-card">
       <section class="section">
@@ -1036,6 +1222,137 @@
     }
   });
 
+
+  const refreshStatusButton = document.getElementById('refreshStatusButton');
+  const statusResult = document.getElementById('statusResult');
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function showStatusResultMessage(text, type) {
+    statusResult.innerHTML =
+      '<div class="status-result-message ' + escapeHtml(type || 'info') + '">' +
+      escapeHtml(text || '') +
+      '</div>';
+    statusResult.classList.add('show');
+  }
+
+  function renderApplications(applications) {
+    if (!Array.isArray(applications) || applications.length === 0) {
+      showStatusResultMessage(
+        'ยังไม่พบใบสมัครที่ผูกกับบัญชี LINE นี้',
+        'info'
+      );
+      return;
+    }
+
+    const cards = applications.map(function(app) {
+      const applicationId = app.applicationId || '-';
+      const position = app.position || 'ไม่ระบุตำแหน่ง';
+      const status = app.status || 'ไม่ระบุสถานะ';
+      const appliedDate = app.appliedDate || '-';
+      const resumeStatus = app.resumeStatus || '-';
+
+      return (
+        '<article class="application-status-card">' +
+          '<div class="application-status-top">' +
+            '<div>' +
+              '<h3 class="application-status-position">' +
+                escapeHtml(position) +
+              '</h3>' +
+              '<div class="application-status-id">' +
+                'ใบสมัคร: ' + escapeHtml(applicationId) +
+              '</div>' +
+            '</div>' +
+            '<div class="application-status-badge">' +
+              escapeHtml(status) +
+            '</div>' +
+          '</div>' +
+
+          '<div class="application-status-meta">' +
+            '<div class="application-status-meta-item">' +
+              '<span class="application-status-meta-label">วันที่สมัคร</span>' +
+              '<span class="application-status-meta-value">' +
+                escapeHtml(appliedDate) +
+              '</span>' +
+            '</div>' +
+            '<div class="application-status-meta-item">' +
+              '<span class="application-status-meta-label">สถานะ Resume</span>' +
+              '<span class="application-status-meta-value">' +
+                escapeHtml(resumeStatus) +
+              '</span>' +
+            '</div>' +
+          '</div>' +
+        '</article>'
+      );
+    }).join('');
+
+    statusResult.innerHTML =
+      '<div class="application-status-list">' +
+        cards +
+      '</div>';
+
+    statusResult.classList.add('show');
+  }
+
+  async function loadStatus() {
+    if (!liffReady || submitting) return;
+
+    refreshStatusButton.disabled = true;
+    refreshStatusButton.textContent = 'กำลังตรวจสอบสถานะ...';
+    statusResult.classList.remove('show');
+    statusResult.innerHTML = '';
+
+    try {
+      let idToken;
+
+      try {
+        idToken = await getCurrentIdToken();
+      } catch (error) {
+        if (error.message === 'ID_TOKEN_EXPIRED_CLIENT') {
+          handleTokenExpired();
+          return;
+        }
+        throw error;
+      }
+
+      const result = await postFormApi(
+        'getMyApplications',
+        {},
+        idToken,
+        120000
+      );
+
+      if (!result || !result.ok) {
+        throw new Error(
+          result && result.message
+            ? result.message
+            : 'ไม่สามารถตรวจสอบสถานะได้'
+        );
+      }
+
+      renderApplications(result.applications || []);
+
+    } catch (error) {
+      console.error(error);
+      showStatusResultMessage(
+        error.message || 'ไม่สามารถตรวจสอบสถานะได้ กรุณาลองใหม่',
+        'error'
+      );
+    } finally {
+      refreshStatusButton.disabled = !liffReady;
+      refreshStatusButton.textContent = '🔎 เช็กสถานะของฉัน';
+    }
+  }
+
+  refreshStatusButton.addEventListener('click', loadStatus);
+
   async function initLIFF() {
     try {
       await liff.init({
@@ -1061,6 +1378,8 @@
       connectionStatus.textContent = 'เชื่อมต่อ LINE สำเร็จ';
       submitButton.disabled = false;
       submitButton.textContent = 'ส่งใบสมัคร';
+      refreshStatusButton.disabled = false;
+      refreshStatusButton.textContent = '🔎 เช็กสถานะของฉัน';
       liffReady = true;
     } catch (error) {
       console.error(error);
