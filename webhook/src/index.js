@@ -231,7 +231,7 @@ async function sendAtworkWelcomeFlex(
               type: "uri",
               label: "ตรวจสอบสถานะการสมัคร",
               uri:
-                "https://liff.line.me/2011817085-Mqy2mWhy"
+                "https://liff.line.me/2011817085-3jHPlME0"  
             }
           }
 
