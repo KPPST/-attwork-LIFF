@@ -2132,46 +2132,27 @@
          RESUME
       ========================= */
 
-     const resumeName =
-  app.resumeName ||
-  '';
+const resumeName = app.resumeName || '';
+const resumeStatus = app.resumeStatus || 'ไม่มีไฟล์แนบ';
+const resumeFileId = app.resumeFileId || '';
 
-const resumeStatus =
-  app.resumeStatus ||
-  'ไม่มีไฟล์แนบ';
-
-const resumeFileId =
-  app.resumeFileId ||
-  '';
-
-
-if (
-  resumeFileId
-) {
-
+if (resumeFileId) {
   const imageUrl =
     'https://drive.google.com/thumbnail?id=' +
     encodeURIComponent(resumeFileId) +
     '&sz=w1200';
-
 
   const driveUrl =
     'https://drive.google.com/file/d/' +
     encodeURIComponent(resumeFileId) +
     '/view';
 
-
   detailResume.innerHTML = `
-
     <div class="resume-card">
 
       ${
         resumeName
-          ? `
-            <div class="resume-name">
-              ${escapeHtml(resumeName)}
-            </div>
-          `
+          ? `<div class="resume-name">${escapeHtml(resumeName)}</div>`
           : ''
       }
 
@@ -2179,17 +2160,15 @@ if (
         ${escapeHtml(resumeStatus)}
       </div>
 
-
       <div
         style="
-          margin-top:12px;
-          overflow:hidden;
-          border:1px solid #e2e8f0;
+          margin-top:14px;
           border-radius:14px;
-          background:#f8fafc;
+          overflow:hidden;
+          background:#fff;
+          border:1px solid #e5e7eb;
         "
       >
-
         <img
           src="${imageUrl}"
           alt="Resume"
@@ -2212,15 +2191,12 @@ if (
             display:none;
             padding:30px 15px;
             text-align:center;
-            color:#64748b;
-            font-size:12px;
+            color:#6b7280;
           "
         >
           ไม่สามารถแสดงตัวอย่าง Resume ได้
         </div>
-
       </div>
-
 
       <a
         href="${driveUrl}"
@@ -2232,19 +2208,13 @@ if (
       </a>
 
     </div>
-
   `;
-
 } else {
-
   detailResume.innerHTML = `
-
     <div class="no-resume">
       ใบสมัครนี้ไม่มี Resume แนบไว้
     </div>
-
   `;
-
 }
 
 
