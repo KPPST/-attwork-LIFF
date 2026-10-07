@@ -1617,6 +1617,56 @@
 
       </div>
 
+        <div class="grid">
+
+
+      <div class="field">
+
+        <label
+          class="required"
+          for="phone"
+        >
+          เบอร์โทรศัพท์
+        </label>
+
+
+        <input
+          id="phone"
+          type="tel"
+          maxlength="10"
+          inputmode="numeric"
+          autocomplete="tel"
+          placeholder="08xxxxxxxx"
+          pattern="0\d{9}"
+          required
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label
+          class="required"
+          for="email"
+        >
+          อีเมล
+        </label>
+
+
+        <input
+          id="email"
+          type="email"
+          maxlength="150"
+          autocomplete="email"
+          placeholder="name@example.com"
+          required
+        >
+
+      </div>
+
+    </div>
+
+
 
       <div class="field">
 
@@ -1632,26 +1682,10 @@
           id="position"
           required
         >
-
-          <option value="">
-            เลือกตำแหน่ง
-          </option>
-
-
-          <option value="ช่าง">
-            ช่าง
-          </option>
-
-
-          <option value="พนักงานโรงงาน">
-            พนักงานโรงงาน
-          </option>
-
-
-          <option value="ออฟฟิศ">
-            ออฟฟิศ
-          </option>
-
+          <option value="">เลือกตำแหน่ง</option>
+          <option value="ช่าง">ช่าง</option>
+          <option value="พนักงานโรงงาน">พนักงานโรงงาน</option>
+          <option value="ออฟฟิศ">ออฟฟิศ</option>
         </select>
 
       </div>
@@ -1849,61 +1883,9 @@
          CONTACT
     ==================================================== -->
 
-    <div class="section-title">
-      ข้อมูลติดต่อ
-    </div>
+   
 
-
-    <div class="grid">
-
-
-      <div class="field">
-
-        <label
-          class="required"
-          for="phone"
-        >
-          เบอร์โทรศัพท์
-        </label>
-
-
-        <input
-          id="phone"
-          type="tel"
-          maxlength="10"
-          inputmode="numeric"
-          autocomplete="tel"
-          placeholder="08xxxxxxxx"
-          pattern="0\d{9}"
-          required
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label
-          class="required"
-          for="email"
-        >
-          อีเมล
-        </label>
-
-
-        <input
-          id="email"
-          type="email"
-          maxlength="150"
-          autocomplete="email"
-          placeholder="name@example.com"
-          required
-        >
-
-      </div>
-
-    </div>
-
+  
 
     <!-- ===================================================
          RESUME
@@ -2318,22 +2300,10 @@
      1. CONFIG
   ========================================================== */
 
-  const LIFF_ID =
-    "2011817085-Mqy2mWhy";
-
-
-  const GAS_WEB_APP_URL =
-    "https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
-
-
-  const MAX_FILE_SIZE =
-    50 * 1024 * 1024;
-
-
-  const CHUNK_SIZE =
-    2 * 1024 * 1024;
-
-
+  const LIFF_ID ="2011817085-Mqy2mWhy";
+  const GAS_WEB_APP_URL ="https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
+  const MAX_FILE_SIZE = 50 * 1024 * 1024;
+  const CHUNK_SIZE = 2 * 1024 * 1024;
   const ALLOWED_EXTENSIONS = [
     "pdf",
     "doc",
@@ -2349,127 +2319,46 @@
   ========================================================== */
 
   let ready = false;
-
   let idToken = "";
-
   let submitting = false;
-
 
   /* =========================================================
      3. ELEMENTS
   ========================================================== */
 
-  const $ =
-    id =>
-      document.getElementById(id);
-
-
-  const applicationForm =
-    $("applicationForm");
-
-
-  const submitButton =
-    $("submitButton");
-
-
-  const submitButtonText =
-    $("submitButtonText");
-
-
-  const lineState =
-    $("lineState");
-
-
-  const formMessage =
-    $("formMessage");
-
-
-  const resumeInput =
-    $("resume");
-
-
-  const resumeDrop =
-    $("resumeDrop");
-
-
-  const resumeSelectButton =
-    $("resumeSelectButton");
-
-
-  const selectedFile =
-    $("selectedFile");
-
-
-  const selectedFileName =
-    $("selectedFileName");
-
-
-  const selectedFileMeta =
-    $("selectedFileMeta");
-
-
-  const selectedFileRemove =
-    $("selectedFileRemove");
-
-
-  const progressCircle =
-    $("progressCircle");
-
-
-  const progressPercent =
-    $("progressPercent");
-
-
-  const loadingOverlay =
-    $("loadingOverlay");
-
-
-  const loadingTitle =
-    $("loadingTitle");
-
-
-  const loadingStage =
-    $("loadingStage");
-
-
-  const loadingDetail =
-    $("loadingDetail");
-
-
-  const loadingChunk =
-    $("loadingChunk");
-
-
-  const loadingSize =
-    $("loadingSize");
-
-
-  const successOverlay =
-    $("successOverlay");
-
-
-  const successApplicationId =
-    $("successApplicationId");
-
-
-  const copyApplicationId =
-    $("copyApplicationId");
-
-
-  const successCloseButton =
-    $("successCloseButton");
+  const $ = id => document.getElementById(id);
+  const applicationForm = $("applicationForm");
+  const submitButton = $("submitButton");
+  const submitButtonText = $("submitButtonText");
+  const lineState = $("lineState");
+  const formMessage = $("formMessage");
+  const resumeInput = $("resume");
+  const resumeDrop = $("resumeDrop");
+  const resumeSelectButton = $("resumeSelectButton")
+  const selectedFile = $("selectedFile");
+  const selectedFileName = $("selectedFileName");
+  const selectedFileMeta = $("selectedFileMeta");
+  const selectedFileRemove = $("selectedFileRemove");
+  const progressCircle = $("progressCircle");
+  const progressPercent = $("progressPercent");
+  const loadingOverlay = $("loadingOverlay");
+  const loadingTitle = $("loadingTitle");
+  const loadingStage = $("loadingStage");
+  const loadingDetail = $("loadingDetail");
+  const loadingChunk = $("loadingChunk");
+  const loadingSize = $("loadingSize");
+  const successOverlay = $("successOverlay");
+  const successApplicationId = $("successApplicationId");
+  const copyApplicationId = $("copyApplicationId");
+  const successCloseButton = $("successCloseButton");
 
 
   /* =========================================================
      4. PROGRESS
   ========================================================== */
 
-  const PROGRESS_RADIUS =
-    52;
-
-
-  const PROGRESS_CIRCUMFERENCE =
-    2 * Math.PI * PROGRESS_RADIUS;
+  const PROGRESS_RADIUS = 52;
+  const PROGRESS_CIRCUMFERENCE = 2 * Math.PI * PROGRESS_RADIUS;
 
 
   progressCircle.style.strokeDasharray =
@@ -3117,50 +3006,22 @@
   }
 
 
-  async function refreshToken(){
+  async function refreshToken() {
 
-    idToken =
-      liff.getIDToken() ||
-      "";
+  idToken =
+    liff.getIDToken() ||
+    "";
 
+  if (!idToken) {
 
-    if(!idToken){
-
-      throw new Error(
-        "ไม่พบ LINE ID Token กรุณาเปิด LIFF ใหม่"
-      );
-
-    }
-
-
-    const exp =
-      getTokenExpiry(
-        idToken
-      );
-
-
-    const now =
-      Math.floor(
-        Date.now() / 1000
-      );
-
-
-    if(
-      exp &&
-      exp <=
-      now + 60
-    ){
-
-      throw new Error(
-        "เซสชัน LINE หมดอายุ กรุณาเปิดหน้า ATWORK ใหม่"
-      );
-
-    }
-
-
-    return idToken;
+    throw new Error(
+      "ไม่พบ LINE ID Token กรุณาเปิดหน้า ATWORK ใหม่"
+    );
 
   }
+
+  return idToken;
+}
 
 
   /* =========================================================
@@ -3297,136 +3158,119 @@
 
   async function init(){
 
-    try{
+  try{
 
-      await liff.init({
+    await liff.init({
 
-        liffId:
-          LIFF_ID,
+      liffId:
+        LIFF_ID,
 
-        withLoginOnExternalBrowser:
-          true
+      withLoginOnExternalBrowser:
+        true
 
-      });
+    });
 
+
+    if(
+      !liff.isLoggedIn()
+    ){
 
       if(
-        !liff.isLoggedIn()
+        !liff.isInClient()
       ){
 
-        if(
-          !liff.isInClient()
-        ){
+        liff.login({
 
-          liff.login({
+          redirectUri:
+            window.location.href
 
-            redirectUri:
-              window.location.href
+        });
 
-          });
-
-
-          return;
-
-        }
-
-
-        throw new Error(
-          "ยังไม่ได้เข้าสู่ระบบ LINE"
-        );
+        return;
 
       }
 
-
-      await refreshToken();
-
-
-      /*
-       * ping เป็น optional
-       */
-      try{
-
-        await apiCall(
-          "ping"
-        );
-
-      }catch(pingError){
-
-        console.log(
-          "Ping skipped:",
-          pingError
-        );
-
-      }
-
-
-      ready =
-        true;
-
-
-      lineState.classList.add(
-        "connected"
-      );
-
-
-      lineState.textContent =
-        liff.isInClient()
-          ? "● เชื่อมต่อ LINE แล้ว"
-          : "● เชื่อมต่อ LINE แล้ว (Browser)";
-
-
-      submitButton.disabled =
-        false;
-
-
-      submitButtonText.textContent =
-        "ส่งใบสมัคร";
-
-
-    }catch(error){
-
-      console.error(
-        "LIFF INIT ERROR:",
-        error
-      );
-
-
-      ready =
-        false;
-
-
-      lineState.classList.remove(
-        "connected"
-      );
-
-
-      lineState.textContent =
-        "เชื่อมต่อ LINE ไม่สำเร็จ";
-
-
-      submitButton.disabled =
-        true;
-
-
-      submitButtonText.textContent =
-        "ไม่สามารถส่งใบสมัคร";
-
-
-      setNotice(
-
-        (
-          error?.message ||
-          "เปิดระบบไม่สำเร็จ"
-        ) +
-        "\n\nกรุณาเปิดหน้านี้ผ่านเมนู ATWORK ใน LINE ใหม่",
-
-        "danger"
-
+      throw new Error(
+        "ยังไม่ได้เข้าสู่ระบบ LINE"
       );
 
     }
 
+
+    /*
+     * รับ ID Token จาก LIFF
+     * ไม่ตรวจ exp ฝั่ง Browser
+     */
+    await refreshToken();
+
+
+    ready =
+      true;
+
+
+    lineState.classList.add(
+      "connected"
+    );
+
+
+    lineState.textContent =
+      liff.isInClient()
+        ? "● เชื่อมต่อ LINE แล้ว"
+        : "● เชื่อมต่อ LINE แล้ว (Browser)";
+
+
+    submitButton.disabled =
+      false;
+
+
+    submitButtonText.textContent =
+      "ส่งใบสมัคร";
+
+
+    hideNotice();
+
+
+  }catch(error){
+
+    console.error(
+      "LIFF INIT ERROR:",
+      error
+    );
+
+
+    ready =
+      false;
+
+
+    lineState.classList.remove(
+      "connected"
+    );
+
+
+    lineState.textContent =
+      "เชื่อมต่อ LINE ไม่สำเร็จ";
+
+
+    submitButton.disabled =
+      true;
+
+
+    submitButtonText.textContent =
+      "ไม่สามารถส่งใบสมัคร";
+
+
+    setNotice(
+
+      error?.message ||
+      "เปิดระบบไม่สำเร็จ",
+
+      "danger"
+
+    );
+
   }
+
+}
 
 
   /* =========================================================
