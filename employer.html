@@ -1,1 +1,1315 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
+  <title>ATWORK - แจ้งความต้องการบุคลากร</title>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7fb;
+      color: #1f2937;
+      font-family:
+        Arial,
+        "Noto Sans Thai",
+        sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 18px 14px 40px;
+    }
+
+    .header {
+      background: #111827;
+      color: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      margin: 0 0 7px;
+      font-size: 24px;
+    }
+
+    .header p {
+      margin: 0;
+      opacity: .8;
+      font-size: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow:
+        0 7px 24px rgba(0,0,0,.05);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #d7dce4;
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 15px;
+      background: #fff;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #111827;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .submit {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      background: #111827;
+      color: #fff;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .submit:disabled {
+      opacity: .5;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .error {
+      display: none;
+      background: #fef2f2;
+      color: #b91c1c;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+    }
+
+    .popup-box {
+      background: #fff;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 20px;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .popup-icon {
+      font-size: 50px;
+      margin-bottom: 8px;
+    }
+
+    .popup-title {
+      font-size: 21px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .popup-text {
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 17px;
+    }
+
+    .job-id {
+      padding: 13px;
+      background: #f3f4f6;
+      border-radius: 12px;
+      font-weight: 700;
+      word-break: break-word;
+      margin-bottom: 16px;
+    }
+
+    .popup-btn {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 13px;
+      background: #111827;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 21px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <main class="container">
+
+
+    <header class="header">
+
+      <h1>
+        แจ้งความต้องการบุคลากร
+      </h1>
+
+      <p>
+        ATWORK Recruitment
+      </p>
+
+    </header>
+
+
+    <div
+      id="errorBox"
+      class="error"
+    ></div>
+
+
+    <form id="jobForm">
+
+      <section class="card">
+
+        <div class="section-title">
+          ข้อมูลบริษัท
+        </div>
+
+        <div class="field">
+
+          <label>
+            ชื่อบริษัท *
+          </label>
+
+          <input
+            id="companyName"
+            type="text"
+            required
+            placeholder="ชื่อบริษัท"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            ชื่อผู้ติดต่อ *
+          </label>
+
+          <input
+            id="contactName"
+            type="text"
+            required
+            placeholder="ชื่อผู้ติดต่อ"
+          >
+
+        </div>
+
+
+        <div class="row">
+
+          <div class="field">
+
+            <label>
+              เบอร์โทรศัพท์ *
+            </label>
+
+            <input
+              id="phone"
+              type="tel"
+              required
+              placeholder="08xxxxxxxx"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              อีเมล *
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              required
+              placeholder="company@email.com"
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <div class="section-title">
+          ตำแหน่งงาน
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            ตำแหน่งงาน *
+          </label>
+
+          <input
+            id="position"
+            type="text"
+            required
+            placeholder="เช่น พนักงานฝ่ายผลิต"
+          >
+
+        </div>
+
+
+        <div class="row">
+
+          <div class="field">
+
+            <label>
+              จำนวนอัตรา *
+            </label>
+
+            <input
+              id="headcount"
+              type="number"
+              min="1"
+              value="1"
+              required
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              เงินเดือน / ค่าจ้าง *
+            </label>
+
+            <input
+              id="salary"
+              type="text"
+              required
+              placeholder="เช่น 15,000 - 18,000 บาท"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            ประเภทการจ้าง
+          </label>
+
+          <select id="employmentType">
+
+            <option value="">
+              กรุณาเลือก
+            </option>
+
+            <option value="ประจำ">
+              พนักงานประจำ
+            </option>
+
+            <option value="สัญญาจ้าง">
+              สัญญาจ้าง
+            </option>
+
+            <option value="ชั่วคราว">
+              ชั่วคราว
+            </option>
+
+            <option value="รายวัน">
+              รายวัน
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            เวลาทำงาน
+          </label>
+
+          <input
+            id="workHours"
+            type="text"
+            placeholder="เช่น จันทร์-เสาร์ 08:00-17:00"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            สถานที่ทำงาน *
+          </label>
+
+          <input
+            id="workLocation"
+            type="text"
+            required
+            placeholder="สถานที่ทำงาน"
+          >
+
+        </div>
+
+
+        <div class="row">
+
+          <div class="field">
+
+            <label>
+              จังหวัด *
+            </label>
+
+            <input
+              id="workProvince"
+              type="text"
+              required
+              placeholder="จังหวัด"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              อำเภอ
+            </label>
+
+            <input
+              id="workDistrict"
+              type="text"
+              placeholder="อำเภอ"
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <div class="section-title">
+          คุณสมบัติและเงื่อนไข
+        </div>
+
+
+        <div class="row">
+
+          <div class="field">
+
+            <label>
+              วันที่เริ่มงาน
+            </label>
+
+            <input
+              id="startDate"
+              type="date"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              วันปิดรับสมัคร
+            </label>
+
+            <input
+              id="applicationDeadline"
+              type="date"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            คุณสมบัติ *
+          </label>
+
+          <textarea
+            id="qualifications"
+            required
+            placeholder="เช่น อายุ 20-35 ปี มีประสบการณ์..."
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            รายละเอียดงาน *
+          </label>
+
+          <textarea
+            id="jobDescription"
+            required
+            placeholder="หน้าที่และรายละเอียดของตำแหน่ง"
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            สวัสดิการ
+          </label>
+
+          <textarea
+            id="benefits"
+            placeholder="เช่น ประกันสังคม โบนัส ที่พัก ค่าอาหาร"
+          ></textarea>
+
+        </div>
+
+      </section>
+
+
+      <button
+        id="submitBtn"
+        class="submit"
+        type="submit"
+      >
+        ส่งคำขอเปิดตำแหน่งงาน
+      </button>
+
+
+      <div
+        id="loading"
+        class="loading"
+      >
+        กำลังบันทึกข้อมูล...
+      </div>
+
+
+    </form>
+
+  </main>
+
+
+  <div
+    id="successPopup"
+    class="popup"
+  >
+
+    <div class="popup-box">
+
+      <div class="popup-icon">
+        ✅
+      </div>
+
+      <div class="popup-title">
+        เปิดตำแหน่งงานสำเร็จ
+      </div>
+
+      <div class="popup-text">
+        ตำแหน่งงานได้รับการอนุมัติและเปิดรับสมัครทันที
+      </div>
+
+      <div
+        id="popupJobId"
+        class="job-id"
+      ></div>
+
+      <button
+        class="popup-btn"
+        type="button"
+        onclick="closePopup()"
+      >
+        ปิด
+      </button>
+
+    </div>
+
+  </div>
+
+
+<script>
+
+/*************************************************
+ * CONFIG
+ *************************************************/
+
+/*
+ * ใส่ LIFF ID ฝั่งบริษัทของคุณตรงนี้
+ *
+ * ตัวอย่าง:
+ * const LIFF_ID = "2011817085-xxxxxxxx";
+ */
+
+const LIFF_ID =
+  "ใส่-LIFF-ID-ฝั่งบริษัท";
+
+
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
+
+
+/*************************************************
+ * INIT
+ *************************************************/
+
+document.addEventListener(
+  "DOMContentLoaded",
+  init
+);
+
+
+async function init() {
+
+  try {
+
+    await liff.init({
+      liffId: LIFF_ID
+    });
+
+
+    if (!liff.isLoggedIn()) {
+
+      liff.login();
+
+      return;
+    }
+
+
+  } catch (error) {
+
+    showError(
+      "ไม่สามารถเปิดระบบ LINE ได้: " +
+      (
+        error.message ||
+        error
+      )
+    );
+  }
+}
+
+
+/*************************************************
+ * FORM
+ *************************************************/
+
+document
+  .getElementById(
+    "jobForm"
+  )
+  .addEventListener(
+    "submit",
+    submitJob
+  );
+
+
+async function submitJob(
+  event
+) {
+
+  event.preventDefault();
+
+
+  hideError();
+
+
+  const submitBtn =
+    document.getElementById(
+      "submitBtn"
+    );
+
+
+  const loading =
+    document.getElementById(
+      "loading"
+    );
+
+
+  submitBtn.disabled =
+    true;
+
+
+  loading.style.display =
+    "block";
+
+
+  try {
+
+    const idToken =
+      liff.getIDToken();
+
+
+    if (!idToken) {
+
+      throw new Error(
+        "ไม่สามารถยืนยันตัวตน LINE ได้"
+      );
+    }
+
+
+    const data = {
+
+      companyName:
+        getValue(
+          "companyName"
+        ),
+
+      contactName:
+        getValue(
+          "contactName"
+        ),
+
+      phone:
+        getValue(
+          "phone"
+        ),
+
+      email:
+        getValue(
+          "email"
+        ),
+
+      position:
+        getValue(
+          "position"
+        ),
+
+      headcount:
+        Number(
+          document
+            .getElementById(
+              "headcount"
+            )
+            .value
+        ),
+
+      workLocation:
+        getValue(
+          "workLocation"
+        ),
+
+      workProvince:
+        getValue(
+          "workProvince"
+        ),
+
+      workDistrict:
+        getValue(
+          "workDistrict"
+        ),
+
+      salary:
+        getValue(
+          "salary"
+        ),
+
+      employmentType:
+        getValue(
+          "employmentType"
+        ),
+
+      workHours:
+        getValue(
+          "workHours"
+        ),
+
+      startDate:
+        getValue(
+          "startDate"
+        ),
+
+      applicationDeadline:
+        getValue(
+          "applicationDeadline"
+        ),
+
+      qualifications:
+        getValue(
+          "qualifications"
+        ),
+
+      jobDescription:
+        getValue(
+          "jobDescription"
+        ),
+
+      benefits:
+        getValue(
+          "benefits"
+        )
+    };
+
+
+    const result =
+      await apiCall(
+        "createJob",
+        data,
+        idToken
+      );
+
+
+    if (
+      !result ||
+      !result.ok
+    ) {
+
+      throw new Error(
+        result &&
+        result.error
+          ? result.error
+          : "ไม่สามารถสร้างตำแหน่งงานได้"
+      );
+    }
+
+
+    showSuccess(
+      result.jobId
+    );
+
+
+    document
+      .getElementById(
+        "jobForm"
+      )
+      .reset();
+
+
+    document
+      .getElementById(
+        "headcount"
+      )
+      .value = 1;
+
+
+  } catch (error) {
+
+    showError(
+      error.message ||
+      "เกิดข้อผิดพลาด"
+    );
+
+  } finally {
+
+    submitBtn.disabled =
+      false;
+
+    loading.style.display =
+      "none";
+  }
+}
+
+
+/*************************************************
+ * GET VALUE
+ *************************************************/
+
+function getValue(
+  id
+) {
+
+  return document
+    .getElementById(id)
+    .value
+    .trim();
+}
+
+
+/*************************************************
+ * API CALL
+ *************************************************/
+
+function apiCall(
+  action,
+  data,
+  idToken
+) {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      const requestId =
+        "req_" +
+        Date.now() +
+        "_" +
+        Math.random()
+          .toString(36)
+          .substring(2);
+
+
+      const targetName =
+        "atworkEmployerApiFrame";
+
+
+      let iframe =
+        document.getElementById(
+          targetName
+        );
+
+
+      if (!iframe) {
+
+        iframe =
+          document.createElement(
+            "iframe"
+          );
+
+        iframe.id =
+          targetName;
+
+        iframe.name =
+          targetName;
+
+        iframe.style.display =
+          "none";
+
+        document.body.appendChild(
+          iframe
+        );
+      }
+
+
+      const form =
+        document.createElement(
+          "form"
+        );
+
+
+      form.method =
+        "POST";
+
+
+      form.action =
+        SCRIPT_URL;
+
+
+      form.target =
+        targetName;
+
+
+      const fields = {
+
+        action:
+          action,
+
+        requestId:
+          requestId,
+
+        idToken:
+          idToken,
+
+        data:
+          JSON.stringify(
+            data || {}
+          )
+      };
+
+
+      Object.keys(fields)
+        .forEach(
+          function(key) {
+
+            const input =
+              document.createElement(
+                "input"
+              );
+
+
+            input.type =
+              "hidden";
+
+
+            input.name =
+              key;
+
+
+            input.value =
+              fields[key];
+
+
+            form.appendChild(
+              input
+            );
+          }
+        );
+
+
+      document.body.appendChild(
+        form
+      );
+
+
+      form.submit();
+
+
+      form.remove();
+
+
+      pollApiResult(
+        requestId,
+        resolve,
+        reject
+      );
+    }
+  );
+}
+
+
+/*************************************************
+ * JSONP POLLING
+ *************************************************/
+
+function pollApiResult(
+  requestId,
+  resolve,
+  reject,
+  attempt
+) {
+
+  attempt =
+    attempt || 0;
+
+
+  if (
+    attempt > 40
+  ) {
+
+    reject(
+      new Error(
+        "เซิร์ฟเวอร์ไม่ตอบกลับภายในเวลาที่กำหนด"
+      )
+    );
+
+    return;
+  }
+
+
+  const callbackName =
+    "atworkEmployerCallback_" +
+    Date.now() +
+    "_" +
+    Math.random()
+      .toString(36)
+      .substring(2);
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  let finished =
+    false;
+
+
+  function cleanup() {
+
+    if (
+      script.parentNode
+    ) {
+
+      script.parentNode
+        .removeChild(
+          script
+        );
+    }
+
+
+    try {
+
+      delete window[
+        callbackName
+      ];
+
+    } catch (ignore) {
+
+      window[
+        callbackName
+      ] = undefined;
+    }
+  }
+
+
+  window[
+    callbackName
+  ] =
+    function(result) {
+
+      if (finished) {
+        return;
+      }
+
+
+      if (
+        result &&
+        result.pending
+      ) {
+
+        cleanup();
+
+
+        setTimeout(
+          function() {
+
+            pollApiResult(
+              requestId,
+              resolve,
+              reject,
+              attempt + 1
+            );
+
+          },
+          700
+        );
+
+
+        return;
+      }
+
+
+      finished =
+        true;
+
+
+      cleanup();
+
+
+      resolve(
+        result
+      );
+    };
+
+
+  script.onerror =
+    function() {
+
+      if (finished) {
+        return;
+      }
+
+
+      cleanup();
+
+
+      setTimeout(
+        function() {
+
+          pollApiResult(
+            requestId,
+            resolve,
+            reject,
+            attempt + 1
+          );
+
+        },
+        700
+      );
+    };
+
+
+  script.src =
+    SCRIPT_URL +
+    "?action=status" +
+    "&requestId=" +
+    encodeURIComponent(
+      requestId
+    ) +
+    "&callback=" +
+    encodeURIComponent(
+      callbackName
+    ) +
+    "&_=" +
+    Date.now();
+
+
+  document.body.appendChild(
+    script
+  );
+}
+
+
+/*************************************************
+ * SUCCESS
+ *************************************************/
+
+function showSuccess(
+  jobId
+) {
+
+  document
+    .getElementById(
+      "popupJobId"
+    )
+    .textContent =
+      "Job ID: " + jobId;
+
+
+  document
+    .getElementById(
+      "successPopup"
+    )
+    .style.display =
+      "flex";
+}
+
+
+function closePopup() {
+
+  document
+    .getElementById(
+      "successPopup"
+    )
+    .style.display =
+      "none";
+}
+
+
+/*************************************************
+ * ERROR
+ *************************************************/
+
+function showError(
+  message
+) {
+
+  const box =
+    document.getElementById(
+      "errorBox"
+    );
+
+
+  box.textContent =
+    message;
+
+
+  box.style.display =
+    "block";
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+function hideError() {
+
+  const box =
+    document.getElementById(
+      "errorBox"
+    );
+
+
+  box.textContent =
+    "";
+
+
+  box.style.display =
+    "none";
+}
+
+</script>
+
+</body>
+</html>
