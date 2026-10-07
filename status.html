@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#f3f7fc">
-  <title>@attwork | ตรวจสอบสถานะการสมัคร</title>
+  <title>@attwork | ตรวจสอบสถานะ</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
@@ -341,13 +341,67 @@
     .status-badge{
       flex:0 0 auto;
       padding:6px 9px;
-      border:1px solid #dbeafe;
+      border:1px solid #cbd5e1;
       border-radius:999px;
-      background:var(--blue-soft);
-      color:var(--blue-dark);
+      background:#f8fafc;
+      color:#475569;
       font-size:10.5px;
       font-weight:900;
       white-space:nowrap;
+    }
+
+    .status-badge.status-red{
+      border-color:#fecaca;
+      background:#fef2f2;
+      color:#dc2626;
+    }
+
+    .status-badge.status-yellow{
+      border-color:#fde68a;
+      background:#fefce8;
+      color:#ca8a04;
+    }
+
+    .status-badge.status-green{
+      border-color:#bbf7d0;
+      background:#ecfdf3;
+      color:#16a34a;
+    }
+
+    .status-badge.status-gray{
+      border-color:#cbd5e1;
+      background:#f8fafc;
+      color:#64748b;
+    }
+
+    .application-actions{
+      display:grid;
+      grid-template-columns:1fr;
+      margin-top:11px;
+    }
+
+    .delete-button{
+      width:100%;
+      min-height:44px;
+      border:1px solid #fecaca;
+      border-radius:13px;
+      background:#fff;
+      color:#dc2626;
+      font-size:13px;
+      font-weight:900;
+      cursor:pointer;
+      transition:transform .16s ease,box-shadow .16s ease,background .16s ease,opacity .16s ease;
+    }
+
+    .delete-button:not(:disabled):hover{
+      transform:translateY(-1px);
+      background:#fef2f2;
+      box-shadow:0 10px 20px rgba(220,38,38,.08);
+    }
+
+    .delete-button:disabled{
+      opacity:.55;
+      cursor:wait;
     }
 
     .meta-grid{
@@ -975,7 +1029,7 @@
 
                 finish(
                   null,
-                  response
+                  response && response.result ? response.result : response
                 );
 
               };
@@ -1056,6 +1110,126 @@
         }
       );
 
+    }
+
+
+
+    function getStatusClass(status) {
+
+      const value = String(
+        status || ""
+      ).trim();
+
+      if (value === "รอตรวจสอบ") {
+        return "status-red";
+      }
+
+      if (value === "กำลังตรวจสอบ") {
+        return "status-yellow";
+      }
+
+      if (value === "ตรวจสอบเสร็จสิ้น") {
+        return "status-green";
+      }
+
+      return "status-gray";
+    }
+
+
+    async function deleteApplication(
+      applicationId,
+      button,
+      card
+    ) {
+
+      if (!applicationId) {
+        return;
+      }
+
+      const confirmed = window.confirm(
+        "ต้องการลบใบสมัครหมายเลข " +
+        applicationId +
+        " ใช่หรือไม่?\n\n" +
+        "ข้อมูลใบสมัครและข้อมูล Resume ที่เกี่ยวข้องจะถูกลบออกจากระบบ"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "กำลังลบใบสมัคร...";
+
+      try {
+        const idToken = await getCurrentIdToken();
+
+        const response = await postFormApi(
+          "deleteMyApplication",
+          {
+            applicationId: applicationId
+          },
+          idToken,
+          120000
+        );
+
+        const result =
+          response && response.result
+            ? response.result
+            : response;
+
+        if (!result || result.ok !== true) {
+          throw new Error(
+            result && result.message
+              ? result.message
+              : "ไม่สามารถลบใบสมัครได้"
+          );
+        }
+
+        if (card) {
+          card.style.transition = "opacity .2s ease, transform .2s ease";
+          card.style.opacity = "0";
+          card.style.transform = "translateY(-4px)";
+
+          setTimeout(function() {
+            card.remove();
+
+            if (!applicationsList.children.length) {
+              applicationsList.innerHTML = `
+                <div class="empty">
+                  ยังไม่มีใบสมัครที่ผูกกับบัญชี LINE นี้
+                </div>
+              `;
+            }
+          }, 220);
+        }
+
+        showMessage(
+          "ลบใบสมัครเรียบร้อยแล้ว",
+          "success"
+        );
+
+      } catch (error) {
+        console.error(
+          "deleteApplication ERROR:",
+          error
+        );
+
+        if (
+          error.message ===
+          "ID_TOKEN_EXPIRED_CLIENT"
+        ) {
+          handleTokenExpired();
+          return;
+        }
+
+        button.disabled = false;
+        button.textContent = "🗑 ลบใบสมัคร";
+
+        showMessage(
+          error.message || "ไม่สามารถลบใบสมัครได้",
+          "error"
+        );
+      }
     }
 
 
@@ -1149,7 +1323,7 @@
 
                 </div>
 
-                <div class="status-badge">
+                <div class="status-badge ${getStatusClass(status)}">
                   ${escapeHtml(
                     status
                   )}
@@ -1205,7 +1379,31 @@
                 </div>
 
               </div>
+
+              <div class="application-actions">
+                <button
+                  class="delete-button"
+                  type="button"
+                >
+                  🗑 ลบใบสมัคร
+                </button>
+              </div>
             `;
+
+
+          const deleteButton =
+            card.querySelector(".delete-button");
+
+          deleteButton.addEventListener(
+            "click",
+            function() {
+              deleteApplication(
+                applicationId,
+                deleteButton,
+                card
+              );
+            }
+          );
 
 
           applicationsList.appendChild(
