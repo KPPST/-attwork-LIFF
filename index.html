@@ -24,19 +24,14 @@
 
     :root{
       --navy:#071b3a;
-      --navy-2:#0c2854;
       --blue:#1657b8;
-      --blue-2:#2f73dc;
       --purple:#6c4ce6;
 
       --bg:#f4f7fb;
       --card:#ffffff;
-      --soft:#f7faff;
 
       --text:#182230;
       --muted:#667085;
-      --muted-2:#98a2b3;
-
       --border:#dbe2ea;
 
       --success:#138a58;
@@ -121,15 +116,6 @@
       touch-action:manipulation;
     }
 
-
-    .hidden{
-      display:none !important;
-    }
-
-
-    /* =========================================================
-       APP
-    ========================================================== */
 
     .app{
       width:min(760px,100%);
@@ -335,12 +321,14 @@
         1px solid
         #e3e9f1;
 
-      border-radius:var(--radius);
+      border-radius:
+        var(--radius);
 
       background:
         rgba(255,255,255,.94);
 
-      box-shadow:var(--shadow);
+      box-shadow:
+        var(--shadow);
     }
 
 
@@ -464,18 +452,18 @@
     }
 
 
-    .field.full{
-      grid-column:1 / -1;
-    }
-
-
     .field{
       min-width:0;
     }
 
 
+    .field.full{
+      grid-column:1 / -1;
+    }
+
+
     /* =========================================================
-       LABEL
+       LABEL / INPUT
     ========================================================== */
 
     label{
@@ -498,12 +486,9 @@
     }
 
 
-    /* =========================================================
-       INPUT
-    ========================================================== */
-
     input,
     select{
+
       width:100%;
 
       min-height:47px;
@@ -544,6 +529,7 @@
 
     input:focus,
     select:focus{
+
       border-color:var(--blue);
 
       background:#fcfdff;
@@ -589,6 +575,7 @@
 
 
     .resume-drop.dragover{
+
       border-color:var(--blue);
 
       background:#eff6ff;
@@ -655,7 +642,8 @@
 
 
     .resume-select-button{
-      flex:0 0 auto;
+      flex:
+        0 0 auto;
 
       padding:
         9px
@@ -678,6 +666,7 @@
 
 
     #resume{
+
       position:absolute;
 
       width:1px;
@@ -755,6 +744,7 @@
 
 
     .selected-file-name{
+
       display:block;
 
       overflow:hidden;
@@ -781,6 +771,7 @@
 
 
     .selected-file-remove{
+
       border:0;
 
       background:transparent;
@@ -798,6 +789,7 @@
     ========================================================== */
 
     .submit-area{
+
       margin-top:19px;
 
       padding-top:17px;
@@ -809,6 +801,7 @@
 
 
     .primary{
+
       position:relative;
 
       width:100%;
@@ -835,29 +828,11 @@
       box-shadow:
         0 12px 24px
         rgba(61,77,185,.18);
-
-      transition:
-        transform .16s ease,
-        box-shadow .16s ease,
-        opacity .16s ease;
-    }
-
-
-    .primary:not(:disabled):hover{
-      transform:translateY(-1px);
-
-      box-shadow:
-        0 16px 29px
-        rgba(61,77,185,.22);
-    }
-
-
-    .primary:not(:disabled):active{
-      transform:translateY(0);
     }
 
 
     .primary:disabled{
+
       opacity:.55;
 
       cursor:not-allowed;
@@ -867,6 +842,7 @@
 
 
     .submit-arrow{
+
       position:absolute;
 
       right:16px;
@@ -881,6 +857,7 @@
 
 
     .submit-note{
+
       margin-top:9px;
 
       text-align:center;
@@ -896,6 +873,7 @@
     ========================================================== */
 
     .notice{
+
       display:none;
 
       margin-top:11px;
@@ -915,29 +893,41 @@
 
 
     .notice.success{
+
       display:block;
 
-      background:var(--success-bg);
+      background:
+        var(--success-bg);
 
-      color:var(--success);
+      color:
+        var(--success);
+
     }
 
 
     .notice.warning{
+
       display:block;
 
-      background:var(--warning-bg);
+      background:
+        var(--warning-bg);
 
-      color:var(--warning);
+      color:
+        var(--warning);
+
     }
 
 
     .notice.danger{
+
       display:block;
 
-      background:var(--danger-bg);
+      background:
+        var(--danger-bg);
 
-      color:var(--danger);
+      color:
+        var(--danger);
+
     }
 
 
@@ -946,6 +936,7 @@
     ========================================================== */
 
     .loading-overlay{
+
       position:fixed;
 
       inset:0;
@@ -978,15 +969,18 @@
 
 
     .loading-overlay.show{
+
       opacity:1;
 
       visibility:visible;
 
       pointer-events:auto;
+
     }
 
 
     .loading-card{
+
       width:min(390px,100%);
 
       padding:
@@ -1000,15 +994,18 @@
 
       border-radius:27px;
 
-      background:rgba(255,255,255,.98);
+      background:
+        rgba(255,255,255,.98);
 
-      box-shadow:var(--shadow-lg);
+      box-shadow:
+        var(--shadow-lg);
 
       text-align:center;
     }
 
 
     .progress-circle{
+
       position:relative;
 
       width:144px;
@@ -1022,16 +1019,19 @@
 
 
     .progress-svg{
+
       width:144px;
       height:144px;
 
-      transform:rotate(-90deg);
+      transform:
+        rotate(-90deg);
 
       overflow:visible;
     }
 
 
     .progress-track{
+
       fill:none;
 
       stroke:#e8edf4;
@@ -1041,6 +1041,7 @@
 
 
     .progress-value{
+
       fill:none;
 
       stroke:url(#progressGradient);
@@ -1055,6 +1056,7 @@
 
 
     .progress-center{
+
       position:absolute;
 
       inset:0;
@@ -1071,6 +1073,7 @@
 
 
     .progress-percent{
+
       color:var(--navy);
 
       font-size:29px;
@@ -1084,6 +1087,7 @@
 
 
     .progress-label{
+
       margin-top:6px;
 
       color:#98a2b3;
@@ -1095,6 +1099,7 @@
 
 
     .loading-title{
+
       margin:0;
 
       color:var(--navy);
@@ -1106,6 +1111,7 @@
 
 
     .loading-stage{
+
       margin-top:7px;
 
       color:#475467;
@@ -1119,6 +1125,7 @@
 
 
     .loading-detail{
+
       margin-top:7px;
 
       color:#98a2b3;
@@ -1130,6 +1137,7 @@
 
 
     .loading-stats{
+
       display:flex;
 
       justify-content:center;
@@ -1143,6 +1151,7 @@
 
 
     .loading-pill{
+
       padding:
         6px
         9px;
@@ -1168,6 +1177,7 @@
     ========================================================== */
 
     .success-overlay{
+
       position:fixed;
 
       inset:0;
@@ -1200,6 +1210,7 @@
 
 
     .success-overlay.show{
+
       opacity:1;
 
       visibility:visible;
@@ -1209,6 +1220,7 @@
 
 
     .success-modal{
+
       width:min(430px,100%);
 
       padding:
@@ -1224,13 +1236,15 @@
 
       background:#fff;
 
-      box-shadow:var(--shadow-lg);
+      box-shadow:
+        var(--shadow-lg);
 
       text-align:center;
     }
 
 
     .success-icon-wrap{
+
       width:82px;
       height:82px;
 
@@ -1250,6 +1264,7 @@
 
 
     .success-icon{
+
       width:51px;
       height:51px;
 
@@ -1279,6 +1294,7 @@
 
 
     .success-modal h2{
+
       margin:0;
 
       color:var(--navy);
@@ -1290,6 +1306,7 @@
 
 
     .success-modal p{
+
       margin:
         7px
         auto
@@ -1306,6 +1323,7 @@
 
 
     .reference-card{
+
       margin-top:17px;
 
       padding:13px;
@@ -1328,6 +1346,7 @@
 
 
     .reference-label{
+
       color:#98a2b3;
 
       font-size:10px;
@@ -1337,6 +1356,7 @@
 
 
     .reference-row{
+
       display:flex;
 
       align-items:center;
@@ -1348,6 +1368,7 @@
 
 
     .reference-value{
+
       min-width:0;
 
       flex:1;
@@ -1363,8 +1384,11 @@
 
 
     .copy-button{
+
       flex:
-        0 0 auto;
+        0
+        0
+        auto;
 
       padding:
         7px
@@ -1387,6 +1411,7 @@
 
 
     .success-close{
+
       width:100%;
 
       min-height:48px;
@@ -1419,6 +1444,7 @@
     @media(max-width:620px){
 
       .app{
+
         padding:
           9px
           9px
@@ -1427,6 +1453,7 @@
 
 
       .hero{
+
         padding:
           20px
           17px
@@ -1447,6 +1474,7 @@
 
 
       .card{
+
         padding:16px;
 
         border-radius:16px;
@@ -1469,6 +1497,7 @@
 
 
       .resume-select-button{
+
         padding:
           8px
           10px;
@@ -1477,12 +1506,14 @@
 
       .progress-circle,
       .progress-svg{
+
         width:132px;
         height:132px;
       }
 
 
       .loading-card{
+
         padding:
           25px
           16px
@@ -1493,6 +1524,7 @@
 
 
       .success-modal{
+
         padding:
           24px
           15px
@@ -1617,56 +1649,6 @@
 
       </div>
 
-        <div class="grid">
-
-
-      <div class="field">
-
-        <label
-          class="required"
-          for="phone"
-        >
-          เบอร์โทรศัพท์
-        </label>
-
-
-        <input
-          id="phone"
-          type="tel"
-          maxlength="10"
-          inputmode="numeric"
-          autocomplete="tel"
-          placeholder="08xxxxxxxx"
-          pattern="0\d{9}"
-          required
-        >
-
-      </div>
-
-      <div class="field">
-
-        <label
-          class="required"
-          for="email"
-        >
-          อีเมล
-        </label>
-
-
-        <input
-          id="email"
-          type="email"
-          maxlength="150"
-          autocomplete="email"
-          placeholder="name@example.com"
-          required
-        >
-
-      </div>
-
-    </div>
-
-
 
       <div class="field">
 
@@ -1682,10 +1664,23 @@
           id="position"
           required
         >
-          <option value="">เลือกตำแหน่ง</option>
-          <option value="ช่าง">ช่าง</option>
-          <option value="พนักงานโรงงาน">พนักงานโรงงาน</option>
-          <option value="ออฟฟิศ">ออฟฟิศ</option>
+
+          <option value="">
+            เลือกตำแหน่ง
+          </option>
+
+          <option value="ช่าง">
+            ช่าง
+          </option>
+
+          <option value="พนักงานโรงงาน">
+            พนักงานโรงงาน
+          </option>
+
+          <option value="ออฟฟิศ">
+            ออฟฟิศ
+          </option>
+
         </select>
 
       </div>
@@ -1883,9 +1878,61 @@
          CONTACT
     ==================================================== -->
 
-   
+    <div class="section-title">
+      ข้อมูลติดต่อ
+    </div>
 
-  
+
+    <div class="grid">
+
+
+      <div class="field">
+
+        <label
+          class="required"
+          for="phone"
+        >
+          เบอร์โทรศัพท์
+        </label>
+
+
+        <input
+          id="phone"
+          type="tel"
+          maxlength="10"
+          inputmode="numeric"
+          autocomplete="tel"
+          placeholder="08xxxxxxxx"
+          pattern="0\d{9}"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label
+          class="required"
+          for="email"
+        >
+          อีเมล
+        </label>
+
+
+        <input
+          id="email"
+          type="email"
+          maxlength="150"
+          autocomplete="email"
+          placeholder="name@example.com"
+          required
+        >
+
+      </div>
+
+    </div>
+
 
     <!-- ===================================================
          RESUME
@@ -1921,7 +1968,7 @@
 
 
           <div class="resume-upload-subtitle">
-            แนบเป็นไฟล์ PDF, DOC, DOCX, JPG, JPEG หรือ PNG
+            PDF, DOC, DOCX, JPG, JPEG หรือ PNG
           </div>
 
         </div>
@@ -1946,9 +1993,7 @@
 
 
       <div class="file-note">
-
         ไม่บังคับแนบ • ขนาดไม่เกิน 50 MB
-
       </div>
 
     </div>
@@ -1960,7 +2005,6 @@
       id="selectedFile"
       class="selected-file"
     >
-
 
       <div
         id="selectedFileIcon"
@@ -2002,7 +2046,7 @@
     </div>
 
 
-    <!-- MESSAGE -->
+    <!-- NOTICE -->
 
     <div
       id="formMessage"
@@ -2025,7 +2069,7 @@
       >
 
         <span id="submitButtonText">
-          กำลังเตรียมระบบ...
+          กำลังเชื่อมต่อ LINE...
         </span>
 
 
@@ -2079,7 +2123,6 @@
         aria-hidden="true"
       >
 
-
         <defs>
 
           <linearGradient
@@ -2093,12 +2136,12 @@
             <stop
               offset="0%"
               stop-color="#1657b8"
-            >
+            />
 
             <stop
               offset="100%"
               stop-color="#6c4ce6"
-            >
+            />
 
           </linearGradient>
 
@@ -2127,9 +2170,7 @@
 
       <div class="progress-center">
 
-
         <div class="progress-center-inner">
-
 
           <div
             id="progressPercent"
@@ -2143,9 +2184,7 @@
             ความคืบหน้า
           </div>
 
-
         </div>
-
 
       </div>
 
@@ -2179,7 +2218,6 @@
 
     <div class="loading-stats">
 
-
       <span
         id="loadingChunk"
         class="loading-pill"
@@ -2195,12 +2233,9 @@
         -
       </span>
 
-
     </div>
 
-
   </div>
-
 
 </div>
 
@@ -2239,8 +2274,8 @@
 
 
     <p>
-      ระบบได้รับข้อมูลของคุณเรียบร้อยแล้ว
-      เจ้าหน้าที่ ATWORK จะดำเนินการตรวจสอบต่อไป
+      ระบบได้รับใบสมัครของคุณเรียบร้อยแล้ว
+      และบันทึกข้อมูลเข้าสู่ระบบ ATWORK
     </p>
 
 
@@ -2253,7 +2288,6 @@
 
 
       <div class="reference-row">
-
 
         <div
           id="successApplicationId"
@@ -2271,9 +2305,7 @@
           คัดลอก
         </button>
 
-
       </div>
-
 
     </div>
 
@@ -2289,21 +2321,44 @@
 
   </div>
 
-
 </div>
+
+
+<!-- =========================================================
+     BACKGROUND POST TARGET
+========================================================== -->
+
+<iframe
+  id="atworkApiFrame"
+  name="atworkApiFrame"
+  style="display:none"
+  title="ATWORK background request"
+></iframe>
 
 
 <script>
 
 
   /* =========================================================
-     1. CONFIG
+     CONFIG
   ========================================================== */
 
-  const LIFF_ID ="2011817085-Mqy2mWhy";
-  const GAS_WEB_APP_URL ="https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
-  const MAX_FILE_SIZE = 50 * 1024 * 1024;
-  const CHUNK_SIZE = 2 * 1024 * 1024;
+  const LIFF_ID =
+    "2011817085-Mqy2mWhy";
+
+
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
+
+
+  const MAX_FILE_SIZE =
+    50 * 1024 * 1024;
+
+
+  const CHUNK_SIZE =
+    2 * 1024 * 1024;
+
+
   const ALLOWED_EXTENSIONS = [
     "pdf",
     "doc",
@@ -2315,50 +2370,140 @@
 
 
   /* =========================================================
-     2. STATE
+     STATE
   ========================================================== */
 
-  let ready = false;
-  let idToken = "";
-  let submitting = false;
+  let liffReady =
+    false;
 
-  /* =========================================================
-     3. ELEMENTS
-  ========================================================== */
 
-  const $ = id => document.getElementById(id);
-  const applicationForm = $("applicationForm");
-  const submitButton = $("submitButton");
-  const submitButtonText = $("submitButtonText");
-  const lineState = $("lineState");
-  const formMessage = $("formMessage");
-  const resumeInput = $("resume");
-  const resumeDrop = $("resumeDrop");
-  const resumeSelectButton = $("resumeSelectButton")
-  const selectedFile = $("selectedFile");
-  const selectedFileName = $("selectedFileName");
-  const selectedFileMeta = $("selectedFileMeta");
-  const selectedFileRemove = $("selectedFileRemove");
-  const progressCircle = $("progressCircle");
-  const progressPercent = $("progressPercent");
-  const loadingOverlay = $("loadingOverlay");
-  const loadingTitle = $("loadingTitle");
-  const loadingStage = $("loadingStage");
-  const loadingDetail = $("loadingDetail");
-  const loadingChunk = $("loadingChunk");
-  const loadingSize = $("loadingSize");
-  const successOverlay = $("successOverlay");
-  const successApplicationId = $("successApplicationId");
-  const copyApplicationId = $("copyApplicationId");
-  const successCloseButton = $("successCloseButton");
+  let idToken =
+    "";
+
+
+  let submitting =
+    false;
 
 
   /* =========================================================
-     4. PROGRESS
+     ELEMENTS
   ========================================================== */
 
-  const PROGRESS_RADIUS = 52;
-  const PROGRESS_CIRCUMFERENCE = 2 * Math.PI * PROGRESS_RADIUS;
+  const $ =
+    id =>
+      document.getElementById(id);
+
+
+  const applicationForm =
+    $("applicationForm");
+
+
+  const submitButton =
+    $("submitButton");
+
+
+  const submitButtonText =
+    $("submitButtonText");
+
+
+  const lineState =
+    $("lineState");
+
+
+  const formMessage =
+    $("formMessage");
+
+
+  const resumeInput =
+    $("resume");
+
+
+  const resumeDrop =
+    $("resumeDrop");
+
+
+  const resumeSelectButton =
+    $("resumeSelectButton");
+
+
+  const selectedFile =
+    $("selectedFile");
+
+
+  const selectedFileName =
+    $("selectedFileName");
+
+
+  const selectedFileMeta =
+    $("selectedFileMeta");
+
+
+  const selectedFileRemove =
+    $("selectedFileRemove");
+
+
+  const selectedFileIcon =
+    $("selectedFileIcon");
+
+
+  const progressCircle =
+    $("progressCircle");
+
+
+  const progressPercent =
+    $("progressPercent");
+
+
+  const loadingOverlay =
+    $("loadingOverlay");
+
+
+  const loadingTitle =
+    $("loadingTitle");
+
+
+  const loadingStage =
+    $("loadingStage");
+
+
+  const loadingDetail =
+    $("loadingDetail");
+
+
+  const loadingChunk =
+    $("loadingChunk");
+
+
+  const loadingSize =
+    $("loadingSize");
+
+
+  const successOverlay =
+    $("successOverlay");
+
+
+  const successApplicationId =
+    $("successApplicationId");
+
+
+  const copyApplicationId =
+    $("copyApplicationId");
+
+
+  const successCloseButton =
+    $("successCloseButton");
+
+
+  /* =========================================================
+     PROGRESS
+  ========================================================== */
+
+  const PROGRESS_RADIUS =
+    52;
+
+
+  const PROGRESS_CIRCUMFERENCE =
+    2 * Math.PI * PROGRESS_RADIUS;
 
 
   progressCircle.style.strokeDasharray =
@@ -2369,9 +2514,11 @@
     PROGRESS_CIRCUMFERENCE.toFixed(2);
 
 
-  function setProgress(percent){
+  function setProgress(
+    percent
+  ){
 
-    const safePercent =
+    const safe =
       Math.max(
         0,
         Math.min(
@@ -2385,7 +2532,7 @@
       PROGRESS_CIRCUMFERENCE *
       (
         1 -
-        safePercent / 100
+        safe / 100
       );
 
 
@@ -2394,16 +2541,14 @@
 
 
     progressPercent.textContent =
-      Math.round(
-        safePercent
-      ) +
+      Math.round(safe) +
       "%";
 
   }
 
 
   /* =========================================================
-     5. NOTICE
+     NOTICE
   ========================================================== */
 
   function setNotice(
@@ -2413,7 +2558,8 @@
 
     if(!message){
 
-      formMessage.textContent = "";
+      formMessage.textContent =
+        "";
 
       formMessage.className =
         "notice";
@@ -2455,7 +2601,7 @@
 
 
   /* =========================================================
-     6. FILE SIZE
+     FILE HELPERS
   ========================================================== */
 
   function formatBytes(
@@ -2472,8 +2618,10 @@
       value < 1024
     ){
 
-      return value +
-        " B";
+      return (
+        value
+      ) +
+      " B";
 
     }
 
@@ -2502,22 +2650,16 @@
   }
 
 
-  /* =========================================================
-     7. FILE EXTENSION
-  ========================================================== */
-
   function getFileExtension(
     fileName
   ){
 
-    const name =
+    const parts =
       String(
         fileName || ""
-      ).trim();
-
-
-    const parts =
-      name.split(".");
+      )
+      .trim()
+      .split(".");
 
 
     if(
@@ -2536,9 +2678,49 @@
   }
 
 
-  /* =========================================================
-     8. VALIDATE FILE
-  ========================================================== */
+  function getFileIcon(
+    fileName
+  ){
+
+    const extension =
+      getFileExtension(
+        fileName
+      );
+
+
+    if(
+      extension === "pdf"
+    ){
+
+      return "📕";
+
+    }
+
+
+    if(
+      ["jpg","jpeg","png"]
+        .includes(extension)
+    ){
+
+      return "🖼️";
+
+    }
+
+
+    if(
+      ["doc","docx"]
+        .includes(extension)
+    ){
+
+      return "📘";
+
+    }
+
+
+    return "📄";
+
+  }
+
 
   function validateResumeFile(
     file
@@ -2595,60 +2777,6 @@
   }
 
 
-  /* =========================================================
-     9. FILE ICON
-  ========================================================== */
-
-  function getFileIcon(
-    fileName
-  ){
-
-    const extension =
-      getFileExtension(
-        fileName
-      );
-
-
-    if(
-      extension === "pdf"
-    ){
-
-      return "📕";
-
-    }
-
-
-    if(
-      ["jpg","jpeg","png"].includes(
-        extension
-      )
-    ){
-
-      return "🖼️";
-
-    }
-
-
-    if(
-      ["doc","docx"].includes(
-        extension
-      )
-    ){
-
-      return "📘";
-
-    }
-
-
-    return "📄";
-
-  }
-
-
-  /* =========================================================
-     10. FILE UI
-  ========================================================== */
-
   function showSelectedFile(
     file
   ){
@@ -2666,6 +2794,11 @@
 
       selectedFileMeta.textContent =
         "-";
+
+
+      selectedFileIcon.textContent =
+        "📄";
+
 
       return;
 
@@ -2694,11 +2827,7 @@
       );
 
 
-    const icon =
-      $("selectedFileIcon");
-
-
-    icon.textContent =
+    selectedFileIcon.textContent =
       getFileIcon(
         file.name
       );
@@ -2707,7 +2836,7 @@
 
 
   /* =========================================================
-     11. FILE SELECT
+     FILE SELECT
   ========================================================== */
 
   resumeSelectButton.addEventListener(
@@ -2807,7 +2936,7 @@
 
 
   /* =========================================================
-     12. DRAG & DROP
+     DRAG / DROP
   ========================================================== */
 
   [
@@ -2822,6 +2951,7 @@
 
           event.preventDefault();
           event.stopPropagation();
+
 
           resumeDrop.classList.add(
             "dragover"
@@ -2846,6 +2976,7 @@
 
           event.preventDefault();
           event.stopPropagation();
+
 
           resumeDrop.classList.remove(
             "dragover"
@@ -2888,17 +3019,17 @@
         );
 
 
-        const dataTransfer =
+        const transfer =
           new DataTransfer();
 
 
-        dataTransfer.items.add(
+        transfer.items.add(
           file
         );
 
 
         resumeInput.files =
-          dataTransfer.files;
+          transfer.files;
 
 
         showSelectedFile(
@@ -2931,354 +3062,76 @@
 
 
   /* =========================================================
-     13. TOKEN
+     REQUEST ID
   ========================================================== */
 
-  function getTokenExpiry(
-    token
-  ){
+  function createRequestId(){
 
-    try{
-
-      const part =
-        token.split(".")[1];
-
-
-      if(!part){
-
-        return 0;
-
-      }
-
-
-      const base64 =
-        part
-          .replace(
-            /-/g,
-            "+"
-          )
-          .replace(
-            /_/g,
-            "/"
-          );
-
-
-      const json =
-        decodeURIComponent(
-
-          atob(
-            base64
-          )
-            .split("")
-            .map(
-              function(c){
-
-                return (
-                  "%" +
-                  (
-                    "00" +
-                    c
-                      .charCodeAt(0)
-                      .toString(16)
-                  ).slice(-2)
-                );
-
-              }
-            )
-            .join("")
-
-        );
-
-
-      return (
-        JSON.parse(
-          json
-        ).exp ||
-        0
-      );
-
-    }catch(error){
-
-      return 0;
-
-    }
-
-  }
-
-
-  async function refreshToken() {
-
-  idToken =
-    liff.getIDToken() ||
-    "";
-
-  if (!idToken) {
-
-    throw new Error(
-      "ไม่พบ LINE ID Token กรุณาเปิดหน้า ATWORK ใหม่"
+    return (
+      "REQ_" +
+      Date.now().toString(36) +
+      "_" +
+      Math.random()
+        .toString(36)
+        .slice(2) +
+      "_" +
+      Math.random()
+        .toString(36)
+        .slice(2)
     );
 
   }
 
-  return idToken;
-}
+
+  /* =========================================================
+     FORM HELPER
+  ========================================================== */
+
+  function addHidden(
+    form,
+    name,
+    value
+  ){
+
+    const input =
+      document.createElement(
+        "input"
+      );
+
+
+    input.type =
+      "hidden";
+
+
+    input.name =
+      name;
+
+
+    input.value =
+      value == null
+        ? ""
+        : String(value);
+
+
+    form.appendChild(
+      input
+    );
+
+  }
 
 
   /* =========================================================
-     14. API
+     POST API
+     
+     ใช้ Form POST + Request ID + JSONP Polling
+     เพื่อหลีกเลี่ยง Failed to fetch / CORS
   ========================================================== */
 
-  async function apiCall(
+  function postFormApi(
     action,
-    data = {}
-  ){
-
-    if(
-      !GAS_WEB_APP_URL ||
-      GAS_WEB_APP_URL.includes(
-        "PASTE_YOUR_"
-      )
-    ){
-
-      throw new Error(
-        "ยังไม่ได้ใส่ GAS Web App URL"
-      );
-
-    }
-
-
-    const response =
-      await fetch(
-        GAS_WEB_APP_URL,
-        {
-
-          method:
-            "POST",
-
-          headers:{
-            "Content-Type":
-              "text/plain;charset=utf-8"
-          },
-
-          body:
-            JSON.stringify({
-
-              action:
-                action,
-
-              idToken:
-                idToken,
-
-              data:
-                data
-
-            })
-
-        }
-      );
-
-
-    if(
-      !response.ok
-    ){
-
-      throw new Error(
-        "Google Apps Script ตอบกลับ HTTP " +
-        response.status
-      );
-
-    }
-
-
-    const raw =
-      await response.text();
-
-
-    let result;
-
-
-    try{
-
-      result =
-        JSON.parse(
-          raw
-        );
-
-    }catch(error){
-
-      console.error(
-        "API RAW RESPONSE:",
-        raw
-      );
-
-
-      throw new Error(
-        "ระบบตอบกลับข้อมูลไม่ถูกต้อง"
-      );
-
-    }
-
-
-    if(
-      !result ||
-      result.success === false ||
-      result.ok === false
-    ){
-
-      throw new Error(
-        result?.message ||
-        "ระบบตอบกลับไม่สำเร็จ"
-      );
-
-    }
-
-
-    const normalized =
-      result.data ||
-      result.result ||
-      result;
-
-
-    return {
-      ...result,
-      ...(
-        normalized &&
-        typeof normalized === "object"
-          ? normalized
-          : {}
-      )
-    };
-
-  }
-
-
-  /* =========================================================
-     15. LIFF INIT
-  ========================================================== */
-
-  async function init(){
-
-  try{
-
-    await liff.init({
-
-      liffId:
-        LIFF_ID,
-
-      withLoginOnExternalBrowser:
-        true
-
-    });
-
-
-    if(
-      !liff.isLoggedIn()
-    ){
-
-      if(
-        !liff.isInClient()
-      ){
-
-        liff.login({
-
-          redirectUri:
-            window.location.href
-
-        });
-
-        return;
-
-      }
-
-      throw new Error(
-        "ยังไม่ได้เข้าสู่ระบบ LINE"
-      );
-
-    }
-
-
-    /*
-     * รับ ID Token จาก LIFF
-     * ไม่ตรวจ exp ฝั่ง Browser
-     */
-    await refreshToken();
-
-
-    ready =
-      true;
-
-
-    lineState.classList.add(
-      "connected"
-    );
-
-
-    lineState.textContent =
-      liff.isInClient()
-        ? "● เชื่อมต่อ LINE แล้ว"
-        : "● เชื่อมต่อ LINE แล้ว (Browser)";
-
-
-    submitButton.disabled =
-      false;
-
-
-    submitButtonText.textContent =
-      "ส่งใบสมัคร";
-
-
-    hideNotice();
-
-
-  }catch(error){
-
-    console.error(
-      "LIFF INIT ERROR:",
-      error
-    );
-
-
-    ready =
-      false;
-
-
-    lineState.classList.remove(
-      "connected"
-    );
-
-
-    lineState.textContent =
-      "เชื่อมต่อ LINE ไม่สำเร็จ";
-
-
-    submitButton.disabled =
-      true;
-
-
-    submitButtonText.textContent =
-      "ไม่สามารถส่งใบสมัคร";
-
-
-    setNotice(
-
-      error?.message ||
-      "เปิดระบบไม่สำเร็จ",
-
-      "danger"
-
-    );
-
-  }
-
-}
-
-
-  /* =========================================================
-     16. READ FILE BASE64
-  ========================================================== */
-
-  function readFileAsBase64(
-    blob
+    data,
+    token,
+    timeoutMs = 180000
   ){
 
     return new Promise(
@@ -3287,56 +3140,337 @@
         reject
       ){
 
-        const reader =
-          new FileReader();
+        const requestId =
+          createRequestId();
 
 
-        reader.onload =
-          function(){
-
-            const result =
-              String(
-                reader.result ||
-                ""
-              );
+        const form =
+          document.createElement(
+            "form"
+          );
 
 
-            const comma =
-              result.indexOf(
-                ","
-              );
+        form.method =
+          "POST";
 
 
-            resolve(
-
-              comma >= 0
-
-                ? result.substring(
-                    comma + 1
-                  )
-
-                : result
-
-            );
-
-          };
+        form.action =
+          SCRIPT_URL;
 
 
-        reader.onerror =
-          function(){
+        form.target =
+          "atworkApiFrame";
+
+
+        form.style.display =
+          "none";
+
+
+        addHidden(
+          form,
+          "action",
+          action
+        );
+
+
+        addHidden(
+          form,
+          "requestId",
+          requestId
+        );
+
+
+        addHidden(
+          form,
+          "idToken",
+          token
+        );
+
+
+        addHidden(
+          form,
+          "data",
+          JSON.stringify(
+            data || {}
+          )
+        );
+
+
+        document.body.appendChild(
+          form
+        );
+
+
+        let finished =
+          false;
+
+
+        let attempts =
+          0;
+
+
+        let script =
+          null;
+
+
+        let timer =
+          null;
+
+
+        function cleanup(){
+
+          if(timer){
+            clearTimeout(timer);
+          }
+
+
+          if(script){
+
+            try{
+              script.remove();
+            }catch(ignore){}
+
+          }
+
+
+          try{
+            form.remove();
+          }catch(ignore){}
+
+        }
+
+
+        function finish(
+          error,
+          value
+        ){
+
+          if(finished){
+            return;
+          }
+
+
+          finished =
+            true;
+
+
+          cleanup();
+
+
+          if(error){
 
             reject(
-              new Error(
-                "อ่านไฟล์ Resume ไม่สำเร็จ"
-              )
+              error
             );
 
-          };
+          }else{
+
+            resolve(
+              value
+            );
+
+          }
+
+        }
 
 
-        reader.readAsDataURL(
-          blob
-        );
+        timer =
+          setTimeout(
+            function(){
+
+              finish(
+
+                new Error(
+                  "Server ตอบกลับช้าเกินไป กรุณาลองใหม่อีกครั้ง"
+                )
+
+              );
+
+            },
+            timeoutMs
+          );
+
+
+        function poll(){
+
+          if(finished){
+            return;
+          }
+
+
+          attempts++;
+
+
+          if(script){
+
+            try{
+              script.remove();
+            }catch(ignore){}
+
+          }
+
+
+          const callbackName =
+            "__atworkIndex_" +
+            Date.now() +
+            "_" +
+            Math.floor(
+              Math.random() *
+              1000000
+            );
+
+
+          script =
+            document.createElement(
+              "script"
+            );
+
+
+          window[callbackName] =
+            function(result){
+
+              try{
+
+                delete window[
+                  callbackName
+                ];
+
+              }catch(ignore){}
+
+
+              if(script){
+
+                try{
+                  script.remove();
+                }catch(ignore){}
+
+              }
+
+
+              if(
+                !result ||
+                result.pending
+              ){
+
+                if(
+                  attempts <
+                  160
+                ){
+
+                  setTimeout(
+                    poll,
+                    900
+                  );
+
+                }else{
+
+                  finish(
+
+                    new Error(
+                      "ไม่พบผลลัพธ์จาก Server"
+                    )
+
+                  );
+
+                }
+
+
+                return;
+
+              }
+
+
+              finish(
+                null,
+                result
+              );
+
+            };
+
+
+          script.onerror =
+            function(){
+
+              try{
+
+                delete window[
+                  callbackName
+                ];
+
+              }catch(ignore){}
+
+
+              if(
+                attempts <
+                160
+              ){
+
+                setTimeout(
+                  poll,
+                  900
+                );
+
+              }else{
+
+                finish(
+
+                  new Error(
+                    "ไม่สามารถตรวจสอบผลลัพธ์จาก Server ได้"
+                  )
+
+                );
+
+              }
+
+            };
+
+
+          script.src =
+            SCRIPT_URL +
+            "?action=status" +
+            "&requestId=" +
+            encodeURIComponent(
+              requestId
+            ) +
+            "&callback=" +
+            encodeURIComponent(
+              callbackName
+            ) +
+            "&_=" +
+            Date.now();
+
+
+          document.body.appendChild(
+            script
+          );
+
+        }
+
+
+        try{
+
+          /*
+           * ส่งข้อมูลไป Apps Script
+           */
+          form.submit();
+
+
+          /*
+           * เริ่ม polling
+           */
+          setTimeout(
+            poll,
+            250
+          );
+
+
+        }catch(error){
+
+          finish(
+            error
+          );
+
+        }
 
       }
     );
@@ -3345,7 +3479,133 @@
 
 
   /* =========================================================
-     17. LOADING
+     API CALL
+  ========================================================== */
+
+  async function apiCall(
+    action,
+    data = {}
+  ){
+
+    if(
+      !SCRIPT_URL
+    ){
+
+      throw new Error(
+        "ยังไม่ได้ตั้งค่า GAS Web App URL"
+      );
+
+    }
+
+
+    if(
+      !idToken
+    ){
+
+      await refreshLineToken();
+
+    }
+
+
+    const response =
+      await postFormApi(
+        action,
+        data,
+        idToken
+      );
+
+
+    if(
+      !response
+    ){
+
+      throw new Error(
+        "ไม่ได้รับข้อมูลจาก Server"
+      );
+
+    }
+
+
+    if(
+      response.pending
+    ){
+
+      throw new Error(
+        "Server ยังประมวลผลไม่เสร็จ"
+      );
+
+    }
+
+
+    if(
+      response.ok === false
+    ){
+
+      throw new Error(
+        response.message ||
+        "ระบบประมวลผลไม่สำเร็จ"
+      );
+
+    }
+
+
+    const result =
+      response.result ||
+      response;
+
+
+    if(
+      result &&
+      (
+        result.success === false ||
+        result.ok === false
+      )
+    ){
+
+      throw new Error(
+        result.message ||
+        response.message ||
+        "ระบบประมวลผลไม่สำเร็จ"
+      );
+
+    }
+
+
+    return result;
+
+  }
+
+
+  /* =========================================================
+     LINE TOKEN
+  ========================================================== */
+
+  async function refreshLineToken(){
+
+    const token =
+      liff.getIDToken();
+
+
+    if(!token){
+
+      throw new Error(
+        "ไม่พบ LINE ID Token กรุณาเปิดหน้า ATWORK จาก LINE ใหม่"
+      );
+
+    }
+
+
+    idToken =
+      token;
+
+
+    return idToken;
+
+  }
+
+
+  /* =========================================================
+     LOADING
   ========================================================== */
 
   function showLoading(){
@@ -3415,7 +3675,8 @@
 
 
     if(
-      stage != null
+      stage !== undefined &&
+      stage !== null
     ){
 
       loadingStage.textContent =
@@ -3425,7 +3686,8 @@
 
 
     if(
-      detail != null
+      detail !== undefined &&
+      detail !== null
     ){
 
       loadingDetail.textContent =
@@ -3435,7 +3697,8 @@
 
 
     if(
-      chunk != null
+      chunk !== undefined &&
+      chunk !== null
     ){
 
       loadingChunk.textContent =
@@ -3445,7 +3708,8 @@
 
 
     if(
-      size != null
+      size !== undefined &&
+      size !== null
     ){
 
       loadingSize.textContent =
@@ -3457,7 +3721,80 @@
 
 
   /* =========================================================
-     18. UPLOAD RESUME
+     READ FILE
+  ========================================================== */
+
+  function readBlobAsBase64(
+    blob
+  ){
+
+    return new Promise(
+      function(
+        resolve,
+        reject
+      ){
+
+        const reader =
+          new FileReader();
+
+
+        reader.onload =
+          function(){
+
+            const result =
+              String(
+                reader.result ||
+                ""
+              );
+
+
+            const comma =
+              result.indexOf(
+                ","
+              );
+
+
+            resolve(
+
+              comma >= 0
+
+                ? result.substring(
+                    comma + 1
+                  )
+
+                : result
+
+            );
+
+          };
+
+
+        reader.onerror =
+          function(){
+
+            reject(
+
+              new Error(
+                "อ่านข้อมูล Resume ไม่สำเร็จ"
+              )
+
+            );
+
+          };
+
+
+        reader.readAsDataURL(
+          blob
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     UPLOAD RESUME
   ========================================================== */
 
   async function uploadResume(
@@ -3496,28 +3833,17 @@
       "application/octet-stream";
 
 
-    /*
-     * 10% = สร้างใบสมัคร
-     * 90% = Resume Upload
-     */
-
-    const uploadStartPercent =
-      10;
-
-
-    const uploadRange =
-      90;
-
-
     updateLoading(
 
-      uploadStartPercent,
+      10,
 
       "กำลังเตรียม Resume...",
 
-      "กำลังสร้างพื้นที่อัปโหลด",
+      "กำลังสร้าง Upload Session",
 
-      "เตรียมไฟล์",
+      "0/" +
+      totalChunks +
+      " ส่วน",
 
       formatBytes(
         file.size
@@ -3527,17 +3853,8 @@
 
 
     /*
-     * ตรงกับ Code.gs:
-     *
-     * prepareApplicationResumeUpload({
-     *   applicationId,
-     *   resumeName,
-     *   resumeType,
-     *   totalBytes,
-     *   totalChunks
-     * })
+     * เตรียม Upload
      */
-
     const start =
       await apiCall(
         "prepareApplicationResumeUpload",
@@ -3563,21 +3880,30 @@
 
 
     if(
-      !start ||
+      !start
+    ){
+
+      throw new Error(
+        "ไม่สามารถเตรียม Resume ได้"
+      );
+
+    }
+
+
+    if(
       start.success === false
     ){
 
       throw new Error(
-        start?.message ||
-        "ไม่สามารถเตรียมการอัปโหลด Resume ได้"
+        start.message ||
+        "เตรียม Resume ไม่สำเร็จ"
       );
 
     }
 
 
     /*
-     * ถ้า Server เจอ upload session เดิม
-     * หรือ Resume เสร็จไปแล้ว
+     * กรณี Server บอกว่าเสร็จแล้ว
      */
     if(
       start.status ===
@@ -3590,7 +3916,7 @@
 
         "อัปโหลด Resume สำเร็จ",
 
-        "ไฟล์ Resume ถูกบันทึกเรียบร้อยแล้ว",
+        "บันทึก Resume เรียบร้อยแล้ว",
 
         totalChunks +
         "/" +
@@ -3613,6 +3939,9 @@
     }
 
 
+    /*
+     * Upload ทีละ chunk
+     */
     for(
       let index = 0;
       index < totalChunks;
@@ -3639,43 +3968,18 @@
         );
 
 
-      const base64 =
-        await readFileAsBase64(
-          blob
-        );
-
-
-      /*
-       * คำนวณก่อนส่ง
-       */
-      const localUploadedBytes =
-        endByte;
-
-
-      const localUploadPercent =
-        (
-          localUploadedBytes /
-          file.size
-        ) *
-        100;
-
-
-      const overallPercent =
-        uploadStartPercent +
-        (
-          localUploadPercent /
-          100
-        ) *
-        uploadRange;
-
-
       updateLoading(
 
-        overallPercent,
+        10 +
+        (
+          index /
+          totalChunks
+        ) *
+        75,
 
-        "กำลังอัปโหลด Resume...",
+        "กำลังเตรียมข้อมูล Resume...",
 
-        "กำลังส่งข้อมูลส่วนที่ " +
+        "กำลังอ่านไฟล์ส่วนที่ " +
         (
           index + 1
         ) +
@@ -3690,7 +3994,7 @@
         " ส่วน",
 
         formatBytes(
-          localUploadedBytes
+          endByte
         ) +
         " / " +
         formatBytes(
@@ -3700,17 +4004,13 @@
       );
 
 
-      /*
-       * ตรงกับ Code.gs:
-       *
-       * uploadApplicationChunk({
-       *   applicationId,
-       *   chunkIndex,
-       *   chunkBase64
-       * })
-       */
+      const base64 =
+        await readBlobAsBase64(
+          blob
+        );
 
-      const result =
+
+      const uploadResult =
         await apiCall(
           "uploadApplicationChunk",
           {
@@ -3729,12 +4029,24 @@
 
 
       if(
-        result.status ===
-        "ERROR"
+        !uploadResult
       ){
 
         throw new Error(
-          result.message ||
+          "ไม่พบผลลัพธ์การอัปโหลด"
+        );
+
+      }
+
+
+      if(
+        uploadResult.success === false ||
+        uploadResult.status ===
+          "ERROR"
+      ){
+
+        throw new Error(
+          uploadResult.message ||
           "อัปโหลด Resume ไม่สำเร็จ"
         );
 
@@ -3743,12 +4055,12 @@
 
       const uploadedBytes =
         Number(
-          result.uploadedBytes ||
+          uploadResult.uploadedBytes ||
           endByte
         );
 
 
-      const uploadPercent =
+      const filePercent =
         Math.min(
 
           100,
@@ -3762,22 +4074,29 @@
         );
 
 
-      const overallProgress =
-        uploadStartPercent +
+      const overallPercent =
+        10 +
         (
-          uploadPercent /
+          filePercent /
           100
         ) *
-        uploadRange;
+        90;
 
 
       updateLoading(
 
-        overallProgress,
+        overallPercent,
 
         "กำลังอัปโหลด Resume...",
 
-        "อัปโหลดข้อมูลแล้ว",
+        "อัปโหลดแล้ว " +
+        formatBytes(
+          uploadedBytes
+        ) +
+        " จาก " +
+        formatBytes(
+          file.size
+        ),
 
         (
           index + 1
@@ -3798,7 +4117,7 @@
 
 
       if(
-        result.status ===
+        uploadResult.status ===
         "COMPLETE"
       ){
 
@@ -3808,7 +4127,7 @@
 
           "อัปโหลด Resume สำเร็จ",
 
-          "กำลังเตรียมผลลัพธ์...",
+          "ไฟล์ Resume ถูกบันทึกเรียบร้อยแล้ว",
 
           totalChunks +
           "/" +
@@ -3826,16 +4145,13 @@
         );
 
 
-        return result;
+        return uploadResult;
 
       }
 
     }
 
 
-    /*
-     * ถ้าครบ loop แต่ไม่ได้ COMPLETE
-     */
     throw new Error(
       "ระบบอัปโหลด Resume ยังไม่ยืนยันว่าเสร็จสมบูรณ์"
     );
@@ -3844,10 +4160,10 @@
 
 
   /* =========================================================
-     19. SUCCESS
+     SUCCESS
   ========================================================== */
 
-  function showSuccessPopup(
+  function showSuccess(
     applicationId
   ){
 
@@ -3868,7 +4184,7 @@
   }
 
 
-  function hideSuccessPopup(){
+  function hideSuccess(){
 
     successOverlay.classList.remove(
       "show"
@@ -3884,7 +4200,7 @@
 
   successCloseButton.addEventListener(
     "click",
-    hideSuccessPopup
+    hideSuccess
   );
 
 
@@ -3897,7 +4213,7 @@
         successOverlay
       ){
 
-        hideSuccessPopup();
+        hideSuccess();
 
       }
 
@@ -3906,7 +4222,7 @@
 
 
   /* =========================================================
-     20. COPY APPLICATION ID
+     COPY
   ========================================================== */
 
   copyApplicationId.addEventListener(
@@ -3943,7 +4259,7 @@
               "คัดลอก";
 
           },
-          1600
+          1500
         );
 
 
@@ -3961,7 +4277,7 @@
 
 
   /* =========================================================
-     21. SUBMIT
+     SUBMIT
   ========================================================== */
 
   applicationForm.addEventListener(
@@ -3972,7 +4288,7 @@
 
 
       if(
-        !ready ||
+        !liffReady ||
         submitting
       ){
 
@@ -3981,9 +4297,6 @@
       }
 
 
-      /*
-       * Browser validation
-       */
       if(
         !applicationForm.checkValidity()
       ){
@@ -4002,9 +4315,6 @@
           : null;
 
 
-      /*
-       * ตรวจ Resume
-       */
       try{
 
         validateResumeFile(
@@ -4039,28 +4349,16 @@
 
       try{
 
-        /* ==========================================
-           TOKEN
-        ========================================== */
-
-        await refreshToken();
-
-
-        /* ==========================================
-           FILE NAME
-        ========================================== */
-
-        const resumeName =
-          file
-            ? file.name
-            : "";
+        /*
+         * Refresh ID Token
+         */
+        await refreshLineToken();
 
 
-        /* ==========================================
-           APPLICATION DATA
-        ========================================== */
-
-        const form = {
+        /*
+         * ข้อมูลใบสมัคร
+         */
+        const applicationData = {
 
           name:
             $("name")
@@ -4126,26 +4424,26 @@
               .trim(),
 
           /*
-           * สำคัญ:
-           * Code.gs ใช้ ResumeName
+           * ส่งชื่อ Resume ไปพร้อมใบสมัคร
            */
           resumeName:
-            resumeName
+            file
+              ? file.name
+              : ""
 
         };
 
 
-        /* ==========================================
-           CREATE APPLICATION
-        ========================================== */
-
+        /*
+         * 1. สร้างใบสมัคร
+         */
         updateLoading(
 
           3,
 
           "กำลังส่งข้อมูลใบสมัคร...",
 
-          "กำลังตรวจสอบข้อมูลผู้สมัคร",
+          "กำลังบันทึกข้อมูลลงระบบ ATWORK",
 
           "ขั้นตอน 1/2",
 
@@ -4161,7 +4459,7 @@
         const result =
           await apiCall(
             "createApplication",
-            form
+            applicationData
           );
 
 
@@ -4169,10 +4467,6 @@
           String(
 
             result.applicationId ||
-
-            result.data?.applicationId ||
-
-            result.result?.applicationId ||
 
             ""
 
@@ -4183,59 +4477,25 @@
 
           throw new Error(
 
-            "ระบบได้รับข้อมูลแล้ว แต่ไม่พบเลขอ้างอิงใบสมัคร\n" +
-            "กรุณาตรวจสอบ Code.gs และ Deploy ล่าสุด"
+            "ระบบสร้างใบสมัครแล้ว แต่ไม่พบเลขอ้างอิงใบสมัคร"
 
           );
 
         }
 
 
-        /* ==========================================
-           NO RESUME
-        ========================================== */
-
+        /*
+         * ถ้าไม่มี Resume
+         */
         if(!file){
-
-          updateLoading(
-
-            70,
-
-            "ส่งใบสมัครสำเร็จ",
-
-            "กำลังเตรียมผลลัพธ์...",
-
-            "เสร็จแล้ว",
-
-            "ไม่มี Resume"
-
-          );
-
-
-          await new Promise(
-            function(resolve){
-
-              setTimeout(
-                resolve,
-                300
-              );
-
-            }
-          );
-
-
-          setProgress(
-            100
-          );
-
 
           updateLoading(
 
             100,
 
-            "ส่งข้อมูลสำเร็จ",
+            "ส่งใบสมัครสำเร็จ",
 
-            "สร้างใบสมัครเรียบร้อยแล้ว",
+            "บันทึกข้อมูลลง Google Sheets เรียบร้อยแล้ว",
 
             "เสร็จสมบูรณ์",
 
@@ -4267,7 +4527,7 @@
           );
 
 
-          showSuccessPopup(
+          showSuccess(
             applicationId
           );
 
@@ -4277,10 +4537,9 @@
         }
 
 
-        /* ==========================================
-           UPLOAD RESUME
-        ========================================== */
-
+        /*
+         * 2. Upload Resume
+         */
         updateLoading(
 
           10,
@@ -4302,37 +4561,15 @@
           "กำลังแนบ Resume...";
 
 
-        const resumeResult =
-          await uploadResume(
-            applicationId,
-            file
-          );
-
-
-        if(
-          !resumeResult ||
-          resumeResult.success === false
-        ){
-
-          throw new Error(
-
-            resumeResult?.message ||
-            "อัปโหลด Resume ไม่สำเร็จ"
-
-          );
-
-        }
-
-
-        /* ==========================================
-           COMPLETE
-        ========================================== */
-
-        setProgress(
-          100
+        await uploadResume(
+          applicationId,
+          file
         );
 
 
+        /*
+         * เสร็จสมบูรณ์
+         */
         updateLoading(
 
           100,
@@ -4369,19 +4606,6 @@
         hideLoading();
 
 
-        /* ==========================================
-           SUCCESS
-        ========================================== */
-
-        showSuccessPopup(
-          applicationId
-        );
-
-
-        /* ==========================================
-           RESET FORM
-        ========================================== */
-
         applicationForm.reset();
 
 
@@ -4393,10 +4617,15 @@
         hideNotice();
 
 
+        showSuccess(
+          applicationId
+        );
+
+
       }catch(error){
 
         console.error(
-          "SUBMIT ERROR:",
+          "SUBMIT ERROR",
           error
         );
 
@@ -4420,13 +4649,13 @@
 
 
         submitButton.disabled =
-          !ready;
+          !liffReady;
 
 
         submitButtonText.textContent =
-          ready
+          liffReady
             ? "ส่งใบสมัคร"
-            : "กำลังเตรียมระบบ...";
+            : "กำลังเชื่อมต่อ LINE...";
 
       }
 
@@ -4435,7 +4664,7 @@
 
 
   /* =========================================================
-     22. PHONE INPUT
+     PHONE
   ========================================================== */
 
   $("phone").addEventListener(
@@ -4458,7 +4687,7 @@
 
 
   /* =========================================================
-     23. POSTAL CODE
+     POSTAL
   ========================================================== */
 
   $("postalCode").addEventListener(
@@ -4481,7 +4710,7 @@
 
 
   /* =========================================================
-     24. START DATE
+     START DATE
   ========================================================== */
 
   (function(){
@@ -4512,10 +4741,144 @@
 
 
   /* =========================================================
-     25. START
+     LIFF INIT
   ========================================================== */
 
-  init();
+  async function initLiff(){
+
+    try{
+
+      lineState.textContent =
+        "กำลังเชื่อมต่อ LINE...";
+
+
+      await liff.init({
+
+        liffId:
+          LIFF_ID,
+
+        withLoginOnExternalBrowser:
+          true
+
+      });
+
+
+      /*
+       * ถ้ายังไม่ได้ Login
+       */
+      if(
+        !liff.isLoggedIn()
+      ){
+
+        if(
+          !liff.isInClient()
+        ){
+
+          liff.login({
+
+            redirectUri:
+              window.location.href
+
+          });
+
+
+          return;
+
+        }
+
+
+        throw new Error(
+          "ยังไม่ได้เข้าสู่ระบบ LINE"
+        );
+
+      }
+
+
+      /*
+       * รับ ID Token
+       */
+      await refreshLineToken();
+
+
+      /*
+       * ถือว่า LIFF พร้อม
+       */
+      liffReady =
+        true;
+
+
+      lineState.classList.add(
+        "connected"
+      );
+
+
+      lineState.textContent =
+        "● เชื่อมต่อ LINE แล้ว";
+
+
+      submitButton.disabled =
+        false;
+
+
+      submitButtonText.textContent =
+        "ส่งใบสมัคร";
+
+
+      hideNotice();
+
+
+    }catch(error){
+
+      console.error(
+        "LIFF INIT ERROR:",
+        error
+      );
+
+
+      liffReady =
+        false;
+
+
+      lineState.classList.remove(
+        "connected"
+      );
+
+
+      lineState.textContent =
+        "เชื่อมต่อ LINE ไม่สำเร็จ";
+
+
+      submitButton.disabled =
+        true;
+
+
+      submitButtonText.textContent =
+        "ไม่สามารถส่งใบสมัคร";
+
+
+      setNotice(
+
+        (
+          error?.message ||
+          "เชื่อมต่อ LINE ไม่สำเร็จ"
+        ) +
+
+        "\n\nกรุณาปิดหน้านี้ แล้วเปิดจากเมนู ATWORK ใน LINE ใหม่",
+
+        "danger"
+
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     START
+  ========================================================== */
+
+  initLiff();
 
 </script>
 
