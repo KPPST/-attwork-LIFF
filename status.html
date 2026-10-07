@@ -15,6 +15,166 @@
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
+
+    async function loadResumePreview(applicationId) {
+  const detailResume =
+    document.getElementById("detailResume");
+
+  if (!detailResume) return;
+
+  detailResume.innerHTML = `
+    <div class="resume-card">
+      <div
+        style="
+          padding:24px;
+          text-align:center;
+          color:#6b7280;
+        "
+      >
+        กำลังโหลด Resume...
+      </div>
+    </div>
+  `;
+
+  try {
+    const response =
+      await postFormApi(
+        "getApplicationResumePreview",
+        {
+          applicationId: applicationId
+        }
+      );
+
+    const result =
+      response && response.result
+        ? response.result
+        : response;
+
+    if (!result || result.ok !== true) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "ไม่สามารถโหลด Resume ได้"
+      );
+    }
+
+    if (!result.hasResume) {
+      detailResume.innerHTML = `
+        <div class="no-resume">
+          ใบสมัครนี้ไม่มี Resume แนบไว้
+        </div>
+      `;
+      return;
+    }
+
+    if (!result.isImage || !result.base64) {
+      detailResume.innerHTML = `
+        <div class="resume-card">
+          ${
+            result.fileName
+              ? `
+                <div class="resume-name">
+                  ${escapeHtml(result.fileName)}
+                </div>
+              `
+              : ""
+          }
+
+          <div class="resume-status">
+            ไม่สามารถแสดงไฟล์นี้เป็นรูปภาพได้
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    const contentType =
+      result.contentType || "image/jpeg";
+
+    const imageSrc =
+      "data:" +
+      contentType +
+      ";base64," +
+      result.base64;
+
+    detailResume.innerHTML = `
+      <div class="resume-card">
+
+        ${
+          result.fileName
+            ? `
+              <div class="resume-name">
+                ${escapeHtml(result.fileName)}
+              </div>
+            `
+            : ""
+        }
+
+        <div class="resume-status">
+          Resume
+        </div>
+
+        <div
+          style="
+            margin-top:14px;
+            border-radius:14px;
+            overflow:hidden;
+            background:#fff;
+            border:1px solid #e5e7eb;
+          "
+        >
+
+          <img
+            src="${imageSrc}"
+            alt="Resume"
+            style="
+              display:block;
+              width:100%;
+              height:auto;
+              max-height:1000px;
+              object-fit:contain;
+              background:#fff;
+            "
+          >
+
+        </div>
+
+      </div>
+    `;
+
+  } catch (error) {
+
+    console.error(
+      "Resume Preview Error:",
+      error
+    );
+
+    detailResume.innerHTML = `
+      <div class="resume-card">
+
+        <div
+          style="
+            padding:24px 15px;
+            text-align:center;
+            color:#dc2626;
+          "
+        >
+          ไม่สามารถแสดง Resume ได้
+          <br>
+          <small>
+            ${escapeHtml(
+              error.message ||
+              "เกิดข้อผิดพลาด"
+            )}
+          </small>
+        </div>
+
+      </div>
+    `;
+
+  }
+}
+    
     :root{
       --bg:#f3f7fc;
       --surface:#ffffff;
