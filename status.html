@@ -1204,9 +1204,13 @@
         }
 
         showMessage(
-          "ลบใบสมัครเรียบร้อยแล้ว",
-          "success"
-        );
+  result.warning
+    ? result.warning
+    : "ลบใบสมัครเรียบร้อยแล้ว",
+  result.warning
+    ? "error"
+    : "success"
+);
 
       } catch (error) {
         console.error(
@@ -1454,13 +1458,14 @@
           await getCurrentIdToken();
 
 
-        const response =
-          await postFormApi(
-            "getMyApplications",
-            {},
-            idToken,
-            120000
-          );
+        const response = await postFormApi(
+  "deleteMyApplication",
+  {
+    applicationId: applicationId
+  },
+  idToken,
+  30000
+);
 
 
         if (
