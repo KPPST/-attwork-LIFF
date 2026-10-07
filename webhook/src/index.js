@@ -1,20 +1,35 @@
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
+const LIFF_URL =
+  "https://liff.line.me/2011817085-Mqy2mWhy";
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
 
-    if (request.method !== "POST") {
+    // ==========================================
+    // GET
+    // ==========================================
+    if (request.method === "GET") {
       return new Response("ATWORK Webhook OK", {
         status: 200
       });
     }
 
+    // ==========================================
+    // รับเฉพาะ POST
+    // ==========================================
+    if (request.method !== "POST") {
+      return new Response("Method Not Allowed", {
+        status: 405
+      });
+    }
+
     try {
 
+      // อ่าน body
       const body = await request.text();
 
-      // ตรวจสอบลายเซ็นจาก LINE
+      // ==========================================
+      // ตรวจ LINE Signature
+      // ==========================================
       const signature =
         request.headers.get("x-line-signature") || "";
 
@@ -37,22 +52,18 @@ export default {
         });
       }
 
-      // ส่ง Webhook ต่อไปยัง Apps Script
-      const response =
-        await fetch(APPS_SCRIPT_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: body
-        });
+      // ==========================================
+      // Parse LINE webhook
+      // ==========================================
+      const data = JSON.parse(body);
 
-      console.log(
-        "Apps Script response:",
-        response.status
+      // ==========================================
+      // ตอบ LINE ก่อนทันที
+      // ==========================================
+      ctx.waitUntil(
+        processLineEvents(data, env)
       );
 
-      // LINE ต้องการ HTTP 200 จาก Webhook ตัวนี้
       return new Response(
         JSON.stringify({
           ok: true
@@ -74,8 +85,7 @@ export default {
 
       return new Response(
         JSON.stringify({
-          ok: false,
-          message: "Webhook error"
+          ok: false
         }),
         {
           status: 500,
@@ -90,7 +100,177 @@ export default {
 
 
 // =====================================================
-// LINE Webhook Signature Verification
+// ประมวลผล LINE Events
+// =====================================================
+
+async function processLineEvents(data, env) {
+
+  const events =
+    Array.isArray(data.events)
+      ? data.events
+      : [];
+
+  for (const event of events) {
+
+    // ------------------------------------------
+    // ข้อความจากผู้ใช้
+    // ------------------------------------------
+    if (
+      event.type === "message" &&
+      event.message &&
+      event.message.type === "text"
+    ) {
+
+      const message =
+        String(
+          event.message.text || ""
+        ).trim();
+
+      // ------------------------------------------
+      // สำหรับผู้หางาน
+      // ------------------------------------------
+      if (
+        message === "สำหรับผู้หางาน" &&
+        event.replyToken
+      ) {
+
+        await sendAtworkWelcomeFlex(
+          event.replyToken,
+          env.LINE_CHANNEL_ACCESS_TOKEN
+        );
+
+        continue;
+      }
+    }
+  }
+}
+
+
+// =====================================================
+// ATWORK FLEX
+// =====================================================
+
+async function sendAtworkWelcomeFlex(
+  replyToken,
+  channelAccessToken
+) {
+
+  const url =
+    "https://api.line.me/v2/bot/message/reply";
+
+  const message = {
+    type: "flex",
+    altText: "ATWORK เมนูสำหรับผู้หางาน",
+
+    contents: {
+      type: "bubble",
+      size: "mega",
+
+      body: {
+        type: "box",
+        layout: "vertical",
+        paddingAll: "20px",
+        spacing: "md",
+        backgroundColor: "#FFFFFF",
+
+        contents: [
+
+          {
+            type: "text",
+            text: "ATWORK",
+            weight: "bold",
+            size: "xl",
+            color: "#222222"
+          },
+
+          {
+            type: "text",
+            text: "Recruitment Services",
+            size: "xs",
+            color: "#888888"
+          },
+
+          {
+            type: "separator",
+            margin: "md",
+            color: "#EEEEEE"
+          },
+
+          {
+            type: "button",
+            style: "secondary",
+            height: "md",
+
+            action: {
+              type: "uri",
+              label: "ฝาก Resume",
+              uri:
+                "https://liff.line.me/2011817085-Mqy2mWhy"
+            }
+          },
+
+          {
+            type: "button",
+            style: "secondary",
+            height: "md",
+
+            action: {
+              type: "uri",
+              label: "ดูตำแหน่งงานว่าง",
+              uri:
+                "https://liff.line.me/2011817085-Mqy2mWhy"
+            }
+          },
+
+          {
+            type: "button",
+            style: "secondary",
+            height: "md",
+
+            action: {
+              type: "uri",
+              label: "ตรวจสอบสถานะการสมัคร",
+              uri:
+                "https://liff.line.me/2011817085-Mqy2mWhy"
+            }
+          }
+
+        ]
+      }
+    }
+  };
+
+  const response =
+    await fetch(url, {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":
+          "Bearer " +
+          channelAccessToken
+      },
+
+      body: JSON.stringify({
+        replyToken: replyToken,
+        messages: [message]
+      })
+    });
+
+  const result =
+    await response.text();
+
+  console.log(
+    "LINE Reply:",
+    response.status,
+    result
+  );
+}
+
+
+// =====================================================
+// LINE Signature Verification
 // =====================================================
 
 async function verifyLineSignature(
@@ -106,7 +286,9 @@ async function verifyLineSignature(
   const key =
     await crypto.subtle.importKey(
       "raw",
-      new TextEncoder().encode(channelSecret),
+      new TextEncoder().encode(
+        channelSecret
+      ),
       {
         name: "HMAC",
         hash: "SHA-256"
@@ -122,11 +304,13 @@ async function verifyLineSignature(
       new TextEncoder().encode(body)
     );
 
-  const expectedSignature =
-    arrayBufferToBase64(signatureBytes);
+  const expected =
+    arrayBufferToBase64(
+      signatureBytes
+    );
 
   return timingSafeEqual(
-    expectedSignature,
+    expected,
     signature
   );
 }
@@ -160,6 +344,7 @@ function timingSafeEqual(a, b) {
   let result = 0;
 
   for (let i = 0; i < a.length; i++) {
+
     result |=
       a.charCodeAt(i) ^
       b.charCodeAt(i);
