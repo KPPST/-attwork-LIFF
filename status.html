@@ -2,13 +2,1756 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
   <title>ATWORK | ตรวจสอบสถานะ</title>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    :root{
+      --bg:#f3f7fc;
+      --surface:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --line:#e2e8f0;
+
+      --blue:#2563eb;
+      --blue-soft:#eff6ff;
+
+      --green:#16a34a;
+      --green-soft:#ecfdf3;
+
+      --red:#dc2626;
+      --red-soft:#fef2f2;
+
+      --shadow:0 18px 55px rgba(15,23,42,.08);
+      --radius-xl:28px;
+      --radius-lg:20px;
+      --radius-md:15px;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      background:
+        radial-gradient(
+          500px 260px at -5% -5%,
+          rgba(37,99,235,.13),
+          transparent 72%
+        ),
+        radial-gradient(
+          460px 260px at 105% 0%,
+          rgba(59,130,246,.10),
+          transparent 72%
+        ),
+        linear-gradient(
+          180deg,
+          #f8fbff 0%,
+          #f3f7fc 45%,
+          #eef4fa 100%
+        );
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+
+      -webkit-font-smoothing:antialiased;
+    }
+
+    button{
+      font:inherit;
+      touch-action:manipulation;
+    }
+
+    .container{
+      width:min(760px,100%);
+      margin:0 auto;
+      padding:14px 14px 42px;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+
+      padding:24px 22px 20px;
+
+      border:1px solid rgba(255,255,255,.9);
+      border-radius:30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.98),
+          rgba(247,251,255,.96)
+        );
+
+      box-shadow:var(--shadow);
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+
+      width:250px;
+      height:250px;
+
+      right:-120px;
+      top:-150px;
+
+      border-radius:50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(37,99,235,.18),
+          rgba(37,99,235,0) 70%
+        );
+    }
+
+    .brand-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+
+      margin-bottom:10px;
+
+      color:var(--blue);
+
+      font-size:10.5px;
+      font-weight:900;
+
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .brand-kicker::before{
+      content:"";
+
+      width:18px;
+      height:2px;
+
+      border-radius:999px;
+
+      background:var(--blue);
+    }
+
+    .brand{
+      font-size:34px;
+      line-height:1;
+      font-weight:950;
+      letter-spacing:-.035em;
+    }
+
+    .hero-title{
+      margin-top:12px;
+
+      font-size:20px;
+      line-height:1.3;
+      font-weight:900;
+    }
+
+    .hero-copy{
+      margin-top:6px;
+
+      color:var(--muted);
+
+      font-size:13px;
+      line-height:1.65;
+    }
+
+    .line-user{
+      display:flex;
+      align-items:center;
+      gap:12px;
+
+      margin-top:18px;
+
+      padding:12px 13px;
+
+      border:1px solid #e4ebf3;
+      border-radius:16px;
+
+      background:rgba(255,255,255,.84);
+    }
+
+    .line-user img{
+      width:46px;
+      height:46px;
+
+      object-fit:cover;
+
+      border-radius:50%;
+
+      background:#eef2f7;
+      flex:0 0 auto;
+    }
+
+    .line-name{
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .connection{
+      display:flex;
+      align-items:center;
+      gap:6px;
+
+      margin-top:4px;
+
+      color:var(--green);
+
+      font-size:11.5px;
+      font-weight:750;
+    }
+
+    .connection::before{
+      content:"";
+
+      width:6px;
+      height:6px;
+
+      border-radius:50%;
+
+      background:currentColor;
+    }
+
+    /* =========================
+       MAIN CARD
+    ========================= */
+
+    .card{
+      margin-top:15px;
+
+      padding:9px;
+
+      border:1px solid rgba(226,232,240,.98);
+      border-radius:30px;
+
+      background:rgba(255,255,255,.88);
+
+      box-shadow:var(--shadow);
+    }
+
+    .card-inner{
+      padding:22px 20px 20px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:flex-start;
+      gap:13px;
+
+      margin-bottom:17px;
+    }
+
+    .section-icon{
+      width:40px;
+      height:40px;
+
+      display:grid;
+      place-items:center;
+
+      flex:0 0 auto;
+
+      border-radius:13px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #eff6ff,
+          #dbeafe
+        );
+
+      color:#1d4ed8;
+
+      font-size:19px;
+      font-weight:950;
+
+      box-shadow:
+        inset 0 0 0 1px rgba(37,99,235,.10);
+    }
+
+    .section-title{
+      margin:0;
+
+      font-size:18px;
+      line-height:1.3;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+
+    .section-desc{
+      margin-top:5px;
+
+      color:var(--muted);
+
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    /* =========================
+       REFRESH
+    ========================= */
+
+    .refresh-button{
+      width:100%;
+
+      min-height:52px;
+
+      border:1px solid #cbd5e1;
+      border-radius:14px;
+
+      background:#fff;
+      color:#0f172a;
+
+      font-size:14px;
+      font-weight:900;
+
+      cursor:pointer;
+
+      transition:
+        transform .16s ease,
+        box-shadow .16s ease,
+        opacity .16s ease,
+        border-color .16s ease;
+    }
+
+    .refresh-button:not(:disabled):hover{
+      transform:translateY(-1px);
+
+      border-color:#93b4de;
+
+      box-shadow:
+        0 12px 24px rgba(37,99,235,.08);
+    }
+
+    .refresh-button:disabled{
+      opacity:.55;
+      cursor:wait;
+    }
+
+    /* =========================
+       MESSAGE
+    ========================= */
+
+    .message{
+      display:none;
+
+      margin-top:14px;
+
+      padding:12px 14px;
+
+      border-radius:13px;
+
+      font-size:12px;
+      line-height:1.55;
+    }
+
+    .message.show{
+      display:block;
+    }
+
+    .message.info{
+      border:1px solid #bfdbfe;
+      background:var(--blue-soft);
+      color:#1d4ed8;
+    }
+
+    .message.success{
+      border:1px solid #bbf7d0;
+      background:var(--green-soft);
+      color:#15803d;
+    }
+
+    .message.error{
+      border:1px solid #fecaca;
+      background:var(--red-soft);
+      color:#b91c1c;
+    }
+
+    /* =========================
+       APPLICATION LIST
+    ========================= */
+
+    .applications{
+      margin-top:14px;
+
+      display:grid;
+      gap:10px;
+    }
+
+    .application-card{
+      padding:15px;
+
+      border:1px solid #e2e8f0;
+      border-radius:17px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #fbfdff,
+          #f7faff
+        );
+    }
+
+    .application-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+
+      gap:12px;
+    }
+
+    .application-position{
+      margin:0;
+
+      font-size:14.5px;
+      line-height:1.45;
+      font-weight:900;
+    }
+
+    .application-id{
+      margin-top:4px;
+
+      color:#94a3b8;
+
+      font-size:10.5px;
+      line-height:1.4;
+
+      word-break:break-all;
+    }
+
+    .status-badge{
+      flex:0 0 auto;
+
+      padding:6px 10px;
+
+      border-radius:999px;
+
+      background:#eff6ff;
+      border:1px solid #dbeafe;
+
+      color:#1d4ed8;
+
+      font-size:10.5px;
+      font-weight:900;
+
+      white-space:nowrap;
+    }
+
+    .meta-grid{
+      display:grid;
+
+      grid-template-columns:1fr 1fr;
+
+      gap:8px;
+
+      margin-top:13px;
+    }
+
+    .meta-item{
+      padding:9px 10px;
+
+      border:1px solid #edf2f7;
+      border-radius:12px;
+
+      background:#fff;
+    }
+
+    .meta-label{
+      display:block;
+
+      color:#94a3b8;
+
+      font-size:9.5px;
+      font-weight:800;
+    }
+
+    .meta-value{
+      display:block;
+
+      margin-top:3px;
+
+      color:#334155;
+
+      font-size:11.5px;
+      font-weight:850;
+
+      word-break:break-word;
+    }
+
+    .resume-box{
+      margin-top:10px;
+
+      padding:10px 11px;
+
+      border:1px solid #edf2f7;
+      border-radius:12px;
+
+      background:#fff;
+
+      font-size:11.5px;
+    }
+
+    .resume-title{
+      color:#64748b;
+      font-weight:800;
+    }
+
+    .resume-status{
+      margin-top:3px;
+
+      color:#334155;
+
+      font-weight:900;
+    }
+
+    .updated{
+      margin-top:8px;
+
+      color:#94a3b8;
+
+      font-size:9.5px;
+      line-height:1.5;
+    }
+
+    .empty{
+      padding:30px 14px;
+
+      text-align:center;
+
+      color:var(--muted);
+
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .loading{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:9px;
+
+      padding:28px 10px;
+
+      color:var(--muted);
+
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .spinner{
+      width:18px;
+      height:18px;
+
+      border:3px solid #dbe5f1;
+      border-top-color:var(--blue);
+
+      border-radius:50%;
+
+      animation:spin .75s linear infinite;
+    }
+
+    @keyframes spin{
+      to{
+        transform:rotate(360deg);
+      }
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    @media(max-width:620px){
+      .container{
+        padding:10px 9px 30px;
+      }
+
+      .hero{
+        padding:20px 17px 17px;
+        border-radius:24px;
+      }
+
+      .brand{
+        font-size:30px;
+      }
+
+      .hero-title{
+        font-size:19px;
+      }
+
+      .card{
+        padding:7px;
+        border-radius:24px;
+      }
+
+      .card-inner{
+        padding:19px 14px 18px;
+      }
+
+      .meta-grid{
+        grid-template-columns:1fr;
+      }
+
+      .application-top{
+        gap:8px;
+      }
+
+      .status-badge{
+        font-size:10px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <h1>ATWORK</h1>
-  <p>กำลังเตรียมหน้าตรวจสอบสถานะ...</p>
+  <main class="container">
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="hero">
+
+      <div class="brand-kicker">
+        Recruitment
+      </div>
+
+      <div class="brand">
+        @attwork
+      </div>
+
+      <div class="hero-title">
+        ตรวจสอบสถานะการสมัคร
+      </div>
+
+      <div class="hero-copy">
+        ตรวจสอบใบสมัครที่เชื่อมกับบัญชี LINE
+        ที่กำลังใช้งานอยู่
+      </div>
+
+      <div id="lineUser" class="line-user hidden">
+
+        <img
+          id="linePicture"
+          src=""
+          alt="LINE profile"
+        >
+
+        <div>
+          <div
+            id="lineDisplayName"
+            class="line-name"
+          >
+            ผู้ใช้ LINE
+          </div>
+
+          <div
+            id="connectionStatus"
+            class="connection"
+          >
+            กำลังเชื่อมต่อ LINE...
+          </div>
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- =========================
+         STATUS CARD
+    ========================= -->
+
+    <section class="card">
+
+      <div class="card-inner">
+
+        <div class="section-head">
+
+          <div
+            class="section-icon"
+            aria-hidden="true"
+          >
+            ✓
+          </div>
+
+          <div>
+
+            <h1 class="section-title">
+              สถานะใบสมัครของฉัน
+            </h1>
+
+            <div class="section-desc">
+              ระบบจะแสดงเฉพาะใบสมัครของบัญชี LINE นี้
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <button
+          id="refreshButton"
+          class="refresh-button"
+          type="button"
+          disabled
+        >
+          กำลังเชื่อมต่อ LINE...
+        </button>
+
+
+        <div
+          id="message"
+          class="message"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+
+        <div
+          id="applications"
+          class="applications"
+        >
+          <div class="loading">
+            <div class="spinner"></div>
+            <span>กำลังเตรียมระบบ...</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- Hidden iframe สำหรับ POST API -->
+  <iframe
+    id="postFrame"
+    name="atworkPostFrame"
+    style="display:none"
+    title="ATWORK background request"
+  ></iframe>
+
+
+  <script>
+
+    /* =========================================================
+       CONFIG
+    ========================================================= */
+
+    const LIFF_ID =
+      '2011817085-3jHPlME0';
+
+    const SCRIPT_URL =
+      'https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec';
+
+
+    /* =========================================================
+       STATE
+    ========================================================= */
+
+    let liffReady = false;
+    let loadingStatus = false;
+
+
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
+
+    const lineUser =
+      document.getElementById('lineUser');
+
+    const linePicture =
+      document.getElementById('linePicture');
+
+    const lineDisplayName =
+      document.getElementById('lineDisplayName');
+
+    const connectionStatus =
+      document.getElementById('connectionStatus');
+
+    const refreshButton =
+      document.getElementById('refreshButton');
+
+    const message =
+      document.getElementById('message');
+
+    const applications =
+      document.getElementById('applications');
+
+
+    /* =========================================================
+       UI
+    ========================================================= */
+
+    function showMessage(text, type){
+
+      message.textContent =
+        text || '';
+
+      message.className =
+        text
+          ? 'message show ' + (type || 'info')
+          : 'message';
+    }
+
+
+    function showLoading(){
+
+      applications.innerHTML = `
+        <div class="loading">
+          <div class="spinner"></div>
+          <span>กำลังตรวจสอบสถานะ...</span>
+        </div>
+      `;
+    }
+
+
+    /* =========================================================
+       REQUEST ID
+    ========================================================= */
+
+    function createRequestId(){
+
+      return (
+        Date.now().toString(36) +
+        '_' +
+        Math.random().toString(36).slice(2) +
+        '_' +
+        Math.random().toString(36).slice(2)
+      );
+    }
+
+
+    /* =========================================================
+       TOKEN
+    ========================================================= */
+
+    function getTokenExpiry(token){
+
+      try{
+
+        const part =
+          token.split('.')[1];
+
+        const base64 =
+          part
+            .replace(/-/g, '+')
+            .replace(/_/g, '/');
+
+        const json =
+          decodeURIComponent(
+            atob(base64)
+              .split('')
+              .map(function(c){
+                return '%' +
+                  ('00' +
+                    c.charCodeAt(0).toString(16)
+                  ).slice(-2);
+              })
+              .join('')
+          );
+
+        return JSON.parse(json).exp || 0;
+
+      }catch(error){
+
+        return 0;
+      }
+    }
+
+
+    function getIdToken(){
+
+      const token =
+        liff.getIDToken();
+
+      if(!token){
+
+        throw new Error(
+          'ไม่พบ LINE ID Token กรุณาเปิด LIFF จาก LINE ใหม่'
+        );
+      }
+
+      const exp =
+        getTokenExpiry(token);
+
+      const now =
+        Math.floor(Date.now() / 1000);
+
+      if(exp && exp <= now + 60){
+
+        throw new Error(
+          'ID_TOKEN_EXPIRED'
+        );
+      }
+
+      return token;
+    }
+
+
+    /* =========================================================
+       HIDDEN FORM POST + POLLING
+    ========================================================= */
+
+    function addHidden(
+      form,
+      name,
+      value
+    ){
+
+      const input =
+        document.createElement('input');
+
+      input.type =
+        'hidden';
+
+      input.name =
+        name;
+
+      input.value =
+        value == null
+          ? ''
+          : String(value);
+
+      form.appendChild(input);
+    }
+
+
+    function postFormApi(
+      action,
+      data,
+      idToken,
+      timeoutMs
+    ){
+
+      timeoutMs =
+        timeoutMs || 120000;
+
+      return new Promise(
+        function(resolve, reject){
+
+          const requestId =
+            createRequestId();
+
+          const targetForm =
+            document.createElement('form');
+
+          targetForm.method =
+            'POST';
+
+          targetForm.action =
+            SCRIPT_URL;
+
+          targetForm.target =
+            'atworkPostFrame';
+
+          targetForm.style.display =
+            'none';
+
+
+          addHidden(
+            targetForm,
+            'action',
+            action
+          );
+
+          addHidden(
+            targetForm,
+            'requestId',
+            requestId
+          );
+
+          addHidden(
+            targetForm,
+            'idToken',
+            idToken
+          );
+
+          addHidden(
+            targetForm,
+            'data',
+            JSON.stringify(data || {})
+          );
+
+
+          document.body.appendChild(
+            targetForm
+          );
+
+
+          let finished = false;
+          let attempts = 0;
+          let scriptEl = null;
+
+
+          function cleanup(){
+
+            if(scriptEl){
+
+              scriptEl.remove();
+
+            }
+
+            try{
+
+              targetForm.remove();
+
+            }catch(error){}
+          }
+
+
+          function finish(
+            error,
+            result
+          ){
+
+            if(finished){
+
+              return;
+            }
+
+            finished = true;
+
+            clearTimeout(
+              timeout
+            );
+
+            cleanup();
+
+
+            if(error){
+
+              reject(error);
+
+            }else{
+
+              resolve(result);
+
+            }
+
+          }
+
+
+          const timeout =
+            setTimeout(
+              function(){
+
+                finish(
+                  new Error(
+                    'Server ตอบกลับช้าเกินไป กรุณาลองใหม่อีกครั้ง'
+                  )
+                );
+
+              },
+              timeoutMs
+            );
+
+
+          function poll(){
+
+            if(finished){
+
+              return;
+            }
+
+            attempts++;
+
+
+            if(scriptEl){
+
+              scriptEl.remove();
+
+            }
+
+
+            const callbackName =
+              '__atworkStatusCallback_' +
+              Date.now() +
+              '_' +
+              Math.floor(
+                Math.random() * 1000000
+              );
+
+
+            scriptEl =
+              document.createElement(
+                'script'
+              );
+
+
+            window[callbackName] =
+              function(result){
+
+                try{
+
+                  delete window[
+                    callbackName
+                  ];
+
+                }catch(error){}
+
+
+                if(scriptEl){
+
+                  scriptEl.remove();
+
+                }
+
+
+                if(
+                  !result ||
+                  result.pending
+                ){
+
+                  if(
+                    attempts < 110
+                  ){
+
+                    setTimeout(
+                      poll,
+                      900
+                    );
+
+                  }else{
+
+                    finish(
+                      new Error(
+                        'ไม่พบผลลัพธ์จาก Server'
+                      )
+                    );
+
+                  }
+
+                  return;
+                }
+
+
+                finish(
+                  null,
+                  result
+                );
+              };
+
+
+            scriptEl.onerror =
+              function(){
+
+                try{
+
+                  delete window[
+                    callbackName
+                  ];
+
+                }catch(error){}
+
+
+                if(scriptEl){
+
+                  scriptEl.remove();
+
+                }
+
+
+                if(
+                  attempts < 110
+                ){
+
+                  setTimeout(
+                    poll,
+                    900
+                  );
+
+                }else{
+
+                  finish(
+                    new Error(
+                      'ไม่สามารถตรวจสอบผลลัพธ์จาก Server ได้'
+                    )
+                  );
+
+                }
+
+              };
+
+
+            scriptEl.src =
+              SCRIPT_URL +
+              '?action=status' +
+              '&requestId=' +
+              encodeURIComponent(
+                requestId
+              ) +
+              '&callback=' +
+              encodeURIComponent(
+                callbackName
+              ) +
+              '&_=' +
+              Date.now();
+
+
+            document.body.appendChild(
+              scriptEl
+            );
+          }
+
+
+          try{
+
+            targetForm.submit();
+
+            poll();
+
+          }catch(error){
+
+            finish(
+              error
+            );
+
+          }
+
+        }
+      );
+    }
+
+
+    /* =========================================================
+       RENDER
+    ========================================================= */
+
+    function escapeHtml(value){
+
+      return String(
+        value == null
+          ? ''
+          : value
+      )
+      .replace(
+        /&/g,
+        '&amp;'
+      )
+      .replace(
+        /</g,
+        '&lt;'
+      )
+      .replace(
+        />/g,
+        '&gt;'
+      )
+      .replace(
+        /"/g,
+        '&quot;'
+      )
+      .replace(
+        /'/g,
+        '&#039;'
+      );
+    }
+
+
+    function formatStatus(status){
+
+      const value =
+        String(
+          status || ''
+        ).trim();
+
+      if(!value){
+
+        return 'ไม่ระบุสถานะ';
+
+      }
+
+      return value;
+    }
+
+
+    function renderApplications(
+      list
+    ){
+
+      if(
+        !Array.isArray(list) ||
+        list.length === 0
+      ){
+
+        applications.innerHTML = `
+          <div class="empty">
+            ยังไม่พบใบสมัครที่ผูกกับบัญชี LINE นี้
+            <br>
+            หากเพิ่งสมัครงาน กรุณารอสักครู่แล้วกดรีเฟรชอีกครั้ง
+          </div>
+        `;
+
+        showMessage(
+          'ไม่พบข้อมูลใบสมัครของบัญชี LINE นี้',
+          'info'
+        );
+
+        return;
+      }
+
+
+      const cards =
+        [...list]
+          .reverse()
+          .map(function(app){
+
+            const applicationId =
+              app.applicationId || '-';
+
+            const position =
+              app.position ||
+              'ไม่ระบุตำแหน่ง';
+
+            const status =
+              formatStatus(
+                app.status
+              );
+
+            const appliedDate =
+              app.appliedDate || '-';
+
+            const resumeStatus =
+              app.resumeStatus ||
+              'ไม่มีไฟล์แนบ';
+
+            const updatedAt =
+              app.updatedAt || '';
+
+
+            return `
+              <article
+                class="application-card"
+              >
+
+                <div
+                  class="application-top"
+                >
+
+                  <div>
+
+                    <h2
+                      class="application-position"
+                    >
+                      ${escapeHtml(
+                        position
+                      )}
+                    </h2>
+
+                    <div
+                      class="application-id"
+                    >
+                      ใบสมัคร:
+                      ${escapeHtml(
+                        applicationId
+                      )}
+                    </div>
+
+                  </div>
+
+
+                  <div
+                    class="status-badge"
+                  >
+                    ${escapeHtml(
+                      status
+                    )}
+                  </div>
+
+                </div>
+
+
+                <div
+                  class="meta-grid"
+                >
+
+                  <div
+                    class="meta-item"
+                  >
+
+                    <span
+                      class="meta-label"
+                    >
+                      วันที่สมัคร
+                    </span>
+
+                    <span
+                      class="meta-value"
+                    >
+                      ${escapeHtml(
+                        appliedDate
+                      )}
+                    </span>
+
+                  </div>
+
+
+                  <div
+                    class="meta-item"
+                  >
+
+                    <span
+                      class="meta-label"
+                    >
+                      Resume
+                    </span>
+
+                    <span
+                      class="meta-value"
+                    >
+                      ${escapeHtml(
+                        resumeStatus
+                      )}
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                ${
+                  app.resumeName
+                    ? `
+                      <div
+                        class="resume-box"
+                      >
+
+                        <div
+                          class="resume-title"
+                        >
+                          ไฟล์ Resume
+                        </div>
+
+                        <div
+                          class="resume-status"
+                        >
+                          ${escapeHtml(
+                            app.resumeName
+                          )}
+                        </div>
+
+                      </div>
+                    `
+                    : ''
+                }
+
+
+                ${
+                  updatedAt
+                    ? `
+                      <div
+                        class="updated"
+                      >
+                        อัปเดตล่าสุด:
+                        ${escapeHtml(
+                          updatedAt
+                        )}
+                      </div>
+                    `
+                    : ''
+                }
+
+              </article>
+            `;
+
+          })
+          .join('');
+
+
+      applications.innerHTML =
+        cards;
+
+
+      showMessage(
+        'โหลดสถานะการสมัครเรียบร้อยแล้ว',
+        'success'
+      );
+    }
+
+
+    /* =========================================================
+       LOAD STATUS
+    ========================================================= */
+
+    async function loadStatus(){
+
+      if(
+        !liffReady ||
+        loadingStatus
+      ){
+
+        return;
+      }
+
+
+      loadingStatus =
+        true;
+
+      refreshButton.disabled =
+        true;
+
+      refreshButton.textContent =
+        'กำลังตรวจสอบ...';
+
+      showLoading();
+
+      showMessage(
+        '',
+        'info'
+      );
+
+
+      try{
+
+        const idToken =
+          getIdToken();
+
+
+        const result =
+          await postFormApi(
+            'getMyApplications',
+            {},
+            idToken,
+            120000
+          );
+
+
+        if(
+          !result ||
+          !result.ok
+        ){
+
+          throw new Error(
+            result &&
+            result.message
+              ? result.message
+              : 'ไม่สามารถตรวจสอบสถานะได้'
+          );
+
+        }
+
+
+        renderApplications(
+          result.applications || []
+        );
+
+
+      }catch(error){
+
+        console.error(
+          error
+        );
+
+
+        applications.innerHTML = `
+          <div class="empty">
+            ไม่สามารถโหลดข้อมูลสถานะได้
+          </div>
+        `;
+
+
+        showMessage(
+          error.message ||
+          'ไม่สามารถตรวจสอบสถานะได้ กรุณาลองใหม่',
+          'error'
+        );
+
+      }finally{
+
+        loadingStatus =
+          false;
+
+        refreshButton.disabled =
+          !liffReady;
+
+        refreshButton.textContent =
+          '🔄 รีเฟรชสถานะ';
+      }
+    }
+
+
+    refreshButton.addEventListener(
+      'click',
+      loadStatus
+    );
+
+
+    /* =========================================================
+       LIFF INIT
+    ========================================================= */
+
+    async function initLIFF(){
+
+      try{
+
+        await liff.init({
+
+          liffId:
+            LIFF_ID,
+
+          withLoginOnExternalBrowser:
+            true
+        });
+
+
+        if(
+          !liff.isLoggedIn()
+        ){
+
+          if(
+            !liff.isInClient()
+          ){
+
+            liff.login({
+
+              redirectUri:
+                window.location.href
+
+            });
+
+            return;
+          }
+
+
+          throw new Error(
+            'ยังไม่ได้เข้าสู่ระบบ LINE'
+          );
+
+        }
+
+
+        /* -----------------------
+           LINE PROFILE
+        ----------------------- */
+
+        try{
+
+          const profile =
+            await liff.getProfile();
+
+
+          lineUser.classList.remove(
+            'hidden'
+          );
+
+
+          lineDisplayName.textContent =
+            profile.displayName ||
+            'ผู้ใช้ LINE';
+
+
+          if(
+            profile.pictureUrl
+          ){
+
+            linePicture.src =
+              profile.pictureUrl;
+
+          }
+
+        }catch(error){
+
+          console.warn(
+            'ไม่สามารถโหลด LINE Profile',
+            error
+          );
+
+        }
+
+
+        /* -----------------------
+           READY
+        ----------------------- */
+
+        connectionStatus.textContent =
+          liff.isInClient()
+            ? 'เชื่อมต่อ LINE สำเร็จ'
+            : 'เชื่อมต่อ LINE สำเร็จ (Browser)';
+
+
+        refreshButton.disabled =
+          false;
+
+        refreshButton.textContent =
+          '🔄 รีเฟรชสถานะ';
+
+
+        liffReady =
+          true;
+
+
+        /* -----------------------
+           LOAD AUTO
+        ----------------------- */
+
+        await loadStatus();
+
+
+      }catch(error){
+
+        console.error(
+          error
+        );
+
+
+        connectionStatus.textContent =
+          'เชื่อมต่อ LINE ไม่สำเร็จ';
+
+
+        refreshButton.disabled =
+          true;
+
+
+        applications.innerHTML = `
+          <div class="empty">
+            ไม่สามารถเชื่อมต่อ LINE ได้
+          </div>
+        `;
+
+
+        showMessage(
+          error.message ||
+          'ไม่สามารถเชื่อมต่อ LINE ได้ กรุณาเปิดหน้านี้จาก LINE ใหม่',
+          'error'
+        );
+
+      }
+
+    }
+
+
+    /* =========================================================
+       START
+    ========================================================= */
+
+    initLIFF();
+
+  </script>
 
 </body>
 </html>
