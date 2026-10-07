@@ -8,220 +8,81 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
 
-  <meta name="theme-color" content="#f3f7fc">
+  <meta
+    name="theme-color"
+    content="#f3f7fc"
+  >
 
-  <title>ATWORK | ตรวจสอบสถานะ</title>
+  <title>@attwork | ตรวจสอบสถานะการสมัคร</title>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
+    :root {
+      --bg: #f3f7fc;
+      --surface: #ffffff;
+      --surface-soft: #f8fbff;
+      --text: #0f172a;
+      --text-soft: #334155;
+      --muted: #64748b;
+      --muted-2: #94a3b8;
 
-    async function loadResumePreview(applicationId) {
-  const detailResume =
-    document.getElementById("detailResume");
+      --line: #e2e8f0;
 
-  if (!detailResume) return;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --blue-soft: #eff6ff;
+      --blue-soft-2: #dbeafe;
 
-  detailResume.innerHTML = `
-    <div class="resume-card">
-      <div
-        style="
-          padding:24px;
-          text-align:center;
-          color:#6b7280;
-        "
-      >
-        กำลังโหลด Resume...
-      </div>
-    </div>
-  `;
+      --green: #16a34a;
+      --green-soft: #ecfdf3;
 
-  try {
-    const response =
-      await postFormApi(
-        "getApplicationResumePreview",
-        {
-          applicationId: applicationId
-        }
-      );
+      --red: #dc2626;
+      --red-soft: #fef2f2;
 
-    const result =
-      response && response.result
-        ? response.result
-        : response;
+      --yellow: #ca8a04;
+      --yellow-soft: #fefce8;
 
-    if (!result || result.ok !== true) {
-      throw new Error(
-        result && result.message
-          ? result.message
-          : "ไม่สามารถโหลด Resume ได้"
-      );
+      --shadow:
+        0 18px 55px rgba(15, 23, 42, .08);
+
+      --shadow-sm:
+        0 8px 26px rgba(15, 23, 42, .06);
+
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 15px;
     }
 
-    if (!result.hasResume) {
-      detailResume.innerHTML = `
-        <div class="no-resume">
-          ใบสมัครนี้ไม่มี Resume แนบไว้
-        </div>
-      `;
-      return;
+    * {
+      box-sizing: border-box;
     }
 
-    if (!result.isImage || !result.base64) {
-      detailResume.innerHTML = `
-        <div class="resume-card">
-          ${
-            result.fileName
-              ? `
-                <div class="resume-name">
-                  ${escapeHtml(result.fileName)}
-                </div>
-              `
-              : ""
-          }
-
-          <div class="resume-status">
-            ไม่สามารถแสดงไฟล์นี้เป็นรูปภาพได้
-          </div>
-        </div>
-      `;
-      return;
+    html {
+      scroll-behavior: smooth;
     }
 
-    const contentType =
-      result.contentType || "image/jpeg";
+    body {
+      margin: 0;
+      min-height: 100vh;
 
-    const imageSrc =
-      "data:" +
-      contentType +
-      ";base64," +
-      result.base64;
-
-    detailResume.innerHTML = `
-      <div class="resume-card">
-
-        ${
-          result.fileName
-            ? `
-              <div class="resume-name">
-                ${escapeHtml(result.fileName)}
-              </div>
-            `
-            : ""
-        }
-
-        <div class="resume-status">
-          Resume
-        </div>
-
-        <div
-          style="
-            margin-top:14px;
-            border-radius:14px;
-            overflow:hidden;
-            background:#fff;
-            border:1px solid #e5e7eb;
-          "
-        >
-
-          <img
-            src="${imageSrc}"
-            alt="Resume"
-            style="
-              display:block;
-              width:100%;
-              height:auto;
-              max-height:1000px;
-              object-fit:contain;
-              background:#fff;
-            "
-          >
-
-        </div>
-
-      </div>
-    `;
-
-  } catch (error) {
-
-    console.error(
-      "Resume Preview Error:",
-      error
-    );
-
-    detailResume.innerHTML = `
-      <div class="resume-card">
-
-        <div
-          style="
-            padding:24px 15px;
-            text-align:center;
-            color:#dc2626;
-          "
-        >
-          ไม่สามารถแสดง Resume ได้
-          <br>
-          <small>
-            ${escapeHtml(
-              error.message ||
-              "เกิดข้อผิดพลาด"
-            )}
-          </small>
-        </div>
-
-      </div>
-    `;
-
-  }
-}
-    
-    :root{
-      --bg:#f3f7fc;
-      --surface:#ffffff;
-      --text:#0f172a;
-      --muted:#64748b;
-      --line:#e2e8f0;
-
-      --blue:#2563eb;
-      --blue-soft:#eff6ff;
-
-      --green:#16a34a;
-      --green-soft:#ecfdf3;
-
-      --red:#dc2626;
-      --red-soft:#fef2f2;
-
-      --shadow:0 18px 55px rgba(15,23,42,.08);
-      --radius-xl:28px;
-      --radius-lg:20px;
-      --radius-md:15px;
-    }
-
-    *{
-      box-sizing:border-box;
-    }
-
-    body{
-      margin:0;
-      min-height:100vh;
-
-      color:var(--text);
+      color: var(--text);
 
       background:
         radial-gradient(
           500px 260px at -5% -5%,
-          rgba(37,99,235,.13),
+          rgba(37, 99, 235, .13),
           transparent 72%
         ),
         radial-gradient(
           460px 260px at 105% 0%,
-          rgba(59,130,246,.10),
+          rgba(59, 130, 246, .10),
           transparent 72%
         ),
         linear-gradient(
           180deg,
           #f8fbff 0%,
-          #f3f7fc 48%,
+          #f3f7fc 42%,
           #eef4fa 100%
         );
 
@@ -233,213 +94,383 @@
         Arial,
         sans-serif;
 
-      -webkit-font-smoothing:antialiased;
+      -webkit-font-smoothing: antialiased;
     }
 
-    button{
-      font:inherit;
-      touch-action:manipulation;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+
+      background-image:
+        linear-gradient(
+          rgba(148, 163, 184, .035) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(148, 163, 184, .035) 1px,
+          transparent 1px
+        );
+
+      background-size: 24px 24px;
+
+      mask-image:
+        linear-gradient(
+          to bottom,
+          black,
+          transparent 85%
+        );
     }
 
-    .container{
-      width:min(760px,100%);
-      margin:0 auto;
-      padding:14px 14px 42px;
+    button {
+      font: inherit;
+      touch-action: manipulation;
     }
 
-    /* =========================
+    button:disabled {
+      cursor: wait;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* =========================================
+       LAYOUT
+    ========================================= */
+
+    .container {
+      position: relative;
+      z-index: 1;
+
+      width: min(760px, 100%);
+
+      margin: 0 auto;
+
+      padding:
+        16px
+        14px
+        48px;
+    }
+
+    /* =========================================
        HERO
-    ========================= */
+    ========================================= */
 
-    .hero{
-      position:relative;
-      overflow:hidden;
+    .hero {
+      position: relative;
+      overflow: hidden;
 
-      padding:24px 22px 20px;
+      padding:
+        24px
+        22px
+        20px;
 
-      border:1px solid rgba(255,255,255,.9);
-      border-radius:30px;
+      border:
+        1px solid rgba(255, 255, 255, .9);
+
+      border-radius:
+        30px;
 
       background:
         linear-gradient(
           145deg,
-          rgba(255,255,255,.98),
-          rgba(247,251,255,.96)
+          rgba(255, 255, 255, .98),
+          rgba(247, 251, 255, .96)
         );
 
-      box-shadow:var(--shadow);
+      box-shadow:
+        var(--shadow);
     }
 
-    .hero::before{
-      content:"";
+    .hero::before,
+    .hero::after {
+      content: "";
 
-      position:absolute;
+      position: absolute;
 
-      width:250px;
-      height:250px;
+      border-radius: 50%;
 
-      right:-120px;
-      top:-150px;
+      pointer-events: none;
+    }
 
-      border-radius:50%;
+    .hero::before {
+      width: 240px;
+      height: 240px;
+
+      right: -115px;
+      top: -145px;
 
       background:
         radial-gradient(
           circle,
-          rgba(37,99,235,.18),
-          rgba(37,99,235,0) 70%
+          rgba(37, 99, 235, .18),
+          rgba(37, 99, 235, 0) 70%
         );
     }
 
-    .brand-kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:7px;
+    .hero::after {
+      width: 150px;
+      height: 150px;
 
-      margin-bottom:10px;
+      right: 100px;
+      bottom: -112px;
 
-      color:var(--blue);
-
-      font-size:10.5px;
-      font-weight:900;
-
-      letter-spacing:.14em;
-      text-transform:uppercase;
+      background:
+        radial-gradient(
+          circle,
+          rgba(59, 130, 246, .10),
+          rgba(59, 130, 246, 0) 70%
+        );
     }
 
-    .brand-kicker::before{
-      content:"";
+    .hero-main {
+      position: relative;
+      z-index: 1;
 
-      width:18px;
-      height:2px;
+      display: flex;
 
-      border-radius:999px;
+      align-items: flex-start;
+      justify-content: space-between;
 
-      background:var(--blue);
+      gap: 18px;
     }
 
-    .brand{
-      font-size:34px;
-      line-height:1;
-      font-weight:950;
-      letter-spacing:-.035em;
+    .brand-kicker {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      margin-bottom: 9px;
+
+      color: var(--blue);
+
+      font-size: 10.5px;
+
+      font-weight: 900;
+
+      letter-spacing: .14em;
+
+      text-transform: uppercase;
     }
 
-    .hero-title{
-      margin-top:12px;
+    .brand-kicker::before {
+      content: "";
 
-      font-size:20px;
-      line-height:1.3;
-      font-weight:900;
+      width: 18px;
+      height: 2px;
+
+      border-radius: 999px;
+
+      background: var(--blue);
     }
 
-    .hero-copy{
-      margin-top:6px;
+    .brand {
+      font-size: 34px;
+      line-height: 1;
 
-      color:var(--muted);
+      font-weight: 950;
 
-      font-size:13px;
-      line-height:1.65;
+      letter-spacing: -.035em;
     }
 
-    /* =========================
-       LINE USER
-    ========================= */
+    .hero-title {
+      margin: 11px 0 0;
 
-    .line-user{
-      display:flex;
-      align-items:center;
-      gap:12px;
+      font-size: 21px;
 
-      margin-top:18px;
-      padding:12px 13px;
+      font-weight: 900;
 
-      border:1px solid #e4ebf3;
-      border-radius:16px;
-
-      background:rgba(255,255,255,.84);
+      letter-spacing: -.025em;
     }
 
-    .line-user img{
-      width:46px;
-      height:46px;
+    .hero-copy {
+      margin-top: 7px;
 
-      object-fit:cover;
+      max-width: 540px;
 
-      border-radius:50%;
+      color: var(--muted);
 
-      background:#eef2f7;
-      flex:0 0 auto;
+      font-size: 13.5px;
+
+      line-height: 1.65;
     }
 
-    .line-name{
-      font-size:14px;
-      font-weight:900;
+    .online-badge {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding:
+        9px
+        12px;
+
+      border:
+        1px solid #dbe5f1;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(255, 255, 255, .88);
+
+      color: #475569;
+
+      font-size: 11px;
+
+      font-weight: 850;
+
+      white-space: nowrap;
+
+      box-shadow:
+        0 8px 20px rgba(37, 99, 235, .06);
     }
 
-    .connection{
-      display:flex;
-      align-items:center;
-      gap:6px;
+    .online-dot {
+      width: 8px;
+      height: 8px;
 
-      margin-top:4px;
+      border-radius: 50%;
 
-      color:var(--green);
+      background: var(--green);
 
-      font-size:11.5px;
-      font-weight:750;
+      box-shadow:
+        0 0 0 4px rgba(22, 163, 74, .10);
     }
 
-    .connection::before{
-      content:"";
+    /* =========================================
+       USER
+    ========================================= */
 
-      width:6px;
-      height:6px;
+    .line-user {
+      position: relative;
+      z-index: 1;
 
-      border-radius:50%;
+      display: flex;
 
-      background:currentColor;
+      align-items: center;
+
+      gap: 12px;
+
+      margin-top: 18px;
+
+      padding:
+        12px
+        13px;
+
+      border:
+        1px solid #e4ebf3;
+
+      border-radius:
+        16px;
+
+      background:
+        rgba(255, 255, 255, .84);
     }
 
-    /* =========================
-       MAIN CARD
-    ========================= */
+    .line-user img {
+      width: 46px;
+      height: 46px;
 
-    .card{
-      margin-top:15px;
+      flex: 0 0 auto;
 
-      padding:9px;
+      object-fit: cover;
 
-      border:1px solid rgba(226,232,240,.98);
-      border-radius:30px;
+      border-radius: 50%;
 
-      background:rgba(255,255,255,.88);
-
-      box-shadow:var(--shadow);
+      background: #eef2f7;
     }
 
-    .card-inner{
-      padding:22px 20px 20px;
+    #lineDisplayName {
+      font-size: 14px;
+
+      font-weight: 900;
     }
 
-    .section-head{
-      display:flex;
-      align-items:flex-start;
-      gap:13px;
+    .connection {
+      display: flex;
 
-      margin-bottom:17px;
+      align-items: center;
+
+      gap: 6px;
+
+      margin-top: 4px;
+
+      color: var(--green);
+
+      font-size: 11.5px;
+
+      font-weight: 750;
     }
 
-    .section-icon{
-      width:40px;
-      height:40px;
+    .connection::before {
+      content: "";
 
-      display:grid;
-      place-items:center;
+      width: 6px;
+      height: 6px;
 
-      flex:0 0 auto;
+      border-radius: 50%;
 
-      border-radius:13px;
+      background: currentColor;
+    }
+
+    /* =========================================
+       STATUS PANEL
+    ========================================= */
+
+    .status-panel {
+      margin-top: 15px;
+
+      padding: 9px;
+
+      border:
+        1px solid rgba(226, 232, 240, .98);
+
+      border-radius:
+        30px;
+
+      background:
+        rgba(255, 255, 255, .88);
+
+      box-shadow:
+        var(--shadow);
+    }
+
+    .status-panel-inner {
+      padding:
+        22px
+        20px
+        20px;
+    }
+
+    .status-panel-head {
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 13px;
+
+      margin-bottom: 16px;
+    }
+
+    .status-panel-icon {
+      width: 40px;
+      height: 40px;
+
+      flex: 0 0 auto;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius:
+        13px;
 
       background:
         linear-gradient(
@@ -448,51 +479,60 @@
           #dbeafe
         );
 
-      color:#1d4ed8;
+      color:
+        var(--blue-dark);
 
-      font-size:19px;
-      font-weight:950;
+      font-size: 19px;
 
       box-shadow:
-        inset 0 0 0 1px rgba(37,99,235,.10);
+        inset
+        0 0 0 1px
+        rgba(37, 99, 235, .10);
     }
 
-    .section-title{
-      margin:0;
+    .status-panel-title {
+      margin: 0;
 
-      font-size:18px;
-      line-height:1.3;
-      font-weight:900;
-      letter-spacing:-.02em;
+      font-size: 18px;
+
+      line-height: 1.3;
+
+      font-weight: 900;
+
+      letter-spacing: -.02em;
     }
 
-    .section-desc{
-      margin-top:5px;
+    .status-panel-desc {
+      margin-top: 5px;
 
-      color:var(--muted);
+      color: var(--muted);
 
-      font-size:12px;
-      line-height:1.6;
+      font-size: 12px;
+
+      line-height: 1.6;
     }
 
-    /* =========================
-       REFRESH BUTTON
-    ========================= */
+    .refresh-button {
+      width: 100%;
 
-    .refresh-button{
-      width:100%;
-      min-height:52px;
+      min-height: 53px;
 
-      border:1px solid #cbd5e1;
-      border-radius:14px;
+      border:
+        1px solid #cbd5e1;
 
-      background:#fff;
-      color:#0f172a;
+      border-radius:
+        14px;
 
-      font-size:14px;
-      font-weight:900;
+      background: #fff;
 
-      cursor:pointer;
+      color:
+        var(--text);
+
+      font-size: 14px;
+
+      font-weight: 900;
+
+      cursor: pointer;
 
       transition:
         transform .16s ease,
@@ -501,75 +541,99 @@
         opacity .16s ease;
     }
 
-    .refresh-button:not(:disabled):hover{
-      transform:translateY(-1px);
+    .refresh-button:not(:disabled):hover {
+      transform: translateY(-1px);
 
-      border-color:#93b4de;
+      border-color:
+        #93b4de;
 
       box-shadow:
-        0 12px 24px rgba(37,99,235,.08);
+        0 12px 24px
+        rgba(37, 99, 235, .08);
     }
 
-    .refresh-button:disabled{
-      opacity:.55;
-      cursor:wait;
+    .refresh-button:disabled {
+      opacity: .55;
     }
 
-    /* =========================
-       MESSAGE
-    ========================= */
+    /* =========================================
+       STATUS RESULT
+    ========================================= */
 
-    .message{
-      display:none;
+    .status-result {
+      display: none;
 
-      margin-top:14px;
-
-      padding:12px 14px;
-
-      border-radius:13px;
-
-      font-size:12px;
-      line-height:1.55;
+      margin-top: 14px;
     }
 
-    .message.show{
-      display:block;
+    .status-result.show {
+      display: block;
     }
 
-    .message.info{
-      border:1px solid #bfdbfe;
-      background:var(--blue-soft);
-      color:#1d4ed8;
+    .result-message {
+      padding:
+        13px
+        14px;
+
+      border-radius:
+        14px;
+
+      font-size: 12px;
+
+      line-height: 1.6;
     }
 
-    .message.success{
-      border:1px solid #bbf7d0;
-      background:var(--green-soft);
-      color:#15803d;
+    .result-message.info {
+      border:
+        1px solid #bfdbfe;
+
+      background:
+        var(--blue-soft);
+
+      color:
+        var(--blue-dark);
     }
 
-    .message.error{
-      border:1px solid #fecaca;
-      background:var(--red-soft);
-      color:#b91c1c;
+    .result-message.success {
+      border:
+        1px solid #bbf7d0;
+
+      background:
+        var(--green-soft);
+
+      color:
+        #15803d;
     }
 
-    /* =========================
-       APPLICATION LIST
-    ========================= */
+    .result-message.error {
+      border:
+        1px solid #fecaca;
 
-    .applications{
-      display:grid;
-      gap:10px;
+      background:
+        var(--red-soft);
 
-      margin-top:14px;
+      color:
+        #b91c1c;
     }
 
-    .application-card{
-      padding:15px;
+    /* =========================================
+       APPLICATION CARD
+    ========================================= */
 
-      border:1px solid #e2e8f0;
-      border-radius:17px;
+    .application-status-list {
+      display: grid;
+
+      gap: 10px;
+    }
+
+    .application-card {
+      padding: 15px;
+
+      border:
+        1px solid #e2e8f0;
+
+      border-radius:
+        17px;
 
       background:
         linear-gradient(
@@ -579,521 +643,797 @@
         );
     }
 
-    .application-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
+    .application-top {
+      display: flex;
 
-      gap:12px;
+      align-items: flex-start;
+
+      justify-content: space-between;
+
+      gap: 12px;
     }
 
-    .application-position{
-      margin:0;
+    .application-position {
+      margin: 0;
 
-      font-size:14.5px;
-      line-height:1.45;
-      font-weight:900;
+      color: var(--text);
+
+      font-size: 15px;
+
+      line-height: 1.45;
+
+      font-weight: 900;
     }
 
-    .application-id{
-      margin-top:4px;
+    .application-id {
+      margin-top: 5px;
 
-      color:#94a3b8;
+      color:
+        var(--muted-2);
 
-      font-size:10.5px;
-      line-height:1.4;
+      font-size: 10.5px;
 
-      word-break:break-all;
+      line-height: 1.45;
+
+      word-break: break-all;
     }
 
-    .status-badge{
-      flex:0 0 auto;
+    .application-badge {
+      flex:
+        0 0 auto;
 
-      padding:6px 10px;
+      padding:
+        6px
+        9px;
 
-      border-radius:999px;
+      border:
+        1px solid #dbeafe;
 
-      background:#eff6ff;
-      border:1px solid #dbeafe;
+      border-radius:
+        999px;
 
-      color:#1d4ed8;
+      background:
+        var(--blue-soft);
 
-      font-size:10.5px;
-      font-weight:900;
+      color:
+        var(--blue-dark);
 
-      white-space:nowrap;
+      font-size: 10.5px;
+
+      font-weight: 900;
+
+      white-space: nowrap;
     }
 
-    .meta-grid{
-      display:grid;
+    .application-meta {
+      display: grid;
 
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:
+        1fr
+        1fr;
 
-      gap:8px;
+      gap: 8px;
 
-      margin-top:13px;
+      margin-top: 12px;
     }
 
-    .meta-item{
-      padding:9px 10px;
+    .meta-item {
+      padding:
+        9px
+        10px;
 
-      border:1px solid #edf2f7;
-      border-radius:12px;
+      border:
+        1px solid #edf2f7;
 
-      background:#fff;
+      border-radius:
+        12px;
+
+      background:
+        #fff;
     }
 
-    .meta-label{
-      display:block;
+    .meta-label {
+      display: block;
 
-      color:#94a3b8;
+      color:
+        var(--muted-2);
 
-      font-size:9.5px;
-      font-weight:800;
+      font-size: 9.5px;
+
+      font-weight: 800;
     }
 
-    .meta-value{
-      display:block;
+    .meta-value {
+      display: block;
 
-      margin-top:3px;
+      margin-top: 3px;
 
-      color:#334155;
+      color:
+        var(--text-soft);
 
-      font-size:11.5px;
-      font-weight:850;
+      font-size: 11.5px;
 
-      word-break:break-word;
+      line-height: 1.45;
+
+      font-weight: 850;
+
+      word-break: break-word;
     }
 
-    /* =========================
-       DETAIL BUTTON
-    ========================= */
+    .view-detail-button {
+      width: 100%;
 
-    .detail-button{
-      width:100%;
+      min-height: 44px;
 
-      min-height:44px;
+      margin-top: 11px;
 
-      margin-top:12px;
+      border: 0;
 
-      border:1px solid #d8e3ef;
-      border-radius:12px;
+      border-radius:
+        13px;
 
-      background:#fff;
+      background:
+        linear-gradient(
+          135deg,
+          #1d4ed8,
+          #2563eb
+        );
 
-      color:#1e3a8a;
+      color:
+        #fff;
 
-      font-size:12px;
-      font-weight:900;
+      font-size: 13px;
 
-      cursor:pointer;
+      font-weight: 900;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 20px
+        rgba(37, 99, 235, .16);
 
       transition:
         transform .16s ease,
-        box-shadow .16s ease,
-        border-color .16s ease;
+        box-shadow .16s ease;
     }
 
-    .detail-button:hover{
-      transform:translateY(-1px);
-
-      border-color:#9ab7de;
+    .view-detail-button:hover {
+      transform:
+        translateY(-1px);
 
       box-shadow:
-        0 10px 22px rgba(37,99,235,.08);
+        0 14px 24px
+        rgba(37, 99, 235, .20);
     }
 
-    /* =========================
-       LOADING
-    ========================= */
-
-    .loading{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:9px;
-
-      padding:28px 10px;
-
-      color:var(--muted);
-
-      font-size:12px;
-      font-weight:800;
-    }
-
-    .spinner{
-      width:18px;
-      height:18px;
-
-      border:3px solid #dbe5f1;
-      border-top-color:var(--blue);
-
-      border-radius:50%;
-
-      animation:spin .75s linear infinite;
-    }
-
-    @keyframes spin{
-      to{
-        transform:rotate(360deg);
-      }
-    }
-
-    .empty{
-      padding:30px 14px;
-
-      text-align:center;
-
-      color:var(--muted);
-
-      font-size:13px;
-      line-height:1.6;
-    }
-
-    /* =========================
+    /* =========================================
        DETAIL MODAL
-    ========================= */
+    ========================================= */
 
-    .detail-overlay{
-      position:fixed;
-      inset:0;
+    .detail-overlay {
+      position: fixed;
 
-      z-index:9999;
+      inset: 0;
 
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
+      z-index: 9999;
 
-      background:rgba(15,23,42,.46);
+      display: flex;
 
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
+      align-items: flex-end;
 
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
+      justify-content: center;
+
+      padding: 12px;
+
+      background:
+        rgba(15, 23, 42, .48);
+
+      backdrop-filter:
+        blur(12px);
+
+      -webkit-backdrop-filter:
+        blur(12px);
+
+      opacity: 0;
+
+      visibility: hidden;
+
+      pointer-events: none;
 
       transition:
-        opacity .2s ease,
-        visibility .2s ease;
+        opacity .20s ease,
+        visibility .20s ease;
     }
 
-    .detail-overlay.show{
-      opacity:1;
-      visibility:visible;
-      pointer-events:auto;
+    .detail-overlay.show {
+      opacity: 1;
+
+      visibility: visible;
+
+      pointer-events: auto;
     }
 
-    .detail-modal{
-      width:min(760px,100%);
+    .detail-modal {
+      width:
+        min(
+          760px,
+          100%
+        );
 
-      max-height:90vh;
-      overflow-y:auto;
+      max-height:
+        min(
+          92vh,
+          900px
+        );
 
-      padding:10px 10px 18px;
+      overflow:
+        hidden;
 
-      border-radius:28px 28px 0 0;
+      border:
+        1px solid
+        rgba(255, 255, 255, .78);
 
-      background:#fff;
+      border-radius:
+        24px
+        24px
+        0
+        0;
+
+      background:
+        rgba(255, 255, 255, .98);
 
       box-shadow:
-        0 -20px 80px rgba(15,23,42,.20);
+        0 30px 90px
+        rgba(15, 23, 42, .24);
 
-      transform:translateY(30px);
+      transform:
+        translateY(20px);
 
       transition:
-        transform .22s cubic-bezier(.2,.8,.2,1);
+        transform .22s
+        cubic-bezier(.2,.8,.2,1);
     }
 
-    .detail-overlay.show .detail-modal{
-      transform:none;
+    .detail-overlay.show
+    .detail-modal {
+      transform:
+        translateY(0);
     }
 
-    .detail-handle{
-      width:42px;
-      height:4px;
+    .detail-header {
+      display: flex;
 
-      margin:4px auto 15px;
+      align-items: flex-start;
 
-      border-radius:999px;
+      justify-content: space-between;
 
-      background:#dbe3ec;
+      gap: 14px;
+
+      padding:
+        17px
+        17px
+        14px;
+
+      border-bottom:
+        1px solid #edf2f7;
+
+      background:
+        #fff;
     }
 
-    .detail-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-
-      gap:12px;
-
-      padding:6px 8px 17px;
+    .detail-header-copy {
+      min-width: 0;
     }
 
-    .detail-header-title{
-      margin:0;
+    .detail-kicker {
+      color:
+        var(--blue);
 
-      font-size:19px;
-      line-height:1.35;
-      font-weight:950;
+      font-size: 10px;
+
+      font-weight: 900;
+
+      letter-spacing: .10em;
+
+      text-transform: uppercase;
     }
 
-    .detail-header-id{
-      margin-top:5px;
+    .detail-title {
+      margin:
+        5px
+        0
+        0;
 
-      color:#94a3b8;
+      font-size: 17px;
 
-      font-size:10.5px;
-      word-break:break-all;
+      line-height: 1.35;
+
+      font-weight: 950;
     }
 
-    .close-button{
-      width:38px;
-      height:38px;
+    .detail-application-id {
+      margin-top: 4px;
 
-      flex:0 0 auto;
+      color:
+        var(--muted-2);
 
-      border:1px solid #e2e8f0;
-      border-radius:12px;
+      font-size: 10px;
 
-      background:#f8fafc;
-      color:#475569;
-
-      font-size:20px;
-      font-weight:900;
-
-      cursor:pointer;
+      word-break: break-all;
     }
 
-    .detail-section{
-      margin-top:10px;
+    .close-detail-button {
+      width: 38px;
+      height: 38px;
 
-      padding:15px;
+      flex:
+        0 0 auto;
 
-      border:1px solid #e5ebf2;
-      border-radius:17px;
+      display: grid;
 
-      background:#fbfdff;
+      place-items: center;
+
+      border:
+        1px solid #e2e8f0;
+
+      border-radius:
+        12px;
+
+      background:
+        #fff;
+
+      color:
+        #475569;
+
+      font-size: 19px;
+
+      cursor: pointer;
     }
 
-    .detail-section-title{
-      margin:0 0 12px;
+    .detail-content {
+      overflow-y: auto;
 
-      font-size:13px;
-      font-weight:950;
-      color:#1e293b;
+      max-height:
+        calc(92vh - 80px);
+
+      padding:
+        16px;
     }
 
-    .detail-grid{
-      display:grid;
+    .detail-section {
+      margin-bottom:
+        14px;
 
-      grid-template-columns:1fr 1fr;
+      padding:
+        15px;
 
-      gap:8px;
+      border:
+        1px solid #e2e8f0;
+
+      border-radius:
+        17px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #fbfdff,
+          #f8fbff
+        );
     }
 
-    .detail-item{
-      min-width:0;
-
-      padding:9px 10px;
-
-      border-radius:12px;
-
-      background:#fff;
-
-      border:1px solid #edf2f7;
+    .detail-section:last-child {
+      margin-bottom: 0;
     }
 
-    .detail-item.full{
-      grid-column:1/-1;
+    .detail-section-title {
+      margin: 0 0 12px;
+
+      font-size: 14px;
+
+      font-weight: 950;
     }
 
-    .detail-label{
-      display:block;
+    .detail-grid {
+      display: grid;
 
-      color:#94a3b8;
+      grid-template-columns:
+        1fr
+        1fr;
 
-      font-size:9.5px;
-      font-weight:800;
+      gap: 9px;
     }
 
-    .detail-value{
-      display:block;
+    .detail-item {
+      min-width: 0;
 
-      margin-top:3px;
+      padding:
+        10px;
 
-      color:#334155;
+      border:
+        1px solid #edf2f7;
 
-      font-size:11.5px;
-      font-weight:850;
+      border-radius:
+        12px;
 
-      line-height:1.55;
-
-      word-break:break-word;
+      background:
+        #fff;
     }
 
-    .detail-status{
-      display:inline-flex;
-
-      padding:7px 11px;
-
-      border-radius:999px;
-
-      background:#eff6ff;
-      border:1px solid #dbeafe;
-
-      color:#1d4ed8;
-
-      font-size:11px;
-      font-weight:950;
+    .detail-item.full {
+      grid-column:
+        1 / -1;
     }
 
-    /* =========================
+    .detail-label {
+      display: block;
+
+      color:
+        var(--muted-2);
+
+      font-size: 9.5px;
+
+      font-weight: 800;
+    }
+
+    .detail-value {
+      display: block;
+
+      margin-top: 4px;
+
+      color:
+        var(--text-soft);
+
+      font-size: 12px;
+
+      line-height: 1.55;
+
+      font-weight: 850;
+
+      word-break: break-word;
+    }
+
+    /* =========================================
        RESUME
-    ========================= */
+    ========================================= */
 
-    .resume-card{
-      padding:12px;
+    .resume-loading {
+      display: grid;
 
-      border:1px solid #e2e8f0;
-      border-radius:14px;
+      place-items: center;
 
-      background:#fff;
+      gap: 9px;
+
+      min-height:
+        150px;
+
+      border:
+        1px dashed #cbd5e1;
+
+      border-radius:
+        15px;
+
+      background:
+        #f8fafc;
+
+      color:
+        var(--muted);
+
+      font-size: 12px;
     }
 
-    .resume-name{
-      color:#334155;
+    .small-spinner {
+      width: 28px;
+      height: 28px;
 
-      font-size:12px;
-      font-weight:900;
+      border:
+        3px solid #dbe4ef;
 
-      word-break:break-word;
+      border-top-color:
+        var(--blue);
+
+      border-radius: 50%;
+
+      animation:
+        spin .8s linear infinite;
     }
 
-    .resume-status{
-      margin-top:4px;
+    .resume-card {
+      overflow: hidden;
 
-      color:#64748b;
+      border:
+        1px solid #e2e8f0;
 
-      font-size:10.5px;
+      border-radius:
+        16px;
+
+      background:
+        #fff;
     }
 
-    .resume-open{
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .resume-top {
+      display: flex;
 
-      width:100%;
+      align-items:
+        flex-start;
 
-      min-height:42px;
+      justify-content:
+        space-between;
 
-      margin-top:10px;
+      gap: 12px;
 
-      border-radius:11px;
+      padding:
+        12px
+        13px;
 
-      background:#0f172a;
-      color:#fff;
+      border-bottom:
+        1px solid #edf2f7;
 
-      font-size:11px;
-      font-weight:900;
-
-      text-decoration:none;
+      background:
+        #fbfdff;
     }
 
-    .no-resume{
-      padding:18px 10px;
+    .resume-name {
+      min-width: 0;
 
-      text-align:center;
+      color:
+        var(--text-soft);
 
-      color:var(--muted);
+      font-size: 12px;
 
-      font-size:12px;
+      font-weight: 900;
+
+      word-break: break-word;
     }
 
-    .hidden{
-      display:none !important;
+    .resume-status {
+      flex:
+        0 0 auto;
+
+      padding:
+        5px
+        8px;
+
+      border-radius:
+        999px;
+
+      background:
+        var(--green-soft);
+
+      color:
+        #15803d;
+
+      font-size: 9.5px;
+
+      font-weight: 900;
+
+      white-space: nowrap;
     }
 
-    /* =========================
+    .resume-image-wrap {
+      padding:
+        10px;
+
+      background:
+        #eef2f7;
+
+      text-align:
+        center;
+    }
+
+    .resume-image {
+      display: block;
+
+      width: 100%;
+      height: auto;
+
+      max-height:
+        900px;
+
+      object-fit: contain;
+
+      border-radius:
+        10px;
+
+      background:
+        #fff;
+
+      box-shadow:
+        0 5px 18px
+        rgba(15, 23, 42, .08);
+    }
+
+    .resume-no-preview {
+      padding:
+        24px
+        14px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.6;
+    }
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
+    .footer-note {
+      margin-top:
+        13px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted-2);
+
+      font-size: 10px;
+
+      line-height: 1.6;
+    }
+
+    /* =========================================
        MOBILE
-    ========================= */
+    ========================================= */
 
-    @media(max-width:620px){
+    @media (max-width: 620px) {
 
-      .container{
-        padding:10px 9px 30px;
+      .container {
+        padding:
+          10px
+          9px
+          30px;
       }
 
-      .hero{
-        padding:20px 17px 17px;
-        border-radius:24px;
+      .hero {
+        padding:
+          20px
+          17px
+          17px;
+
+        border-radius:
+          24px;
       }
 
-      .brand{
-        font-size:30px;
+      .hero-main {
+        display: block;
       }
 
-      .hero-title{
-        font-size:19px;
+      .online-badge {
+        margin-top:
+          13px;
       }
 
-      .card{
-        padding:7px;
-        border-radius:24px;
+      .brand {
+        font-size: 30px;
       }
 
-      .card-inner{
-        padding:19px 14px 18px;
+      .hero-title {
+        font-size: 19px;
       }
 
-      .meta-grid{
-        grid-template-columns:1fr;
+      .hero-copy {
+        font-size: 13px;
       }
 
-      .detail-modal{
-        max-height:92vh;
-        border-radius:24px 24px 0 0;
+      .status-panel {
+        padding:
+          7px;
+
+        border-radius:
+          24px;
       }
 
-      .detail-grid{
-        grid-template-columns:1fr;
+      .status-panel-inner {
+        padding:
+          19px
+          14px
+          18px;
       }
 
-      .detail-item.full{
-        grid-column:auto;
+      .application-meta {
+        grid-template-columns:
+          1fr;
+      }
+
+      .detail-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+      .detail-item.full {
+        grid-column:
+          auto;
+      }
+
+      .detail-content {
+        padding:
+          12px;
+      }
+
+      .detail-section {
+        padding:
+          13px;
+      }
+
+      .detail-overlay {
+        padding:
+          0;
+      }
+
+      .detail-modal {
+        max-height:
+          94vh;
+
+        border-radius:
+          22px
+          22px
+          0
+          0;
+      }
+
+      .detail-content {
+        max-height:
+          calc(94vh - 80px);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform:
+          rotate(360deg);
       }
     }
   </style>
 </head>
 
-
 <body>
 
-  <main class="container">
+  <div class="container">
 
-    <!-- =========================
-         HEADER
-    ========================= -->
-
+    <!-- =====================================
+         HERO
+    ====================================== -->
     <header class="hero">
 
-      <div class="brand-kicker">
-        Recruitment
+      <div class="hero-main">
+
+        <div>
+
+          <div class="brand-kicker">
+            Recruitment
+          </div>
+
+          <div class="brand">
+            @attwork
+          </div>
+
+          <h1 class="hero-title">
+            ตรวจสอบสถานะการสมัคร
+          </h1>
+
+          <div class="hero-copy">
+            ตรวจสอบใบสมัครที่เชื่อมกับบัญชี LINE
+            ของคุณ พร้อมดูรายละเอียดและ Resume
+            ที่แนบไว้ได้จากหน้านี้
+          </div>
+
+        </div>
+
+        <div class="online-badge">
+          <span class="online-dot"></span>
+          ระบบออนไลน์
+        </div>
+
       </div>
 
-      <div class="brand">
-        @attwork
-      </div>
 
-      <div class="hero-title">
-        ตรวจสอบสถานะการสมัคร
-      </div>
-
-      <div class="hero-copy">
-        ตรวจสอบใบสมัครของคุณที่เชื่อมกับบัญชี LINE
-      </div>
-
-
+      <!-- LINE USER -->
       <div
         id="lineUser"
         class="line-user hidden"
@@ -1107,10 +1447,7 @@
 
         <div>
 
-          <div
-            id="lineDisplayName"
-            class="line-name"
-          >
+          <div id="lineDisplayName">
             ผู้ใช้ LINE
           </div>
 
@@ -1128,31 +1465,34 @@
     </header>
 
 
-    <!-- =========================
+    <!-- =====================================
          STATUS
-    ========================= -->
+    ====================================== -->
+    <section
+      class="status-panel"
+      aria-labelledby="statusPanelTitle"
+    >
 
-    <section class="card">
+      <div class="status-panel-inner">
 
-      <div class="card-inner">
+        <div class="status-panel-head">
 
-        <div class="section-head">
-
-          <div
-            class="section-icon"
-            aria-hidden="true"
-          >
+          <div class="status-panel-icon">
             ✓
           </div>
 
           <div>
 
-            <h1 class="section-title">
+            <h2
+              id="statusPanelTitle"
+              class="status-panel-title"
+            >
               ใบสมัครของฉัน
-            </h1>
+            </h2>
 
-            <div class="section-desc">
-              แสดงเฉพาะใบสมัครที่ผูกกับบัญชี LINE นี้
+            <div class="status-panel-desc">
+              ระบบจะแสดงเฉพาะใบสมัครที่เชื่อมกับ
+              บัญชี LINE ของคุณเท่านั้น
             </div>
 
           </div>
@@ -1161,7 +1501,7 @@
 
 
         <button
-          id="refreshButton"
+          id="refreshStatusButton"
           class="refresh-button"
           type="button"
           disabled
@@ -1171,67 +1511,56 @@
 
 
         <div
-          id="message"
-          class="message"
-          aria-live="polite"
+          id="statusResult"
+          class="status-result"
         ></div>
-
-
-        <div
-          id="applications"
-          class="applications"
-        >
-
-          <div class="loading">
-
-            <div class="spinner"></div>
-
-            <span>
-              กำลังเตรียมระบบ...
-            </span>
-
-          </div>
-
-        </div>
 
       </div>
 
     </section>
 
-  </main>
+
+    <div class="footer-note">
+      ข้อมูลใบสมัครจะถูกใช้เพื่อการตรวจสอบและดำเนินการสมัครงานกับ @attwork
+    </div>
+
+  </div>
 
 
-  <!-- =========================
+  <!-- =======================================
        DETAIL MODAL
-  ========================= -->
-
+  ======================================== -->
   <div
     id="detailOverlay"
     class="detail-overlay"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="detailTitle"
+    aria-hidden="true"
   >
 
-    <div class="detail-modal">
-
-      <div class="detail-handle"></div>
-
+    <div
+      class="detail-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="detailTitle"
+    >
 
       <div class="detail-header">
 
-        <div>
+        <div class="detail-header-copy">
+
+          <div class="detail-kicker">
+            Application
+          </div>
 
           <h2
             id="detailTitle"
-            class="detail-header-title"
+            class="detail-title"
           >
             รายละเอียดใบสมัคร
           </h2>
 
           <div
             id="detailApplicationId"
-            class="detail-header-id"
+            class="detail-application-id"
           >
             -
           </div>
@@ -1241,7 +1570,7 @@
 
         <button
           id="closeDetailButton"
-          class="close-button"
+          class="close-detail-button"
           type="button"
           aria-label="ปิด"
         >
@@ -1251,815 +1580,914 @@
       </div>
 
 
-      <!-- APPLICATION DETAIL -->
+      <div class="detail-content">
 
-      <section class="detail-section">
+        <!-- APPLICATION -->
+        <section class="detail-section">
 
-        <h3 class="detail-section-title">
-          ข้อมูลใบสมัคร
-        </h3>
+          <h3 class="detail-section-title">
+            ข้อมูลใบสมัคร
+          </h3>
 
-        <div
-          id="detailApplication"
-          class="detail-grid"
-        ></div>
+          <div
+            id="detailApplication"
+            class="detail-grid"
+          ></div>
 
-      </section>
+        </section>
 
 
-      <!-- RESUME -->
+        <!-- RESUME -->
+        <section class="detail-section">
 
-      <section class="detail-section">
+          <h3 class="detail-section-title">
+            Resume
+          </h3>
 
-        <h3 class="detail-section-title">
-          Resume
-        </h3>
+          <div id="detailResume">
 
-        <div id="detailResume"></div>
+            <div class="resume-loading">
 
-      </section>
+              <div class="small-spinner"></div>
+
+              <div>
+                กำลังเตรียม Resume...
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
 
     </div>
 
   </div>
 
 
-  <!-- Hidden iframe -->
-  <iframe
-    id="postFrame"
-    name="atworkPostFrame"
-    style="display:none"
-    title="ATWORK background request"
-  ></iframe>
+<script>
+
+  /* =================================================
+     CONFIG
+  ================================================= */
+
+  const LIFF_ID =
+    "2011817085-3jHPlME0";
+
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec";
 
 
-  <script>
+  /* =================================================
+     STATE
+  ================================================= */
 
-    /* =========================================================
-       CONFIG
-    ========================================================= */
+  let liffReady =
+    false;
 
-    const LIFF_ID =
-      '2011817085-3jHPlME0';
+  let applicationList =
+    [];
 
-    const SCRIPT_URL =
-      'https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec';
-
-
-    /* =========================================================
-       STATE
-    ========================================================= */
-
-    let liffReady = false;
-    let loadingStatus = false;
-
-    let applicationList = [];
+  let currentApplication =
+    null;
 
 
-    /* =========================================================
-       ELEMENTS
-    ========================================================= */
+  /* =================================================
+     ELEMENTS
+  ================================================= */
 
-    const lineUser =
-      document.getElementById('lineUser');
+  const lineUser =
+    document.getElementById(
+      "lineUser"
+    );
 
-    const linePicture =
-      document.getElementById('linePicture');
+  const linePicture =
+    document.getElementById(
+      "linePicture"
+    );
 
-    const lineDisplayName =
-      document.getElementById('lineDisplayName');
+  const lineDisplayName =
+    document.getElementById(
+      "lineDisplayName"
+    );
 
-    const connectionStatus =
-      document.getElementById('connectionStatus');
+  const connectionStatus =
+    document.getElementById(
+      "connectionStatus"
+    );
 
-    const refreshButton =
-      document.getElementById('refreshButton');
+  const refreshStatusButton =
+    document.getElementById(
+      "refreshStatusButton"
+    );
 
-    const message =
-      document.getElementById('message');
+  const statusResult =
+    document.getElementById(
+      "statusResult"
+    );
 
-    const applications =
-      document.getElementById('applications');
+  const detailOverlay =
+    document.getElementById(
+      "detailOverlay"
+    );
 
-    const detailOverlay =
-      document.getElementById('detailOverlay');
+  const closeDetailButton =
+    document.getElementById(
+      "closeDetailButton"
+    );
 
-    const closeDetailButton =
-      document.getElementById('closeDetailButton');
+  const detailTitle =
+    document.getElementById(
+      "detailTitle"
+    );
 
-    const detailTitle =
-      document.getElementById('detailTitle');
+  const detailApplicationId =
+    document.getElementById(
+      "detailApplicationId"
+    );
 
-    const detailApplicationId =
-      document.getElementById('detailApplicationId');
+  const detailApplication =
+    document.getElementById(
+      "detailApplication"
+    );
 
-    const detailApplication =
-      document.getElementById('detailApplication');
-
-    const detailResume =
-      document.getElementById('detailResume');
-
-
-    /* =========================================================
-       MESSAGE
-    ========================================================= */
-
-    function showMessage(
-      text,
-      type
-    ){
-
-      message.textContent =
-        text || '';
-
-      message.className =
-        text
-          ? 'message show ' + (type || 'info')
-          : 'message';
-    }
-
-
-    /* =========================================================
-       LOADING
-    ========================================================= */
-
-    function showLoading(){
-
-      applications.innerHTML = `
-        <div class="loading">
-          <div class="spinner"></div>
-          <span>
-            กำลังตรวจสอบสถานะ...
-          </span>
-        </div>
-      `;
-    }
+  const detailResume =
+    document.getElementById(
+      "detailResume"
+    );
 
 
-    /* =========================================================
-       REQUEST ID
-    ========================================================= */
+  /* =================================================
+     ESCAPE HTML
+  ================================================= */
 
-    function createRequestId(){
+  function escapeHtml(
+    value
+  ) {
 
-      return (
-        Date.now().toString(36) +
-        '_' +
-        Math.random().toString(36).slice(2) +
-        '_' +
-        Math.random().toString(36).slice(2)
+    return String(
+      value == null
+        ? ""
+        : value
+    )
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
       );
+
+  }
+
+
+  /* =================================================
+     FORMAT SALARY
+  ================================================= */
+
+  function formatSalary(
+    value
+  ) {
+
+    const number =
+      Number(
+        value
+      );
+
+    if (
+      !number
+    ) {
+
+      return "-";
+
     }
 
+    return number.toLocaleString(
+      "th-TH"
+    ) + " บาท";
 
-    /* =========================================================
-       TOKEN
-    ========================================================= */
+  }
 
-    function getTokenExpiry(
-      token
-    ){
 
-      try{
+  /* =================================================
+     TOKEN EXPIRY
+  ================================================= */
 
-        const part =
-          token.split('.')[1];
+  function getTokenExpiry(
+    token
+  ) {
 
-        const base64 =
-          part
-            .replace(/-/g, '+')
-            .replace(/_/g, '/');
+    try {
 
-        const json =
-          decodeURIComponent(
-            atob(base64)
-              .split('')
-              .map(function(c){
+      const part =
+        token.split(".")[1];
 
-                return '%' +
+      const base64 =
+        part
+          .replace(
+            /-/g,
+            "+"
+          )
+          .replace(
+            /_/g,
+            "/"
+          );
+
+      const json =
+        decodeURIComponent(
+          atob(base64)
+            .split("")
+            .map(
+              function(c) {
+
+                return (
+                  "%" +
                   (
-                    '00' +
+                    "00" +
                     c
                       .charCodeAt(0)
                       .toString(16)
-                  ).slice(-2);
+                  ).slice(-2)
+                );
 
-              })
-              .join('')
-          );
-
-        return JSON.parse(json).exp || 0;
-
-      }catch(error){
-
-        return 0;
-
-      }
-    }
-
-
-    function getIdToken(){
-
-      const token =
-        liff.getIDToken();
-
-      if(!token){
-
-        throw new Error(
-          'ไม่พบ LINE ID Token กรุณาเปิด LIFF จาก LINE ใหม่'
-        );
-
-      }
-
-
-      const exp =
-        getTokenExpiry(
-          token
-        );
-
-      const now =
-        Math.floor(
-          Date.now() / 1000
-        );
-
-
-      if(
-        exp &&
-        exp <= now + 60
-      ){
-
-        throw new Error(
-          'ID_TOKEN_EXPIRED'
-        );
-
-      }
-
-
-      return token;
-    }
-
-
-    /* =========================================================
-       HIDDEN FORM POST
-    ========================================================= */
-
-    function addHidden(
-      form,
-      name,
-      value
-    ){
-
-      const input =
-        document.createElement(
-          'input'
-        );
-
-      input.type =
-        'hidden';
-
-      input.name =
-        name;
-
-      input.value =
-        value == null
-          ? ''
-          : String(value);
-
-      form.appendChild(
-        input
-      );
-    }
-
-
-    function postFormApi(
-      action,
-      data,
-      idToken,
-      timeoutMs
-    ){
-
-      timeoutMs =
-        timeoutMs || 120000;
-
-
-      return new Promise(
-        function(resolve, reject){
-
-          const requestId =
-            createRequestId();
-
-
-          const targetForm =
-            document.createElement(
-              'form'
-            );
-
-
-          targetForm.method =
-            'POST';
-
-          targetForm.action =
-            SCRIPT_URL;
-
-          targetForm.target =
-            'atworkPostFrame';
-
-          targetForm.style.display =
-            'none';
-
-
-          addHidden(
-            targetForm,
-            'action',
-            action
-          );
-
-          addHidden(
-            targetForm,
-            'requestId',
-            requestId
-          );
-
-          addHidden(
-            targetForm,
-            'idToken',
-            idToken
-          );
-
-          addHidden(
-            targetForm,
-            'data',
-            JSON.stringify(
-              data || {}
+              }
             )
+            .join("")
+        );
+
+      return (
+        JSON.parse(json).exp ||
+        0
+      );
+
+    } catch (error) {
+
+      return 0;
+
+    }
+
+  }
+
+
+  /* =================================================
+     GET LINE ID TOKEN
+  ================================================= */
+
+  async function getCurrentIdToken() {
+
+    const token =
+      liff.getIDToken();
+
+    if (!token) {
+
+      throw new Error(
+        "ไม่พบ LINE ID Token"
+      );
+
+    }
+
+    const exp =
+      getTokenExpiry(
+        token
+      );
+
+    const now =
+      Math.floor(
+        Date.now() / 1000
+      );
+
+    if (
+      exp &&
+      exp <= now + 60
+    ) {
+
+      throw new Error(
+        "ID_TOKEN_EXPIRED_CLIENT"
+      );
+
+    }
+
+    return token;
+
+  }
+
+
+  /* =================================================
+     TOKEN EXPIRED
+  ================================================= */
+
+  function handleTokenExpired() {
+
+    try {
+
+      if (
+        !liff.isInClient()
+      ) {
+
+        liff.logout();
+
+        liff.login({
+
+          redirectUri:
+            window.location.href
+
+        });
+
+        return;
+
+      }
+
+    } catch (error) {
+    }
+
+
+    const alreadyReloaded =
+      sessionStorage.getItem(
+        "ATWORK_STATUS_TOKEN_RELOAD"
+      );
+
+
+    if (
+      !alreadyReloaded
+    ) {
+
+      sessionStorage.setItem(
+        "ATWORK_STATUS_TOKEN_RELOAD",
+        "1"
+      );
+
+      location.reload();
+
+      return;
+
+    }
+
+
+    sessionStorage.removeItem(
+      "ATWORK_STATUS_TOKEN_RELOAD"
+    );
+
+
+    showStatusMessage(
+      "เซสชัน LINE หมดอายุแล้ว กรุณาปิดหน้านี้ แล้วเปิดตรวจสอบสถานะจาก LINE ใหม่",
+      "error"
+    );
+
+  }
+
+
+  /* =================================================
+     REQUEST ID
+  ================================================= */
+
+  function createRequestId() {
+
+    return (
+      Date.now().toString(36) +
+      "_" +
+      Math.random()
+        .toString(36)
+        .slice(2) +
+      "_" +
+      Math.random()
+        .toString(36)
+        .slice(2)
+    );
+
+  }
+
+
+  /* =================================================
+     ADD HIDDEN
+  ================================================= */
+
+  function addHidden(
+    form,
+    name,
+    value
+  ) {
+
+    const input =
+      document.createElement(
+        "input"
+      );
+
+    input.type =
+      "hidden";
+
+    input.name =
+      name;
+
+    input.value =
+      value == null
+        ? ""
+        : String(value);
+
+    form.appendChild(
+      input
+    );
+
+  }
+
+
+  /* =================================================
+     POST API + POLLING
+  ================================================= */
+
+  function postFormApi(
+    action,
+    data,
+    idToken,
+    timeoutMs
+  ) {
+
+    timeoutMs =
+      timeoutMs || 120000;
+
+
+    return new Promise(
+      function(
+        resolve,
+        reject
+      ) {
+
+        const requestId =
+          createRequestId();
+
+
+        const targetForm =
+          document.createElement(
+            "form"
           );
 
 
-          document.body.appendChild(
-            targetForm
+        targetForm.method =
+          "POST";
+
+        targetForm.action =
+          SCRIPT_URL;
+
+        targetForm.target =
+          "atworkPostFrame";
+
+        targetForm.style.display =
+          "none";
+
+
+        addHidden(
+          targetForm,
+          "action",
+          action
+        );
+
+        addHidden(
+          targetForm,
+          "requestId",
+          requestId
+        );
+
+        addHidden(
+          targetForm,
+          "idToken",
+          idToken
+        );
+
+        addHidden(
+          targetForm,
+          "data",
+          JSON.stringify(
+            data || {}
+          )
+        );
+
+
+        document.body.appendChild(
+          targetForm
+        );
+
+
+        let finished =
+          false;
+
+        let attempts =
+          0;
+
+        let scriptEl =
+          null;
+
+        let timeoutHandle =
+          null;
+
+
+        function cleanup() {
+
+          if (
+            scriptEl
+          ) {
+
+            scriptEl.remove();
+
+          }
+
+          try {
+
+            targetForm.remove();
+
+          } catch (error) {
+          }
+
+        }
+
+
+        function finish(
+          error,
+          result
+        ) {
+
+          if (
+            finished
+          ) {
+
+            return;
+
+          }
+
+          finished =
+            true;
+
+          clearTimeout(
+            timeoutHandle
+          );
+
+          cleanup();
+
+
+          if (
+            error
+          ) {
+
+            reject(
+              error
+            );
+
+          } else {
+
+            resolve(
+              result
+            );
+
+          }
+
+        }
+
+
+        timeoutHandle =
+          setTimeout(
+            function() {
+
+              finish(
+                new Error(
+                  "Server ตอบกลับช้าเกินไป กรุณาลองใหม่อีกครั้ง"
+                )
+              );
+
+            },
+            timeoutMs
           );
 
 
-          let finished = false;
-          let attempts = 0;
-          let scriptEl = null;
+        function poll() {
 
+          if (
+            finished
+          ) {
 
-          function cleanup(){
-
-            if(scriptEl){
-
-              scriptEl.remove();
-
-            }
-
-            try{
-
-              targetForm.remove();
-
-            }catch(error){}
-          }
-
-
-          function finish(
-            error,
-            result
-          ){
-
-            if(finished){
-
-              return;
-            }
-
-            finished = true;
-
-
-            clearTimeout(
-              timeout
-            );
-
-
-            cleanup();
-
-
-            if(error){
-
-              reject(error);
-
-            }else{
-
-              resolve(result);
-
-            }
+            return;
 
           }
 
 
-          const timeout =
-            setTimeout(
-              function(){
+          attempts++;
 
-                finish(
-                  new Error(
-                    'Server ตอบกลับช้าเกินไป กรุณาลองใหม่อีกครั้ง'
-                  )
-                );
 
-              },
-              timeoutMs
+          if (
+            scriptEl
+          ) {
+
+            scriptEl.remove();
+
+          }
+
+
+          const callbackName =
+            "__atworkStatusCallback_" +
+            Date.now() +
+            "_" +
+            Math.floor(
+              Math.random() *
+              1000000
             );
 
 
-          function poll(){
-
-            if(finished){
-
-              return;
-            }
+          scriptEl =
+            document.createElement(
+              "script"
+            );
 
 
-            attempts++;
+          window[
+            callbackName
+          ] =
+            function(
+              response
+            ) {
+
+              try {
+
+                delete window[
+                  callbackName
+                ];
+
+              } catch (error) {
+              }
 
 
-            if(scriptEl){
+              if (
+                scriptEl
+              ) {
 
-              scriptEl.remove();
+                scriptEl.remove();
 
-            }
-
-
-            const callbackName =
-              '__atworkStatusCallback_' +
-              Date.now() +
-              '_' +
-              Math.floor(
-                Math.random() *
-                1000000
-              );
+              }
 
 
-            scriptEl =
-              document.createElement(
-                'script'
-              );
+              if (
+                !response ||
+                response.pending
+              ) {
 
-
-            window[callbackName] =
-              function(result){
-
-                try{
-
-                  delete window[
-                    callbackName
-                  ];
-
-                }catch(error){}
-
-
-                if(scriptEl){
-
-                  scriptEl.remove();
-
-                }
-
-
-                if(
-                  !result ||
-                  result.pending
-                ){
-
-                  if(
-                    attempts < 110
-                  ){
-
-                    setTimeout(
-                      poll,
-                      900
-                    );
-
-                  }else{
-
-                    finish(
-                      new Error(
-                        'ไม่พบผลลัพธ์จาก Server'
-                      )
-                    );
-
-                  }
-
-
-                  return;
-                }
-
-
-                finish(
-                  null,
-                  result
-                );
-
-              };
-
-
-            scriptEl.onerror =
-              function(){
-
-                try{
-
-                  delete window[
-                    callbackName
-                  ];
-
-                }catch(error){}
-
-
-                if(scriptEl){
-
-                  scriptEl.remove();
-
-                }
-
-
-                if(
+                if (
                   attempts < 110
-                ){
+                ) {
 
                   setTimeout(
                     poll,
                     900
                   );
 
-                }else{
+                } else {
 
                   finish(
                     new Error(
-                      'ไม่สามารถตรวจสอบผลลัพธ์จาก Server ได้'
+                      "ไม่พบผลลัพธ์จาก Server"
                     )
                   );
 
                 }
 
-              };
+                return;
+
+              }
 
 
-            scriptEl.src =
-              SCRIPT_URL +
-              '?action=status' +
-              '&requestId=' +
-              encodeURIComponent(
-                requestId
-              ) +
-              '&callback=' +
-              encodeURIComponent(
-                callbackName
-              ) +
-              '&_=' +
-              Date.now();
+              finish(
+                null,
+                response
+              );
+
+            };
 
 
-            document.body.appendChild(
-              scriptEl
-            );
+          scriptEl.onerror =
+            function() {
 
-          }
+              try {
+
+                delete window[
+                  callbackName
+                ];
+
+              } catch (error) {
+              }
 
 
-          try{
+              if (
+                scriptEl
+              ) {
 
-            targetForm.submit();
+                scriptEl.remove();
 
-            poll();
+              }
 
-          }catch(error){
 
-            finish(
-              error
-            );
+              if (
+                attempts < 110
+              ) {
 
-          }
+                setTimeout(
+                  poll,
+                  900
+                );
+
+              } else {
+
+                finish(
+                  new Error(
+                    "ไม่สามารถตรวจสอบผลลัพธ์จาก Server ได้"
+                  )
+                );
+
+              }
+
+            };
+
+
+          scriptEl.src =
+            SCRIPT_URL +
+            "?action=status" +
+            "&requestId=" +
+            encodeURIComponent(
+              requestId
+            ) +
+            "&callback=" +
+            encodeURIComponent(
+              callbackName
+            ) +
+            "&_=" +
+            Date.now();
+
+
+          document.body.appendChild(
+            scriptEl
+          );
 
         }
-      );
-    }
 
 
-    /* =========================================================
-       ESCAPE HTML
-    ========================================================= */
+        try {
 
-    function escapeHtml(
-      value
-    ){
+          targetForm.submit();
 
-      return String(
-        value == null
-          ? ''
-          : value
-      )
-      .replace(
-        /&/g,
-        '&amp;'
-      )
-      .replace(
-        /</g,
-        '&lt;'
-      )
-      .replace(
-        />/g,
-        '&gt;'
-      )
-      .replace(
-        /"/g,
-        '&quot;'
-      )
-      .replace(
-        /'/g,
-        '&#039;'
-      );
-    }
+          poll();
 
+        } catch (error) {
 
-    /* =========================================================
-       MONEY
-    ========================================================= */
+          finish(
+            error
+          );
 
-    function formatMoney(
-      value
-    ){
-
-      const number =
-        Number(value || 0);
-
-      if(!number){
-
-        return '-';
+        }
 
       }
+    );
+
+  }
 
 
-      return (
-        new Intl.NumberFormat(
-          'th-TH'
-        ).format(number)
-        + ' บาท'
+  /* =================================================
+     SHOW STATUS MESSAGE
+  ================================================= */
+
+  function showStatusMessage(
+    message,
+    type
+  ) {
+
+    statusResult.innerHTML =
+      `
+        <div class="result-message ${escapeHtml(type || "info")}">
+          ${escapeHtml(message || "")}
+        </div>
+      `;
+
+    statusResult.classList.add(
+      "show"
+    );
+
+  }
+
+
+  /* =================================================
+     RENDER APPLICATIONS
+  ================================================= */
+
+  function renderApplications(
+    applications
+  ) {
+
+    applicationList =
+      Array.isArray(
+        applications
+      )
+        ? applications
+        : [];
+
+
+    if (
+      applicationList.length === 0
+    ) {
+
+      showStatusMessage(
+        "ยังไม่พบใบสมัครที่ผูกกับบัญชี LINE นี้",
+        "info"
       );
+
+      return;
+
     }
 
 
-    /* =========================================================
-       RENDER APPLICATION LIST
-    ========================================================= */
-
-    function renderApplications(
-      list
-    ){
-
-      applicationList =
-        Array.isArray(list)
-          ? list
-          : [];
-
-
-      if(
-        applicationList.length === 0
-      ){
-
-        applications.innerHTML = `
-          <div class="empty">
-            ยังไม่พบใบสมัครที่ผูกกับบัญชี LINE นี้
-            <br><br>
-            หากเพิ่งสมัครงาน
-            กรุณากดรีเฟรชอีกครั้ง
-          </div>
-        `;
-
-        showMessage(
-          'ยังไม่พบข้อมูลใบสมัคร',
-          'info'
-        );
-
-        return;
-      }
-
-
-      const cards =
-        [...applicationList]
-          .reverse()
-          .map(function(
+    const cards =
+      applicationList
+        .map(
+          function(
             app,
-            reversedIndex
-          ){
-
-            const originalIndex =
-              applicationList.length -
-              1 -
-              reversedIndex;
-
-
-            const position =
-              app.position ||
-              'ไม่ระบุตำแหน่ง';
+            index
+          ) {
 
             const applicationId =
               app.applicationId ||
-              '-';
+              "-";
+
+            const position =
+              app.position ||
+              "ไม่ระบุตำแหน่ง";
 
             const status =
               app.status ||
-              'ไม่ระบุสถานะ';
+              "ไม่ระบุสถานะ";
 
             const appliedDate =
               app.appliedDate ||
-              '-';
+              "-";
 
             const resumeStatus =
               app.resumeStatus ||
-              'ไม่มีไฟล์แนบ';
+              "ไม่มีไฟล์แนบ";
 
 
             return `
+              <article class="application-card">
 
-              <article
-                class="application-card"
-              >
-
-                <div
-                  class="application-top"
-                >
+                <div class="application-top">
 
                   <div>
 
-                    <h2
-                      class="application-position"
-                    >
-                      ${escapeHtml(
-                        position
-                      )}
-                    </h2>
+                    <h3 class="application-position">
+                      ${escapeHtml(position)}
+                    </h3>
 
-                    <div
-                      class="application-id"
-                    >
-                      ใบสมัคร:
-                      ${escapeHtml(
-                        applicationId
-                      )}
+                    <div class="application-id">
+                      ใบสมัคร: ${escapeHtml(applicationId)}
                     </div>
 
                   </div>
 
-
-                  <div
-                    class="status-badge"
-                  >
-                    ${escapeHtml(
-                      status
-                    )}
+                  <div class="application-badge">
+                    ${escapeHtml(status)}
                   </div>
 
                 </div>
 
 
-                <div
-                  class="meta-grid"
-                >
+                <div class="application-meta">
 
-                  <div
-                    class="meta-item"
-                  >
+                  <div class="meta-item">
 
-                    <span
-                      class="meta-label"
-                    >
+                    <span class="meta-label">
                       วันที่สมัคร
                     </span>
 
-                    <span
-                      class="meta-value"
-                    >
-                      ${escapeHtml(
-                        appliedDate
-                      )}
+                    <span class="meta-value">
+                      ${escapeHtml(appliedDate)}
                     </span>
 
                   </div>
 
 
-                  <div
-                    class="meta-item"
-                  >
+                  <div class="meta-item">
 
-                    <span
-                      class="meta-label"
-                    >
+                    <span class="meta-label">
                       Resume
                     </span>
 
-                    <span
-                      class="meta-value"
-                    >
-                      ${escapeHtml(
-                        resumeStatus
-                      )}
+                    <span class="meta-value">
+                      ${escapeHtml(resumeStatus)}
                     </span>
 
                   </div>
@@ -2068,65 +2496,247 @@
 
 
                 <button
+                  class="view-detail-button"
                   type="button"
-                  class="detail-button"
-                  data-index="${originalIndex}"
+                  data-index="${index}"
                 >
                   ดูรายละเอียด
                 </button>
 
               </article>
-
             `;
 
-          })
-          .join('');
+          }
+        )
+        .join("");
 
 
-      applications.innerHTML =
-        cards;
+    statusResult.innerHTML =
+      `
+        <div class="application-status-list">
+          ${cards}
+        </div>
+      `;
 
 
-      showMessage(
-        'โหลดสถานะการสมัครเรียบร้อยแล้ว',
-        'success'
+    statusResult.classList.add(
+      "show"
+    );
+
+
+    statusResult
+      .querySelectorAll(
+        ".view-detail-button"
+      )
+      .forEach(
+        function(button) {
+
+          button.addEventListener(
+            "click",
+            function() {
+
+              const index =
+                Number(
+                  button.dataset.index
+                );
+
+              showApplicationDetail(
+                index
+              );
+
+            }
+          );
+
+        }
       );
+
+  }
+
+
+  /* =================================================
+     LOAD APPLICATION STATUS
+  ================================================= */
+
+  async function loadStatus() {
+
+    if (
+      !liffReady
+    ) {
+
+      return;
+
     }
 
 
-    /* =========================================================
-       SHOW DETAIL
-    ========================================================= */
-
-    function showApplicationDetail(
-      index
-    ){
-
-      const app =
-        applicationList[index];
+    refreshStatusButton.disabled =
+      true;
 
 
-      if(!app){
+    refreshStatusButton.textContent =
+      "กำลังตรวจสอบสถานะ...";
 
-        return;
+
+    statusResult.classList.remove(
+      "show"
+    );
+
+
+    statusResult.innerHTML =
+      "";
+
+
+    try {
+
+      let idToken;
+
+
+      try {
+
+        idToken =
+          await getCurrentIdToken();
+
+      } catch (error) {
+
+        if (
+          error.message ===
+          "ID_TOKEN_EXPIRED_CLIENT"
+        ) {
+
+          handleTokenExpired();
+
+          return;
+
+        }
+
+        throw error;
+
       }
 
 
-      detailTitle.textContent =
-        app.position ||
-        'รายละเอียดใบสมัคร';
-
-
-      detailApplicationId.textContent =
-        'ใบสมัคร: ' +
-        (
-          app.applicationId ||
-          '-'
+      const response =
+        await postFormApi(
+          "getMyApplications",
+          {},
+          idToken,
+          120000
         );
 
 
-      detailApplication.innerHTML = `
+      /*
+       * Backend รุ่นนี้ตอบ:
+       *
+       * {
+       *   ok: true,
+       *   result: {
+       *     ok: true,
+       *     applications: [...]
+       *   }
+       * }
+       *
+       * จึงต้องดึง response.result ก่อน
+       */
 
+      const result =
+        response &&
+        response.result
+          ? response.result
+          : response;
+
+
+      if (
+        !result ||
+        result.ok !== true
+      ) {
+
+        throw new Error(
+          result &&
+          result.message
+            ? result.message
+            : "ไม่สามารถตรวจสอบสถานะได้"
+        );
+
+      }
+
+
+      renderApplications(
+        result.applications || []
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "loadStatus ERROR:",
+        error
+      );
+
+
+      showStatusMessage(
+        error.message ||
+        "ไม่สามารถตรวจสอบสถานะได้ กรุณาลองใหม่",
+        "error"
+      );
+
+
+    } finally {
+
+      refreshStatusButton.disabled =
+        !liffReady;
+
+      refreshStatusButton.textContent =
+        "🔎 เช็กสถานะของฉัน";
+
+    }
+
+  }
+
+
+  /* =================================================
+     SHOW APPLICATION DETAIL
+  ================================================= */
+
+  async function showApplicationDetail(
+    index
+  ) {
+
+    const app =
+      applicationList[index];
+
+
+    if (
+      !app
+    ) {
+
+      return;
+
+    }
+
+
+    currentApplication =
+      app;
+
+
+    const applicationId =
+      app.applicationId ||
+      "-";
+
+
+    const position =
+      app.position ||
+      "ไม่ระบุตำแหน่ง";
+
+
+    detailTitle.textContent =
+      position;
+
+
+    detailApplicationId.textContent =
+      "ใบสมัคร: " +
+      applicationId;
+
+
+    detailApplication.innerHTML =
+      `
         <div class="detail-item">
 
           <span class="detail-label">
@@ -2135,7 +2745,7 @@
 
           <span class="detail-value">
             ${escapeHtml(
-              app.name || '-'
+              app.name || "-"
             )}
           </span>
 
@@ -2150,7 +2760,7 @@
 
           <span class="detail-value">
             ${escapeHtml(
-              app.position || '-'
+              app.position || "-"
             )}
           </span>
 
@@ -2165,7 +2775,7 @@
 
           <span class="detail-value">
             ${escapeHtml(
-              formatMoney(
+              formatSalary(
                 app.expectedSalary
               )
             )}
@@ -2177,12 +2787,12 @@
         <div class="detail-item">
 
           <span class="detail-label">
-            วันที่พร้อมเริ่มงาน
+            วันที่เริ่มงาน
           </span>
 
           <span class="detail-value">
             ${escapeHtml(
-              app.startDate || '-'
+              app.startDate || "-"
             )}
           </span>
 
@@ -2197,7 +2807,7 @@
 
           <span class="detail-value">
             ${escapeHtml(
-              app.phone || '-'
+              app.phone || "-"
             )}
           </span>
 
@@ -2212,7 +2822,7 @@
 
           <span class="detail-value">
             ${escapeHtml(
-              app.email || '-'
+              app.email || "-"
             )}
           </span>
 
@@ -2222,12 +2832,12 @@
         <div class="detail-item full">
 
           <span class="detail-label">
-            ที่อยู่ปัจจุบัน
+            ที่อยู่
           </span>
 
           <span class="detail-value">
             ${escapeHtml(
-              app.address || '-'
+              app.address || "-"
             )}
           </span>
 
@@ -2242,7 +2852,7 @@
 
           <span class="detail-value">
             ${escapeHtml(
-              app.appliedDate || '-'
+              app.appliedDate || "-"
             )}
           </span>
 
@@ -2257,7 +2867,7 @@
 
           <span class="detail-value">
             ${escapeHtml(
-              app.updatedAt || '-'
+              app.updatedAt || "-"
             )}
           </span>
 
@@ -2267,483 +2877,671 @@
         <div class="detail-item full">
 
           <span class="detail-label">
-            สถานะใบสมัคร
+            สถานะการสมัคร
           </span>
 
-          <div
-            style="margin-top:6px"
-          >
-
-            <span class="detail-status">
-              ${escapeHtml(
-                app.status ||
-                'ไม่ระบุสถานะ'
-              )}
-            </span>
-
-          </div>
+          <span class="detail-value">
+            ${escapeHtml(
+              app.status || "-"
+            )}
+          </span>
 
         </div>
-
       `;
 
 
-      /* =========================
-         RESUME
-      ========================= */
+    detailResume.innerHTML =
+      `
+        <div class="resume-loading">
 
-const resumeName = app.resumeName || '';
-const resumeStatus = app.resumeStatus || 'ไม่มีไฟล์แนบ';
-const resumeFileId = app.resumeFileId || '';
+          <div class="small-spinner"></div>
 
-if (resumeFileId) {
-  const imageUrl =
-    'https://drive.google.com/thumbnail?id=' +
-    encodeURIComponent(resumeFileId) +
-    '&sz=w1200';
+          <div>
+            กำลังโหลด Resume...
+          </div>
 
-  const driveUrl =
-    'https://drive.google.com/file/d/' +
-    encodeURIComponent(resumeFileId) +
-    '/view';
-
-  detailResume.innerHTML = `
-    <div class="resume-card">
-
-      ${
-        resumeName
-          ? `<div class="resume-name">${escapeHtml(resumeName)}</div>`
-          : ''
-      }
-
-      <div class="resume-status">
-        ${escapeHtml(resumeStatus)}
-      </div>
-
-      <div
-        style="
-          margin-top:14px;
-          border-radius:14px;
-          overflow:hidden;
-          background:#fff;
-          border:1px solid #e5e7eb;
-        "
-      >
-        <img
-          src="${imageUrl}"
-          alt="Resume"
-          style="
-            display:block;
-            width:100%;
-            height:auto;
-            max-height:900px;
-            object-fit:contain;
-            background:#fff;
-          "
-          onerror="
-            this.style.display='none';
-            this.nextElementSibling.style.display='block';
-          "
-        >
-
-        <div
-          style="
-            display:none;
-            padding:30px 15px;
-            text-align:center;
-            color:#6b7280;
-          "
-        >
-          ไม่สามารถแสดงตัวอย่าง Resume ได้
         </div>
-      </div>
-
-      <a
-        href="${driveUrl}"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="resume-open"
-      >
-        เปิด Resume เต็มขนาด
-      </a>
-
-    </div>
-  `;
-} else {
-  detailResume.innerHTML = `
-    <div class="no-resume">
-      ใบสมัครนี้ไม่มี Resume แนบไว้
-    </div>
-  `;
-}
+      `;
 
 
-      detailOverlay.classList.add(
-        'show'
+    detailOverlay.classList.add(
+      "show"
+    );
+
+
+    detailOverlay.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+
+    document.body.style.overflow =
+      "hidden";
+
+
+    /*
+     * มี ResumeFileID
+     * จึงเรียก Preview
+     */
+
+    if (
+      app.resumeFileId
+    ) {
+
+      await loadResumePreview(
+        applicationId
       );
 
-      document.body.style.overflow =
-        'hidden';
-    }
+    } else {
 
+      detailResume.innerHTML =
+        `
+          <div class="resume-card">
 
-    /* =========================================================
-       CLOSE DETAIL
-    ========================================================= */
+            <div class="resume-no-preview">
+              ใบสมัครนี้ยังไม่มี Resume แนบไว้
+            </div>
 
-    function closeApplicationDetail(){
-
-      detailOverlay.classList.remove(
-        'show'
-      );
-
-      document.body.style.overflow =
-        '';
-    }
-
-
-    /* =========================================================
-       DETAIL CLICK
-    ========================================================= */
-
-    applications.addEventListener(
-      'click',
-      function(event){
-
-        const button =
-          event.target.closest(
-            '.detail-button'
-          );
-
-
-        if(!button){
-
-          return;
-        }
-
-
-        const index =
-          Number(
-            button.dataset.index
-          );
-
-
-        showApplicationDetail(
-          index
-        );
-
-      }
-    );
-
-
-    closeDetailButton.addEventListener(
-      'click',
-      closeApplicationDetail
-    );
-
-
-    detailOverlay.addEventListener(
-      'click',
-      function(event){
-
-        if(
-          event.target ===
-          detailOverlay
-        ){
-
-          closeApplicationDetail();
-
-        }
-
-      }
-    );
-
-
-    document.addEventListener(
-      'keydown',
-      function(event){
-
-        if(
-          event.key === 'Escape' &&
-          detailOverlay.classList.contains(
-            'show'
-          )
-        ){
-
-          closeApplicationDetail();
-
-        }
-
-      }
-    );
-
-
-    /* =========================================================
-       LOAD STATUS
-    ========================================================= */
-
-    async function loadStatus(){
-
-      if(
-        !liffReady ||
-        loadingStatus
-      ){
-
-        return;
-      }
-
-
-      loadingStatus =
-        true;
-
-
-      refreshButton.disabled =
-        true;
-
-      refreshButton.textContent =
-        'กำลังตรวจสอบ...';
-
-
-      showLoading();
-
-      showMessage(
-        '',
-        'info'
-      );
-
-
-      try{
-
-        const idToken =
-          getIdToken();
-
-
-        const result =
-          await postFormApi(
-            'getMyApplications',
-            {},
-            idToken,
-            120000
-          );
-
-
-        if(
-          !result ||
-          !result.ok
-        ){
-
-          throw new Error(
-            result &&
-            result.message
-              ? result.message
-              : 'ไม่สามารถตรวจสอบสถานะได้'
-          );
-
-        }
-
-
-        renderApplications(
-          result.applications || []
-        );
-
-
-      }catch(error){
-
-        console.error(
-          error
-        );
-
-
-        applications.innerHTML = `
-          <div class="empty">
-            ไม่สามารถโหลดข้อมูลสถานะได้
           </div>
         `;
 
+    }
 
-        showMessage(
-          error.message ||
-          'ไม่สามารถตรวจสอบสถานะได้ กรุณาลองใหม่',
-          'error'
-        );
+  }
 
 
-      }finally{
+  /* =================================================
+     JSONP RESUME PREVIEW
+  ================================================= */
 
-        loadingStatus =
+  function requestResumePreview(
+    idToken,
+    applicationId,
+    timeoutMs
+  ) {
+
+    timeoutMs =
+      timeoutMs || 120000;
+
+
+    return new Promise(
+      function(
+        resolve,
+        reject
+      ) {
+
+        const callbackName =
+          "__atworkResumeCallback_" +
+          Date.now() +
+          "_" +
+          Math.floor(
+            Math.random() *
+            1000000
+          );
+
+
+        const script =
+          document.createElement(
+            "script"
+          );
+
+
+        let finished =
           false;
 
 
-        refreshButton.disabled =
-          !liffReady;
+        const timeout =
+          setTimeout(
+            function() {
 
-        refreshButton.textContent =
-          '🔄 รีเฟรชสถานะ';
+              finish(
+                new Error(
+                  "โหลด Resume ใช้เวลานานเกินไป"
+                )
+              );
 
-      }
-
-    }
-
-
-    refreshButton.addEventListener(
-      'click',
-      loadStatus
-    );
+            },
+            timeoutMs
+          );
 
 
-    /* =========================================================
-       LIFF INIT
-    ========================================================= */
+        function cleanup() {
 
-    async function initLIFF(){
-
-      try{
-
-        await liff.init({
-
-          liffId:
-            LIFF_ID,
-
-          withLoginOnExternalBrowser:
-            true
-
-        });
+          clearTimeout(
+            timeout
+          );
 
 
-        if(
-          !liff.isLoggedIn()
-        ){
+          try {
 
-          if(
-            !liff.isInClient()
-          ){
+            delete window[
+              callbackName
+            ];
 
-            liff.login({
+          } catch (error) {
+          }
 
-              redirectUri:
-                window.location.href
 
-            });
+          try {
+
+            script.remove();
+
+          } catch (error) {
+          }
+
+        }
+
+
+        function finish(
+          error,
+          result
+        ) {
+
+          if (
+            finished
+          ) {
 
             return;
-          }
-
-
-          throw new Error(
-            'ยังไม่ได้เข้าสู่ระบบ LINE'
-          );
-
-        }
-
-
-        /* =====================
-           LINE PROFILE
-        ===================== */
-
-        try{
-
-          const profile =
-            await liff.getProfile();
-
-
-          lineUser.classList.remove(
-            'hidden'
-          );
-
-
-          lineDisplayName.textContent =
-            profile.displayName ||
-            'ผู้ใช้ LINE';
-
-
-          if(
-            profile.pictureUrl
-          ){
-
-            linePicture.src =
-              profile.pictureUrl;
 
           }
 
-        }catch(error){
+          finished =
+            true;
 
-          console.warn(
-            'ไม่สามารถโหลด LINE Profile',
+          cleanup();
+
+
+          if (
             error
-          );
+          ) {
+
+            reject(
+              error
+            );
+
+          } else {
+
+            resolve(
+              result
+            );
+
+          }
 
         }
 
 
-        /* =====================
-           READY
-        ===================== */
+        window[
+          callbackName
+        ] =
+          function(
+            result
+          ) {
 
-        connectionStatus.textContent =
-          liff.isInClient()
-            ? 'เชื่อมต่อ LINE สำเร็จ'
-            : 'เชื่อมต่อ LINE สำเร็จ (Browser)';
+            finish(
+              null,
+              result
+            );
 
-
-        refreshButton.disabled =
-          false;
-
-
-        refreshButton.textContent =
-          '🔄 รีเฟรชสถานะ';
+          };
 
 
-        liffReady =
-          true;
+        script.onerror =
+          function() {
+
+            finish(
+              new Error(
+                "ไม่สามารถเชื่อมต่อ Server เพื่อโหลด Resume ได้"
+              )
+            );
+
+          };
 
 
-        /* =====================
-           AUTO LOAD
-        ===================== */
+        script.src =
+          SCRIPT_URL +
+          "?action=getApplicationResumePreview" +
+          "&idToken=" +
+          encodeURIComponent(
+            idToken
+          ) +
+          "&applicationId=" +
+          encodeURIComponent(
+            applicationId
+          ) +
+          "&callback=" +
+          encodeURIComponent(
+            callbackName
+          ) +
+          "&_=" +
+          Date.now();
 
-        await loadStatus();
+
+        document.body.appendChild(
+          script
+        );
+
+      }
+    );
+
+  }
 
 
-      }catch(error){
+  /* =================================================
+     LOAD RESUME PREVIEW
+  ================================================= */
 
-        console.error(
-          error
+  async function loadResumePreview(
+    applicationId
+  ) {
+
+    try {
+
+      const idToken =
+        await getCurrentIdToken();
+
+
+      const result =
+        await requestResumePreview(
+          idToken,
+          applicationId,
+          120000
         );
 
 
-        connectionStatus.textContent =
-          'เชื่อมต่อ LINE ไม่สำเร็จ';
+      if (
+        !result ||
+        result.ok !== true
+      ) {
 
-
-        refreshButton.disabled =
-          true;
-
-
-        applications.innerHTML = `
-          <div class="empty">
-            ไม่สามารถเชื่อมต่อ LINE ได้
-          </div>
-        `;
-
-
-        showMessage(
-          error.message ||
-          'ไม่สามารถเชื่อมต่อ LINE ได้ กรุณาเปิดจาก LINE ใหม่',
-          'error'
+        throw new Error(
+          result &&
+          result.message
+            ? result.message
+            : "ไม่สามารถโหลด Resume ได้"
         );
 
       }
 
+
+      if (
+        !result.hasResume
+      ) {
+
+        detailResume.innerHTML =
+          `
+            <div class="resume-card">
+
+              <div class="resume-no-preview">
+                ใบสมัครนี้ไม่มี Resume แนบไว้
+              </div>
+
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      if (
+        !result.isImage ||
+        !result.base64
+      ) {
+
+        detailResume.innerHTML =
+          `
+            <div class="resume-card">
+
+              <div class="resume-top">
+
+                <div class="resume-name">
+                  ${escapeHtml(
+                    result.fileName ||
+                    "Resume"
+                  )}
+                </div>
+
+                <div class="resume-status">
+                  ${escapeHtml(
+                    result.contentType ||
+                    "ไฟล์"
+                  )}
+                </div>
+
+              </div>
+
+
+              <div class="resume-no-preview">
+                ไฟล์ Resume นี้ยังไม่สามารถ
+                แสดงเป็นรูปภาพในหน้านี้ได้
+              </div>
+
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      const contentType =
+        result.contentType ||
+        "image/jpeg";
+
+
+      const imageSrc =
+        "data:" +
+        contentType +
+        ";base64," +
+        result.base64;
+
+
+      detailResume.innerHTML =
+        `
+          <div class="resume-card">
+
+            <div class="resume-top">
+
+              <div class="resume-name">
+                ${escapeHtml(
+                  result.fileName ||
+                  "Resume"
+                )}
+              </div>
+
+              <div class="resume-status">
+                Resume
+              </div>
+
+            </div>
+
+
+            <div class="resume-image-wrap">
+
+              <img
+                class="resume-image"
+                src="${imageSrc}"
+                alt="Resume"
+              >
+
+            </div>
+
+          </div>
+        `;
+
+
+    } catch (error) {
+
+      console.error(
+        "loadResumePreview ERROR:",
+        error
+      );
+
+
+      detailResume.innerHTML =
+        `
+          <div class="resume-card">
+
+            <div class="resume-no-preview">
+
+              ไม่สามารถแสดง Resume ได้
+
+              <br>
+
+              <small>
+                ${escapeHtml(
+                  error.message ||
+                  "เกิดข้อผิดพลาด"
+                )}
+              </small>
+
+            </div>
+
+          </div>
+        `;
+
     }
 
+  }
 
-    /* =========================================================
-       START
-    ========================================================= */
 
-    initLIFF();
+  /* =================================================
+     CLOSE DETAIL
+  ================================================= */
 
-  </script>
+  function closeDetail() {
+
+    detailOverlay.classList.remove(
+      "show"
+    );
+
+
+    detailOverlay.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+
+    document.body.style.overflow =
+      "";
+
+    currentApplication =
+      null;
+
+  }
+
+
+  closeDetailButton.addEventListener(
+    "click",
+    closeDetail
+  );
+
+
+  detailOverlay.addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        detailOverlay
+      ) {
+
+        closeDetail();
+
+      }
+
+    }
+  );
+
+
+  document.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key ===
+        "Escape"
+      ) {
+
+        if (
+          detailOverlay.classList.contains(
+            "show"
+          )
+        ) {
+
+          closeDetail();
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /* =================================================
+     REFRESH BUTTON
+  ================================================= */
+
+  refreshStatusButton.addEventListener(
+    "click",
+    loadStatus
+  );
+
+
+  /* =================================================
+     INIT LIFF
+  ================================================= */
+
+  async function initLIFF() {
+
+    try {
+
+      connectionStatus.textContent =
+        "กำลังเชื่อมต่อ LINE...";
+
+
+      await liff.init({
+
+        liffId:
+          LIFF_ID,
+
+        withLoginOnExternalBrowser:
+          true
+
+      });
+
+
+      if (
+        !liff.isLoggedIn()
+      ) {
+
+        if (
+          !liff.isInClient()
+        ) {
+
+          liff.login({
+
+            redirectUri:
+              window.location.href
+
+          });
+
+          return;
+
+        }
+
+
+        throw new Error(
+          "ยังไม่ได้เข้าสู่ระบบ LINE"
+        );
+
+      }
+
+
+      /* -----------------------------------------
+         PROFILE
+      ----------------------------------------- */
+
+      try {
+
+        const profile =
+          await liff.getProfile();
+
+
+        lineUser.classList.remove(
+          "hidden"
+        );
+
+
+        lineDisplayName.textContent =
+          profile.displayName ||
+          "ผู้ใช้ LINE";
+
+
+        if (
+          profile.pictureUrl
+        ) {
+
+          linePicture.src =
+            profile.pictureUrl;
+
+        }
+
+      } catch (error) {
+
+        console.log(
+          "Profile unavailable:",
+          error
+        );
+
+      }
+
+
+      /* -----------------------------------------
+         READY
+      ----------------------------------------- */
+
+      connectionStatus.textContent =
+        "เชื่อมต่อ LINE สำเร็จ";
+
+
+      liffReady =
+        true;
+
+
+      refreshStatusButton.disabled =
+        false;
+
+
+      refreshStatusButton.textContent =
+        "🔎 เช็กสถานะของฉัน";
+
+
+      /*
+       * โหลดสถานะทันที
+       */
+
+      await loadStatus();
+
+
+    } catch (error) {
+
+      console.error(
+        "LIFF INIT ERROR:",
+        error
+      );
+
+
+      connectionStatus.textContent =
+        "เชื่อมต่อ LINE ไม่สำเร็จ";
+
+
+      refreshStatusButton.disabled =
+        true;
+
+
+      refreshStatusButton.textContent =
+        "ไม่สามารถเชื่อมต่อ LINE";
+
+
+      showStatusMessage(
+        "ไม่สามารถเชื่อมต่อ LINE ได้ กรุณาปิดหน้านี้ แล้วเปิดจากเมนู ATWORK ใน LINE ใหม่",
+        "error"
+      );
+
+    }
+
+  }
+
+
+  /* =================================================
+     START
+  ================================================= */
+
+  initLIFF();
+
+</script>
 
 </body>
 </html>
