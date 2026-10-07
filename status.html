@@ -2132,77 +2132,120 @@
          RESUME
       ========================= */
 
-      const resumeName =
-        app.resumeName ||
-        '';
+     const resumeName =
+  app.resumeName ||
+  '';
 
-      const resumeStatus =
-        app.resumeStatus ||
-        'ไม่มีไฟล์แนบ';
+const resumeStatus =
+  app.resumeStatus ||
+  'ไม่มีไฟล์แนบ';
 
-      const resumeUrl =
-        app.resumeUrl ||
-        '';
+const resumeFileId =
+  app.resumeFileId ||
+  '';
 
 
-      if(
-        resumeName ||
-        resumeUrl ||
-        (
-          resumeStatus !==
-          'ไม่มีไฟล์แนบ'
-        )
-      ){
+if (
+  resumeFileId
+) {
 
-        detailResume.innerHTML = `
+  const imageUrl =
+    'https://drive.google.com/thumbnail?id=' +
+    encodeURIComponent(resumeFileId) +
+    '&sz=w1200';
 
-          <div class="resume-card">
 
+  const driveUrl =
+    'https://drive.google.com/file/d/' +
+    encodeURIComponent(resumeFileId) +
+    '/view';
+
+
+  detailResume.innerHTML = `
+
+    <div class="resume-card">
+
+      ${
+        resumeName
+          ? `
             <div class="resume-name">
-              ${escapeHtml(
-                resumeName ||
-                'มี Resume แนบอยู่'
-              )}
+              ${escapeHtml(resumeName)}
             </div>
-
-            <div class="resume-status">
-              ${escapeHtml(
-                resumeStatus
-              )}
-            </div>
-
-            ${
-              resumeUrl
-                ? `
-                  <a
-                    class="resume-open"
-                    href="${escapeHtml(
-                      resumeUrl
-                    )}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    เปิด Resume
-                  </a>
-                `
-                : ''
-            }
-
-          </div>
-
-        `;
-
-      }else{
-
-        detailResume.innerHTML = `
-
-          <div class="no-resume">
-            ใบสมัครนี้ไม่มี Resume แนบไว้
-          </div>
-
-        `;
-
+          `
+          : ''
       }
+
+      <div class="resume-status">
+        ${escapeHtml(resumeStatus)}
+      </div>
+
+
+      <div
+        style="
+          margin-top:12px;
+          overflow:hidden;
+          border:1px solid #e2e8f0;
+          border-radius:14px;
+          background:#f8fafc;
+        "
+      >
+
+        <img
+          src="${imageUrl}"
+          alt="Resume"
+          style="
+            display:block;
+            width:100%;
+            height:auto;
+            max-height:900px;
+            object-fit:contain;
+            background:#fff;
+          "
+          onerror="
+            this.style.display='none';
+            this.nextElementSibling.style.display='block';
+          "
+        >
+
+        <div
+          style="
+            display:none;
+            padding:30px 15px;
+            text-align:center;
+            color:#64748b;
+            font-size:12px;
+          "
+        >
+          ไม่สามารถแสดงตัวอย่าง Resume ได้
+        </div>
+
+      </div>
+
+
+      <a
+        href="${driveUrl}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="resume-open"
+      >
+        เปิด Resume เต็มขนาด
+      </a>
+
+    </div>
+
+  `;
+
+} else {
+
+  detailResume.innerHTML = `
+
+    <div class="no-resume">
+      ใบสมัครนี้ไม่มี Resume แนบไว้
+    </div>
+
+  `;
+
+}
 
 
       detailOverlay.classList.add(
