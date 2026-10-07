@@ -484,51 +484,22 @@
               name="position"
               required
             >
-              <select
-          id="position"
-  name="position"
-  required
->
-  <option value="" selected disabled>
-    เลือกตำแหน่งที่สมัคร
-  </option>
+              <option value="" selected disabled>
+                เลือกตำแหน่งที่สมัคร
+              </option>
 
-  <option value="ช่าง">
-    ช่าง
-  </option>
+              <option value="ช่าง">
+                ช่าง
+              </option>
 
-  <option value="พนักงานโรงงาน">
-    พนักงานโรงงาน
-  </option>
+              <option value="พนักงานโรงงาน">
+                พนักงานโรงงาน
+              </option>
 
-  <option value="ออฟฟิศ">
-    ออฟฟิศ
-  </option>
-
-  <option value="ช่างเทคนิค">
-    ช่างเทคนิค
-  </option>
-
-  <option value="พนักงานฝ่ายผลิต">
-    พนักงานฝ่ายผลิต
-  </option>
-
-  <option value="พนักงานคลังสินค้า">
-    พนักงานคลังสินค้า
-  </option>
-
-  <option value="พนักงานออฟฟิศ">
-    พนักงานออฟฟิศ
-  </option>
-
-  <option value="เจ้าหน้าที่ธุรการ">
-    เจ้าหน้าที่ธุรการ
-  </option>
-
-  <option value="พนักงานบริการลูกค้า">
-    พนักงานบริการลูกค้า
-  </option>
-</select>
+              <option value="ออฟฟิศ">
+                ออฟฟิศ
+              </option>
+            </select>
 
             <div class="hint">
               เลือกตำแหน่งที่ตรงกับงานที่ต้องการสมัคร
@@ -1420,7 +1391,7 @@
       name: valueOf('appName'),
       phone: valueOf('appPhone'),
       email: valueOf('appEmail'),
-      position:String(document.getElementById('position')?.value || '').trim(),
+      position: valueOf('position'),
       expectedSalary: valueOf('salary'),
       startDate: valueOf('startDate'),
       houseNo: valueOf('houseNo'),
