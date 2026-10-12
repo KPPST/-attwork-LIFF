@@ -195,7 +195,7 @@
   @keyframes checkIn{0%{transform:scale(.55);opacity:0}65%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
 
   /* ==========================================================
-     LOADING / UPLOAD PROGRESS
+     หน้ากำลังโหลดและแสดงความคืบหน้าการอัปโหลด
      ========================================================== */
   .section-head{position:relative}
   .section-progress{
@@ -299,6 +299,9 @@
     </header>
 
 
+
+
+
     <form id="applicationForm" class="form-card">
       <section class="section">
         <div class="section-head">
@@ -307,6 +310,7 @@
             <h1 class="section-title">ข้อมูลผู้สมัคร</h1>
             <div class="section-desc">ข้อมูลพื้นฐานสำหรับการสมัครงาน</div>
           </div>
+          <div class="section-progress" id="sectionProgress1" aria-label="ยังไม่ได้ส่งข้อมูล"></div>
         </div>
 
         <div class="grid">
@@ -332,6 +336,7 @@
             <h2 class="section-title">ตำแหน่งและวันเริ่มงาน</h2>
             <div class="section-desc">เลือกตำแหน่งงาน เงินเดือนที่คาดหวัง และวันที่พร้อมเริ่มงาน</div>
           </div>
+          <div class="section-progress" id="sectionProgress2" aria-label="ยังไม่ได้ส่งข้อมูล"></div>
         </div>
 
         <div class="grid">
@@ -498,6 +503,7 @@
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby22-07GUwSwZwvcF0JxVkmyiPJzxpfUQyIsj0H9AJKidTkGS0BqwJRJToxpF7FD4hv/exec';
   const CHUNK_SIZE = 2 * 1024 * 1024;
   const MAX_FILE_SIZE = 50 * 1024 * 1024;
+  const APPLICATION_FORM_SNAPSHOT_KEY = 'ATWORK_APPLICATION_FORM_SNAPSHOT_V1';
 
   let liffReady = false;
   let submitting = false;
@@ -537,6 +543,7 @@
   let openJobs = [];
   let jobListLoaded = false;
   let jobListLoadError = '';
+  let jobLoadPromise = null;
 
   function setStatus(element, text, type) {
     element.textContent = text || '';
@@ -637,7 +644,59 @@
     }
   }
 
+  function saveApplicationFormSnapshot() {
+    try {
+      const values = {};
+      Array.from(form.elements).forEach(function(element) {
+        if (!element.id || element.type === 'file' || element.type === 'button' || element.type === 'submit' || element.type === 'reset') return;
+        if (element.type === 'checkbox' || element.type === 'radio') values[element.id] = element.checked;
+        else values[element.id] = element.value;
+      });
+      sessionStorage.setItem(APPLICATION_FORM_SNAPSHOT_KEY, JSON.stringify({
+        values: values,
+        hadResumeFile: !!fileOf('resumeFile')
+      }));
+    } catch (e) {
+      // หากอุปกรณ์ไม่รองรับ sessionStorage จะยังสามารถกรอกข้อมูลใหม่ได้
+    }
+  }
+
+  function restoreApplicationFormSnapshot() {
+    try {
+      const raw = sessionStorage.getItem(APPLICATION_FORM_SNAPSHOT_KEY);
+      if (!raw) return null;
+      const snapshot = JSON.parse(raw);
+      const values = snapshot && snapshot.values ? snapshot.values : {};
+      Object.keys(values).forEach(function(id) {
+        const element = document.getElementById(id);
+        if (!element || element.type === 'file') return;
+        if (element.type === 'checkbox' || element.type === 'radio') element.checked = Boolean(values[id]);
+        else element.value = values[id] == null ? '' : String(values[id]);
+      });
+      sessionStorage.removeItem(APPLICATION_FORM_SNAPSHOT_KEY);
+      updateSelectedJobDetail();
+      return { restored: true, hadResumeFile: !!(snapshot && snapshot.hadResumeFile) };
+    } catch (e) {
+      try { sessionStorage.removeItem(APPLICATION_FORM_SNAPSHOT_KEY); } catch (ignore) {}
+      return null;
+    }
+  }
+
+  function isTokenExpiredError(value) {
+    const message = String(value || '');
+    return /ID_TOKEN_EXPIRED_CLIENT|ไม่พบ LINE ID Token|id[\s_-]*token.{0,60}expired|expired.{0,60}id[\s_-]*token/i.test(message);
+  }
+
+  function getApiErrorMessage(result, fallback) {
+    if (result && result.error) return String(result.error);
+    if (result && result.message) return String(result.message);
+    return fallback || 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+  }
+
   function handleTokenExpired() {
+    // เก็บค่าช่องกรอกก่อนเข้าสู่ระบบใหม่ (ไฟล์แนบต้องเลือกใหม่หลังกลับมา)
+    saveApplicationFormSnapshot();
+
     if (!liff.isInClient()) {
       try { liff.logout(); } catch (e) {}
       liff.login({ redirectUri: window.location.href });
@@ -645,7 +704,6 @@
     }
 
     const alreadyReloaded = sessionStorage.getItem('ATWORK_TOKEN_RELOAD');
-
     if (!alreadyReloaded) {
       sessionStorage.setItem('ATWORK_TOKEN_RELOAD', '1');
       location.reload();
@@ -662,11 +720,7 @@
 
     const exp = getTokenExpiry(token);
     const now = Math.floor(Date.now() / 1000);
-
-    if (exp && exp <= now + 60) {
-      throw new Error('ID_TOKEN_EXPIRED_CLIENT');
-    }
-
+    if (exp && exp <= now + 60) throw new Error('ID_TOKEN_EXPIRED_CLIENT');
     return token;
   }
 
@@ -842,7 +896,7 @@
     if (Array.isArray(result)) return result;
     if (!result || typeof result !== 'object') return [];
     if (result.ok === false || result.success === false) {
-      throw new Error(result.message || 'โหลดตำแหน่งงานไม่สำเร็จ');
+      throw new Error(result.error || result.message || 'โหลดตำแหน่งงานไม่สำเร็จ');
     }
     const candidates = [result.jobs, result.openJobs, result.items, result.data];
     for (const item of candidates) {
@@ -979,7 +1033,11 @@
     // Resume เป็นข้อมูลเสริม: หากไม่ได้แนบไฟล์ ให้ข้ามการตรวจสอบไฟล์
     if (!file) return;
 
-    if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+    const fileType = String(file.type || '').toLowerCase();
+    const fileName = String(file.name || '').toLowerCase();
+    const validType = fileType === 'image/jpeg' || fileType === 'image/png' ||
+      (!fileType && /\.(jpe?g|png)$/.test(fileName));
+    if (!validType) {
       throw new Error('Resume ต้องเป็น JPG / JPEG / PNG');
     }
 
@@ -1023,7 +1081,7 @@
       {
         applicationId: applicationId,
         fileName: file.name,
-        mimeType: file.type,
+        mimeType: file.type || (/\.png$/i.test(file.name) ? 'image/png' : 'image/jpeg'),
         fileSize: file.size,
         totalChunks: totalChunks
       },
@@ -1032,7 +1090,7 @@
     );
 
     if (!prepareResult.ok) {
-      throw new Error(prepareResult.message || 'เตรียมอัปโหลด Resume ไม่สำเร็จ');
+      throw new Error(getApiErrorMessage(prepareResult, 'เตรียมอัปโหลด Resume ไม่สำเร็จ'));
     }
 
     const uploadId = prepareResult.uploadId;
@@ -1072,7 +1130,7 @@
       setStatus(submitStatus, 'กำลังอัปโหลด Resume... ' + Math.round(ratio * 100) + '%', 'info');
 
       if (!result.ok) {
-        throw new Error(result.message || 'อัปโหลด Resume ไม่สำเร็จ');
+        throw new Error(getApiErrorMessage(result, 'อัปโหลด Resume ไม่สำเร็จ'));
       }
 
       if (result.status === 'COMPLETE') {
@@ -1099,7 +1157,7 @@
 
     const resumeDone =
       resumeResult &&
-      resumeResult.status === 'COMPLETE';
+      (resumeResult.status === 'COMPLETE' || resumeResult.completed === true);
 
     successResumeStatus.textContent =
       resumeDone ? 'แนบ Resume สำเร็จ' : 'ไม่มี Resume';
@@ -1202,13 +1260,15 @@
     setSectionProgress(1, 'active');
     showLoading('กำลังส่งข้อมูล', 'กำลังตรวจสอบข้อมูลผู้สมัคร...', 5, 'กรุณาอย่าปิดหน้านี้ระหว่างส่งข้อมูล', true);
 
+    let applicationCreated = false;
+
     try {
       let idToken;
 
       try {
         idToken = await getCurrentIdToken();
       } catch (error) {
-        if (error.message === 'ID_TOKEN_EXPIRED_CLIENT') {
+        if (isTokenExpiredError(error && error.message)) {
           handleTokenExpired();
           return;
         }
@@ -1230,10 +1290,11 @@
         120000
       );
 
-      if (!applicationResult.ok) {
-        throw new Error(applicationResult.message || 'บันทึกใบสมัครไม่สำเร็จ');
+      if (!applicationResult || applicationResult.ok !== true) {
+        throw new Error(getApiErrorMessage(applicationResult, 'บันทึกใบสมัครไม่สำเร็จ'));
       }
 
+      applicationCreated = true;
       const applicationId = applicationResult.applicationId || (applicationResult.data && applicationResult.data.applicationId) || '';
       let resumeResult = null;
 
@@ -1252,6 +1313,7 @@
 
       setStatus(submitStatus, 'ส่งข้อมูลเรียบร้อยแล้ว', 'success');
       showSuccessPopup(applicationId, resumeResult);
+      try { sessionStorage.removeItem(APPLICATION_FORM_SNAPSHOT_KEY); } catch (e) {}
       form.reset();
       updateSelectedJobDetail();
       showSelectedFile(null, false);
@@ -1260,7 +1322,16 @@
       console.error(error);
       hideLoading();
       resetSectionProgress();
-      setStatus(submitStatus, error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
+      const message = error && error.message ? error.message : 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+      if (isTokenExpiredError(message) && !applicationCreated) {
+        handleTokenExpired();
+        return;
+      }
+      if (isTokenExpiredError(message) && applicationCreated) {
+        setStatus(submitStatus, 'ใบสมัครถูกบันทึกแล้ว แต่เซสชัน LINE หมดอายุระหว่างอัปโหลด Resume จึงยังแนบไฟล์ไม่สำเร็จ กรุณาอย่าส่งใบสมัครซ้ำ เพราะระบบบันทึกใบสมัครนี้แล้ว', 'error');
+        return;
+      }
+      setStatus(submitStatus, message, 'error');
     } finally {
       submitting = false;
       submitButton.disabled = !liffReady;
@@ -1286,6 +1357,16 @@
         throw new Error('ยังไม่ได้เข้าสู่ระบบ LINE');
       }
 
+      // รอรายการตำแหน่งงานก่อนคืนค่าตำแหน่งที่ผู้สมัครเคยเลือกไว้
+      if (jobLoadPromise) await jobLoadPromise;
+      const restoredSnapshot = restoreApplicationFormSnapshot();
+
+      const freshToken = liff.getIDToken();
+      const tokenExpiry = getTokenExpiry(freshToken || '');
+      if (freshToken && (!tokenExpiry || tokenExpiry > Math.floor(Date.now() / 1000) + 60)) {
+        sessionStorage.removeItem('ATWORK_TOKEN_RELOAD');
+      }
+
       try {
         const profile = await liff.getProfile();
         lineUser.classList.remove('hidden');
@@ -1297,6 +1378,12 @@
       submitButton.disabled = false;
       submitButton.textContent = 'ส่งใบสมัคร';
       liffReady = true;
+      if (restoredSnapshot && restoredSnapshot.restored) {
+        const note = restoredSnapshot.hadResumeFile
+          ? 'เข้าสู่ระบบใหม่แล้ว คืนข้อมูลที่กรอกไว้ให้แล้ว กรุณาเลือกไฟล์ Resume อีกครั้งก่อนส่ง'
+          : 'เข้าสู่ระบบใหม่แล้ว คืนข้อมูลที่กรอกไว้ให้แล้ว กรุณาตรวจสอบข้อมูลก่อนส่ง';
+        setStatus(submitStatus, note, 'info');
+      }
     } catch (error) {
       console.error(error);
       connectionStatus.textContent = 'เชื่อมต่อ LINE ไม่สำเร็จ';
@@ -1305,7 +1392,7 @@
   }
 
   positionSelect.addEventListener('change', updateSelectedJobDetail);
-  loadOpenJobs();
+  jobLoadPromise = loadOpenJobs();
   initLIFF();
 </script>
 </body>
