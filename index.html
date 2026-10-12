@@ -127,6 +127,15 @@
   input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,.10);background:#fcfdff}
   input[type=date]{color-scheme:light}
   .hint{margin-top:7px;color:var(--muted-2);font-size:10.5px;line-height:1.5}
+  .job-detail{display:none;margin-top:12px;padding:14px;border:1px solid #dbeafe;border-radius:15px;background:linear-gradient(145deg,#f8fbff,#eff6ff)}
+  .job-detail.show{display:block}
+  .job-detail-title{margin:0 0 9px;font-size:13px;font-weight:900;color:#1e3a8a;line-height:1.45}
+  .job-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px}
+  .job-detail-item{min-width:0}
+  .job-detail-label{display:block;margin-bottom:3px;color:#64748b;font-size:10px;font-weight:750}
+  .job-detail-value{display:block;color:#1e293b;font-size:12px;font-weight:800;line-height:1.5;overflow-wrap:anywhere}
+  .job-load-status{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}
+  .job-load-status.error{color:#b91c1c}
 
   .resume-box{
     padding:16px;
@@ -273,9 +282,9 @@
     <header class="hero">
       <div class="hero-main">
         <div>
-          <div class="brand-kicker">Online Job Application</div>
+          <div class="brand-kicker">Recruitment</div>
           <div class="brand">@attwork</div>
-          <div class="hero-copy">กรอกข้อมูลสมัครงานและแนบ Resume เพื่อสมัครงาน</div>
+          <div class="hero-copy">กรอกข้อมูลสมัครงานและแนบ Resume เพื่อให้เจ้าหน้าที่ @attwork ตรวจสอบและติดต่อกลับได้สะดวก</div>
         </div>
         <div class="online-badge"><span class="online-dot"></span>สมัครงานออนไลน์</div>
       </div>
@@ -333,16 +342,22 @@
         <div class="grid">
           <div class="field full">
             <label for="position">ตำแหน่งที่สมัคร <span class="required">*</span></label>
-            <select id="position" name="position" required>
-              <option value="" selected disabled>เลือกตำแหน่งที่สมัคร</option>
-              <option value="พนักงานฝ่ายผลิต">พนักงานฝ่ายผลิต</option>
-              <option value="ช่างเทคนิค">ช่างเทคนิค</option>
-              <option value="พนักงานคลังสินค้า">พนักงานคลังสินค้า</option>
-              <option value="พนักงานออฟฟิศ">พนักงานออฟฟิศ</option>
-              <option value="เจ้าหน้าที่ธุรการ">เจ้าหน้าที่ธุรการ</option>
-              <option value="พนักงานบริการลูกค้า">พนักงานบริการลูกค้า</option>
+            <select id="position" name="position" required disabled>
+              <option value="" selected disabled>กำลังโหลดตำแหน่งงาน...</option>
             </select>
-            <div class="hint">เลือกตำแหน่งที่ตรงกับงานที่ต้องการสมัคร</div>
+            <div class="hint">รายการนี้ดึงจากตำแหน่งที่บริษัทเปิดรับสมัครอยู่ในระบบ ATWORK</div>
+            <div id="jobLoadStatus" class="job-load-status" role="status" aria-live="polite">กำลังโหลดตำแหน่งงานที่เปิดรับสมัคร...</div>
+            <div id="selectedJobDetail" class="job-detail" aria-live="polite">
+              <h3 class="job-detail-title" id="jobDetailTitle"></h3>
+              <div class="job-detail-grid">
+                <div class="job-detail-item"><span class="job-detail-label">บริษัท</span><span class="job-detail-value" id="jobDetailCompany">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">สถานที่ทำงาน</span><span class="job-detail-value" id="jobDetailLocation">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">ประเภทงาน</span><span class="job-detail-value" id="jobDetailType">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">ค่าตอบแทน</span><span class="job-detail-value" id="jobDetailSalary">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">เวลาทำงาน</span><span class="job-detail-value" id="jobDetailHours">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">ปิดรับสมัคร</span><span class="job-detail-value" id="jobDetailDeadline">-</span></div>
+              </div>
+            </div>
           </div>
           <div class="field">
             <label for="salary">เงินเดือนที่คาดหวัง <span class="required">*</span></label>
@@ -408,9 +423,9 @@
         </div>
         <div class="resume-box">
           <div class="field">
-            <label for="resumeFile">Resume <span class="required">*</span></label>
+            <label for="resumeFile">Resume <span style="color:var(--muted-2);font-weight:600">(ไม่บังคับ)</span></label>
             <div class="upload-box">
-              <input id="resumeFile" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required>
+              <input id="resumeFile" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
               <div class="hint">รองรับ JPG / JPEG / PNG • ขนาดไม่เกิน 50 MB • แนะนำไฟล์ที่อ่านง่ายและเห็นข้อมูลครบ</div>
             </div>
             <div id="selectedFile" class="file-selected">
@@ -485,7 +500,7 @@
 
 <script>
   const LIFF_ID = '2011817085-Mqy2mWhy';
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzo86xOy48YydkIGVeyd1t2L1dUdSqoERGoKBZvPLfspWA9dy6567ZHiG0Tjk2WTBph/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby22-07GUwSwZwvcF0JxVkmyiPJzxpfUQyIsj0H9AJKidTkGS0BqwJRJToxpF7FD4hv/exec';
   const CHUNK_SIZE = 2 * 1024 * 1024;
   const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
@@ -521,6 +536,12 @@
   const sectionProgress3 = document.getElementById('sectionProgress3');
   const sectionProgress4 = document.getElementById('sectionProgress4');
   const sections = Array.from(document.querySelectorAll('.form-card .section'));
+  const positionSelect = document.getElementById('position');
+  const jobLoadStatus = document.getElementById('jobLoadStatus');
+  const selectedJobDetail = document.getElementById('selectedJobDetail');
+  let openJobs = [];
+  let jobListLoaded = false;
+  let jobListLoadError = '';
 
   function setStatus(element, text, type) {
     element.textContent = text || '';
@@ -760,11 +781,17 @@
   }
 
   function getApplicationPayload() {
+    const selectedJob = getSelectedJob();
     return {
       name: valueOf('appName'),
       phone: valueOf('appPhone'),
       email: valueOf('appEmail'),
-      position: valueOf('position'),
+      // ส่งชื่อที่ตำแหน่งแสดงให้ระบบเดิมใช้ต่อได้ และส่ง JobID เพื่อระบุตำแหน่งจริง
+      position: selectedJob ? selectedJob.position : '',
+      jobId: selectedJob ? selectedJob.jobId : '',
+      companyName: selectedJob ? selectedJob.companyName : '',
+      jobLocation: selectedJob ? selectedJob.location : '',
+      jobProvince: selectedJob ? selectedJob.province : '',
       expectedSalary: valueOf('salary'),
       startDate: valueOf('startDate'),
       houseNo: valueOf('houseNo'),
@@ -777,8 +804,185 @@
     };
   }
 
+
+  function normalizedKey(value) {
+    return String(value == null ? '' : value).replace(/[^a-z0-9]/gi, '').toLowerCase();
+  }
+
+  function pickJobField(job, candidates) {
+    if (!job || typeof job !== 'object') return '';
+    const wanted = candidates.map(normalizedKey);
+    const key = Object.keys(job).find(function(k) {
+      return wanted.includes(normalizedKey(k));
+    });
+    return key == null || job[key] == null ? '' : String(job[key]).trim();
+  }
+
+  function normalizeJob(job) {
+    const jobId = pickJobField(job, ['JobID', 'jobId', 'job_id', 'id']);
+    const position = pickJobField(job, ['Position', 'JobTitle', 'Title', 'position', 'jobTitle', 'jobName']);
+    if (!jobId || !position) return null;
+
+    const province = pickJobField(job, ['WorkProvince', 'JobProvince', 'Province', 'workProvince', 'province']);
+    const district = pickJobField(job, ['WorkDistrict', 'JobDistrict', 'District', 'workDistrict', 'district']);
+    const workLocation = pickJobField(job, ['WorkLocation', 'JobLocation', 'Location', 'workLocation', 'location']);
+    const location = [workLocation, district, province]
+      .filter(function(value, index, all) { return value && all.indexOf(value) === index; })
+      .join(' • ');
+
+    return {
+      jobId: jobId,
+      position: position,
+      companyName: pickJobField(job, ['CompanyName', 'Company', 'EmployerName', 'companyName']) || 'ไม่ระบุชื่อบริษัท',
+      location: location || 'ไม่ระบุสถานที่ทำงาน',
+      province: province,
+      employmentType: pickJobField(job, ['EmploymentType', 'JobType', 'employmentType', 'jobType']) || 'ไม่ระบุ',
+      salary: pickJobField(job, ['Salary', 'SalaryRange', 'PayRate', 'salary', 'salaryRange']) || 'ตามที่บริษัทแจ้ง',
+      workHours: pickJobField(job, ['WorkHours', 'WorkingHours', 'workHours']) || 'ไม่ระบุ',
+      deadline: pickJobField(job, ['ApplicationDeadline', 'Deadline', 'CloseDate', 'applicationDeadline']) || 'ไม่ระบุ'
+    };
+  }
+
+  function unwrapOpenJobs(result) {
+    if (Array.isArray(result)) return result;
+    if (!result || typeof result !== 'object') return [];
+    if (result.ok === false || result.success === false) {
+      throw new Error(result.message || 'โหลดตำแหน่งงานไม่สำเร็จ');
+    }
+    const candidates = [result.jobs, result.openJobs, result.items, result.data];
+    for (const item of candidates) {
+      if (Array.isArray(item)) return item;
+      if (item && typeof item === 'object') {
+        if (Array.isArray(item.jobs)) return item.jobs;
+        if (Array.isArray(item.items)) return item.items;
+        if (Array.isArray(item.openJobs)) return item.openJobs;
+      }
+    }
+    return [];
+  }
+
+  function requestOpenJobsJsonp() {
+    return new Promise(function(resolve, reject) {
+      const callbackName = '__atworkOpenJobs_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
+      const script = document.createElement('script');
+      let finished = false;
+      const timeout = setTimeout(function() {
+        finish(new Error('โหลดตำแหน่งงานไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อแล้วลองใหม่'));
+      }, 20000);
+
+      function finish(error, value) {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timeout);
+        try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+        script.remove();
+        if (error) reject(error);
+        else resolve(value);
+      }
+
+      window[callbackName] = function(data) { finish(null, data); };
+      script.onerror = function() {
+        finish(new Error('เชื่อมต่อรายการตำแหน่งงานไม่ได้ กรุณาลองใหม่อีกครั้ง'));
+      };
+      script.src = SCRIPT_URL + '?action=getOpenJobs&callback=' + encodeURIComponent(callbackName) + '&_=' + Date.now();
+      document.body.appendChild(script);
+    });
+  }
+
+  function setJobLoadMessage(message, isError) {
+    jobLoadStatus.textContent = message || '';
+    jobLoadStatus.classList.toggle('error', !!isError);
+  }
+
+  function getSelectedJob() {
+    const id = valueOf('position');
+    return openJobs.find(function(job) { return job.jobId === id; }) || null;
+  }
+
+  function putJobDetailText(id, value) {
+    const node = document.getElementById(id);
+    if (node) node.textContent = value || '-';
+  }
+
+  function updateSelectedJobDetail() {
+    const job = getSelectedJob();
+    if (!job) {
+      selectedJobDetail.classList.remove('show');
+      return;
+    }
+    putJobDetailText('jobDetailTitle', job.position);
+    putJobDetailText('jobDetailCompany', job.companyName);
+    putJobDetailText('jobDetailLocation', job.location);
+    putJobDetailText('jobDetailType', job.employmentType);
+    putJobDetailText('jobDetailSalary', job.salary);
+    putJobDetailText('jobDetailHours', job.workHours);
+    putJobDetailText('jobDetailDeadline', job.deadline);
+    selectedJobDetail.classList.add('show');
+  }
+
+  function renderOpenJobs(rawJobs) {
+    openJobs = rawJobs.map(normalizeJob).filter(Boolean);
+    positionSelect.replaceChildren();
+
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    placeholder.textContent = openJobs.length ? 'เลือกตำแหน่งงานที่ต้องการสมัคร' : 'ยังไม่มีตำแหน่งงานเปิดรับสมัคร';
+    positionSelect.appendChild(placeholder);
+
+    openJobs.forEach(function(job) {
+      const option = document.createElement('option');
+      option.value = job.jobId;
+      option.textContent = job.position + ' — ' + job.companyName + (job.province ? ' — ' + job.province : '');
+      positionSelect.appendChild(option);
+    });
+
+    jobListLoaded = true;
+    jobListLoadError = '';
+    positionSelect.disabled = openJobs.length === 0;
+    if (openJobs.length) {
+      setJobLoadMessage('พบตำแหน่งที่เปิดรับสมัคร ' + openJobs.length + ' ตำแหน่ง เลือกงานเพื่อดูรายละเอียดก่อนสมัคร');
+    } else {
+      setJobLoadMessage('ขณะนี้ยังไม่มีตำแหน่งที่เปิดรับสมัคร หรือข้อมูลตำแหน่งยังไม่พร้อม', false);
+    }
+    updateSelectedJobDetail();
+  }
+
+  async function loadOpenJobs() {
+    jobListLoaded = false;
+    jobListLoadError = '';
+    positionSelect.disabled = true;
+    positionSelect.replaceChildren();
+    const loadingOption = document.createElement('option');
+    loadingOption.value = '';
+    loadingOption.selected = true;
+    loadingOption.disabled = true;
+    loadingOption.textContent = 'กำลังโหลดตำแหน่งงาน...';
+    positionSelect.appendChild(loadingOption);
+    setJobLoadMessage('กำลังโหลดตำแหน่งงานที่บริษัทเปิดรับสมัคร...');
+
+    try {
+      const response = await requestOpenJobsJsonp();
+      renderOpenJobs(unwrapOpenJobs(response));
+    } catch (error) {
+      jobListLoadError = error && error.message ? error.message : 'โหลดตำแหน่งงานไม่สำเร็จ';
+      jobListLoaded = false;
+      positionSelect.replaceChildren();
+      const errorOption = document.createElement('option');
+      errorOption.value = '';
+      errorOption.selected = true;
+      errorOption.disabled = true;
+      errorOption.textContent = 'โหลดตำแหน่งงานไม่สำเร็จ';
+      positionSelect.appendChild(errorOption);
+      positionSelect.disabled = true;
+      setJobLoadMessage(jobListLoadError + ' หากเพิ่งเพิ่มงานจากฝั่งบริษัท ให้ลองรีเฟรชหน้าอีกครั้ง', true);
+    }
+  }
+
   function validateResumeFile(file) {
-    if (!file) throw new Error('กรุณาเลือกไฟล์ Resume');
+    // Resume เป็นข้อมูลเสริม: หากไม่ได้แนบไฟล์ ให้ข้ามการตรวจสอบไฟล์
+    if (!file) return;
 
     if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
       throw new Error('Resume ต้องเป็น JPG / JPEG / PNG');
@@ -942,6 +1146,14 @@
 
   resumeFile.addEventListener('change', function() {
     const file = fileOf('resumeFile');
+
+    // ผู้สมัครสามารถข้ามการแนบ Resume ได้
+    if (!file) {
+      showSelectedFile(null, false);
+      setSectionProgress(4, 'idle');
+      return;
+    }
+
     try {
       validateResumeFile(file);
       showSelectedFile(file, false);
@@ -962,6 +1174,17 @@
     event.preventDefault();
 
     if (submitting || !liffReady) return;
+
+    if (!jobListLoaded || jobListLoadError) {
+      setStatus(submitStatus, jobListLoadError || 'กำลังโหลดตำแหน่งงาน กรุณารอสักครู่แล้วลองอีกครั้ง', 'error');
+      return;
+    }
+
+    if (!getSelectedJob()) {
+      setStatus(submitStatus, 'กรุณาเลือกตำแหน่งงานที่เปิดรับสมัครจากรายการก่อนส่งใบสมัคร', 'error');
+      positionSelect.focus();
+      return;
+    }
 
     if (!form.checkValidity()) {
       form.reportValidity();
@@ -1035,6 +1258,7 @@
       setStatus(submitStatus, 'ส่งข้อมูลเรียบร้อยแล้ว', 'success');
       showSuccessPopup(applicationId, resumeResult);
       form.reset();
+      updateSelectedJobDetail();
       showSelectedFile(null, false);
 
     } catch (error) {
@@ -1085,6 +1309,8 @@
     }
   }
 
+  positionSelect.addEventListener('change', updateSelectedJobDetail);
+  loadOpenJobs();
   initLIFF();
 </script>
 </body>
