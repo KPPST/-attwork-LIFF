@@ -143,6 +143,33 @@
     border-radius:18px;
     background:linear-gradient(180deg,#fbfdff,#f7faff);
   }
+    
+.input-with-unit {
+  display: flex;
+  width: 100%;
+}
+
+.input-with-unit input {
+  flex: 1;
+  min-width: 0;
+  border-radius: 14px 0 0 14px;
+}
+
+.input-unit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  padding: 0 14px;
+  border: 1px solid #d8e1eb;
+  border-left: 0;
+  border-radius: 0 14px 14px 0;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
   .upload-box{
     padding:15px;
     border:1.5px dashed #b9cbe1;
@@ -368,12 +395,12 @@
           <div class="field">
             <label for="headcount">จำนวนอัตราที่รับ <span class="required">*</span></label>
             <input id="headcount" name="headcount" type="number" min="1" max="9999" step="1" placeholder="1" required>
-             <label>อัตรา / คน</label>
+            <span class="input-unit">อัตรา/คน</span>
           </div>
           <div class="field">
             <label for="salary">เงินเดือน / ค่าจ้าง <span class="required">*</span></label>
             <input id="salary" name="salary" type="text" placeholder="15,000" required>
-            <label>บาท / เดือน</label>
+            <span class="input-unit">บาท/เดือน</span>
           </div>
           <div class="field">
             <label for="workHours">เวลาทำงาน</label>
