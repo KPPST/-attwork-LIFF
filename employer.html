@@ -369,6 +369,7 @@
             <label for="headcount">จำนวนอัตราที่รับ <span class="required">*</span></label>
             <input id="headcount" name="headcount" type="number" min="1" max="9999" step="1" inputmode="numeric" placeholder="1" required>
           </div>
+          
           <div class="field">
             <label for="salary">เงินเดือน / ค่าจ้าง <span class="required">*</span></label>
             <select id="salary" name="salary" required>
@@ -382,10 +383,17 @@
             </select>
             <div class="hint">กรอกจำนวนเงินหรือเลือกตัวเลือก</div>
           </div>
-          <div class="field">
-            <label for="workHours">เวลาทำงาน <span class="required">*</span></label>
-            <input id="workHours" name="workHours" type="text" placeholder="เช่น จันทร์–เสาร์ 08:00–17:00" required>
-          </div>
+          <!-- วันที่และเวลาปฏิบัติงาน -->
+          <div class="form-group">
+            <label class="section-label">วันและเวลาปฏิบัติงาน</label>
+
+            <div class="work-schedule-row">
+              <div class="schedule-field">
+                <label for="WorkHours">วันปฎืบัติงาน <span class="required">*</span></label>
+                <input id="WorkHours" name="WorkHours" type="date"required>       
+              </div>
+            </div>
+              
           <div class="field full">
             <label for="workLocation">สถานที่ทำงาน <span class="required">*</span></label>
             <input id="workLocation" name="workLocation" type="text" placeholder="เช่น นิคมอุตสาหกรรมบางปู อาคาร/สาขา" required>
