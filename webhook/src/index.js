@@ -160,7 +160,7 @@ async function sendAtworkWelcomeFlex(
 
   const message = {
     type: "flex",
-    altText: "ATWORK เมนูสำหรับผู้หางาน",
+    altText: "@attwork เมนูสำหรับผู้หางาน",
 
     contents: {
       type: "bubble",
@@ -177,7 +177,7 @@ async function sendAtworkWelcomeFlex(
 
           {
             type: "text",
-            text: "ATWORK",
+            text: "@attwork",
             weight: "bold",
             size: "xl",
             color: "#222222"
@@ -185,7 +185,7 @@ async function sendAtworkWelcomeFlex(
 
           {
             type: "text",
-            text: "Recruitment Services",
+            text: "JOB Services",
             size: "xs",
             color: "#888888"
           },
