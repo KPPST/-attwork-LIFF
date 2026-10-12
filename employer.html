@@ -408,10 +408,22 @@
             </div>
           </div>
           
-          <div class="field">
-            <label for="workHours">เวลาทำงาน</label>
-            <input id="workHours" name="workHours" type="text" placeholder="เช่น จันทร์–เสาร์ 08:00–17:00">
+          
+          <div style="display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:8px;">
+            <div>
+              <label>วันที่ทำงาน</label>
+              <input type="date" name="WorkHours" required style="width:100%; box-sizing:border-box;">
+            </div>
+            <div>
+              <label>เวลาเริ่มงาน</label>
+              <input type="time" name="Starttime" required style="width:100%; box-sizing:border-box;">
+            </div>
+            <div>
+              <label>เวลาเลิกงาน</label>
+              <input type="time" name="Endtime" required style="width:100%; box-sizing:border-box;">
+            </div>
           </div>
+
           
           <div class="field ">
             <label for="workLocation">สถานที่ทำงาน <span class="required">*</span></label>
