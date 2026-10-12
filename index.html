@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#f6f8fc">
-  <title>@attwork|สมัครงานเท่านั้น</title>
+  <title>@attwork | สมัครงานเท่านั้น</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
@@ -282,9 +282,9 @@
     <header class="hero">
       <div class="hero-main">
         <div>
-          <div class="brand-kicker">Online Job Application</div>
+          <div class="brand-kicker">Recruitment</div>
           <div class="brand">@attwork</div>
-          <div class="hero-copy">กรอกข้อมูลสมัครงานและแนบ Resume(ถ้ามี) เพื่อให้เจ้าหน้าที่ @attwork ตรวจสอบและติดต่อกลับได้สะดวก</div>
+          <div class="hero-copy">กรอกข้อมูลสมัครงานและแนบ Resume เพื่อให้เจ้าหน้าที่ @attwork ตรวจสอบและติดต่อกลับได้สะดวก</div>
         </div>
         <div class="online-badge"><span class="online-dot"></span>สมัครงานออนไลน์</div>
       </div>
@@ -298,6 +298,10 @@
       </div>
     </header>
 
+
+
+
+
     <form id="applicationForm" class="form-card">
       <section class="section">
         <div class="section-head">
@@ -306,25 +310,20 @@
             <h1 class="section-title">ข้อมูลผู้สมัคร</h1>
             <div class="section-desc">ข้อมูลพื้นฐานสำหรับการสมัครงาน</div>
           </div>
+          <div class="section-progress" id="sectionProgress1" aria-label="ยังไม่ได้ส่งข้อมูล"></div>
         </div>
 
         <div class="grid">
-          <div class="field">
-            <label for="appName"> ชื่อ-นามสกุล <span class="required">*</span></label>
+          <div class="field full">
+            <label for="appName">ชื่อ-นามสกุล <span class="required">*</span></label>
             <input id="appName" name="name" autocomplete="name" placeholder="กรอกชื่อ-นามสกุล" required>
           </div>
-          
           <div class="field">
-            <label for="appAge"> อายุ <span class="required">*</span></label>
-            <input id="appAge" name="age" autocomplete="age" placeholder="กรอกอายุของคุณ" required>
-          </div>
-            
-          <div class="field">
-            <label for="appPhone"> เบอร์โทรศัพท์ <span class="required">*</span></label>
-            <input id="appPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="เช่น 08xxxxxxxx" required>
+            <label for="appPhone">เบอร์โทรศัพท์ <span class="required">*</span></label>
+            <input id="appPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="เช่น 0812345678" required>
           </div>
           <div class="field">
-            <label for="appEmail"> Email <span class="required">*</span></label>
+            <label for="appEmail">Email <span class="required">*</span></label>
             <input id="appEmail" name="email" type="email" autocomplete="email" placeholder="example@email.com" required>
           </div>
         </div>
@@ -337,30 +336,37 @@
             <h2 class="section-title">ตำแหน่งและวันเริ่มงาน</h2>
             <div class="section-desc">เลือกตำแหน่งงาน เงินเดือนที่คาดหวัง และวันที่พร้อมเริ่มงาน</div>
           </div>
+          <div class="section-progress" id="sectionProgress2" aria-label="ยังไม่ได้ส่งข้อมูล"></div>
         </div>
-        
+
         <div class="grid">
           <div class="field full">
             <label for="position">ตำแหน่งที่สมัคร <span class="required">*</span></label>
-            <select id="position" name=position" required >
-              <option value="" selected disabled>เลือกตำแหน่งที่สนใจสมัคร</option>
-              <option value="พนักงานฝ่ายผลิต">พนักงานฝ่ายผลิต</option>
-              <option value="ช่างเทคนิค">ช่างเทคนิค</option>
-              <option value="พนักงานคลังสินค้า">พนักงานคลังสินค้า</option>
-              <option value="พนักงานออฟฟิศ">พนักงานออฟฟิศ</option>
-              <option value="เจ้าหน้าที่ธุรการ">เจ้าหน้าที่ธุรการ</option>
-              <option value="พนักงานบริการลูกค้า">พนักงานบริการลูกค้า</option>
+            <select id="position" name="position" required disabled>
+              <option value="" selected disabled>กำลังโหลดตำแหน่งงาน...</option>
             </select>
-            <div class="hint">เลือกตำแหน่งที่สนใจสมัครงาน</div>
+            <div class="hint">รายการนี้ดึงจากตำแหน่งที่บริษัทเปิดรับสมัครอยู่ในระบบ ATWORK</div>
+            <div id="jobLoadStatus" class="job-load-status" role="status" aria-live="polite">กำลังโหลดตำแหน่งงานที่เปิดรับสมัคร...</div>
+            <div id="selectedJobDetail" class="job-detail" aria-live="polite">
+              <h3 class="job-detail-title" id="jobDetailTitle"></h3>
+              <div class="job-detail-grid">
+                <div class="job-detail-item"><span class="job-detail-label">บริษัท</span><span class="job-detail-value" id="jobDetailCompany">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">สถานที่ทำงาน</span><span class="job-detail-value" id="jobDetailLocation">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">ประเภทงาน</span><span class="job-detail-value" id="jobDetailType">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">ค่าตอบแทน</span><span class="job-detail-value" id="jobDetailSalary">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">เวลาทำงาน</span><span class="job-detail-value" id="jobDetailHours">-</span></div>
+                <div class="job-detail-item"><span class="job-detail-label">ปิดรับสมัคร</span><span class="job-detail-value" id="jobDetailDeadline">-</span></div>
+              </div>
+            </div>
           </div>
-  
-        <div class="field">
+          <div class="field">
             <label for="salary">เงินเดือนที่คาดหวัง <span class="required">*</span></label>
             <input id="salary" name="expectedSalary" type="number" min="1" inputmode="numeric" placeholder="เช่น 15000" required>
-        </div>
-        <div class="field">
+          </div>
+          <div class="field">
             <label for="startDate">วันที่พร้อมเริ่มงาน <span class="required">*</span></label>
             <input id="startDate" name="startDate" type="date" required>
+          </div>
         </div>
       </section>
 
@@ -371,8 +377,9 @@
             <h2 class="section-title">ที่อยู่ปัจจุบัน</h2>
             <div class="section-desc">ใช้สำหรับข้อมูลประกอบและการติดต่อในขั้นตอนถัดไป</div>
           </div>
+          <div class="section-progress" id="sectionProgress3" aria-label="ยังไม่ได้ส่งข้อมูล"></div>
         </div>
-        
+
         <div class="grid">
           <div class="field">
             <label for="houseNo">บ้านเลขที่ <span class="required">*</span></label>
@@ -409,9 +416,10 @@
         <div class="section-head">
           <div class="section-number">04</div>
           <div>
-            <h2 class="section-title">แนบ Resume (ถ้ามี)</h2>
+            <h2 class="section-title">แนบ Resume</h2>
             <div class="section-desc">แนบประวัติของคุณเพื่อให้เจ้าหน้าที่พิจารณาข้อมูลได้รวดเร็วยิ่งขึ้น</div>
           </div>
+          <div class="section-progress" id="sectionProgress4" aria-label="ยังไม่ได้อัปโหลด Resume"></div>
         </div>
         <div class="resume-box">
           <div class="field">
