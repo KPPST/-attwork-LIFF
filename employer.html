@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#f6f8fc">
-  <title>แจ้งความต้องการบุคลากร</title>
+  <title>@attwork | แจ้งความต้องการบุคลากร</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
 
@@ -173,6 +173,8 @@
   .status.info{border:1px solid #bfdbfe;background:var(--blue-soft);color:#1d4ed8}
   .status.success{border:1px solid #bbf7d0;background:var(--green-soft);color:#15803d}
   .status.error{border:1px solid #fecaca;background:var(--red-soft);color:#b91c1c}
+  .status-reconnect{display:block;width:100%;min-height:43px;margin-top:9px;padding:10px 13px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;color:#1d4ed8;font-size:12px;font-weight:900;cursor:pointer}
+  .status-reconnect:hover{background:#eff6ff}
 
   .success-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:rgba(15,23,42,.48);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
   .success-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
@@ -355,45 +357,35 @@
           <div class="field full">
             <label for="position">ตำแหน่งงานที่เปิดรับ <span class="required">*</span></label>
             <select id="position" name="position" required>
-              <option value="" selected disabled>เลือกตำแหน่งที่เปิดรับสมัคร</option>
+              <option value="" selected disabled>เลือกตำแหน่งที่ต้องการเปิดรับสมัคร</option>
               <option value="พนักงานฝ่ายผลิต">พนักงานฝ่ายผลิต</option>
               <option value="ช่างเทคนิค">ช่างเทคนิค</option>
-              <option value="พนักงานคลังสินค้า">พนักงานคลังสินค้า</option>
+              <option value="พนักงานคลังสินค้า">พนักงานคลังสินค้</option>
               <option value="พนักงานออฟฟิศ">พนักงานออฟฟิศ</option>
-              <option value="เจ้าหน้าที่ธุรการ">เจ้าหน้าที่ธุรการ</option>
+              <option value="เจ้าหน้าที่ธุรการ">เจ้าหน้าที่ธุรกา</option>
               <option value="พนักงานบริการลูกค้า">พนักงานบริการลูกค้า</option>
             </select>
             <div class="hint">เลือกตำแหน่งจากรายการแนะนำ</div>
           </div>
           <div class="field">
             <label for="headcount">จำนวนอัตราที่รับ <span class="required">*</span></label>
-            <input id="headcount" name="headcount" type="number" min="1" max="9999" step="1" inputmode="numeric" placeholder="1" required>
+            <input id="headcount" name="headcount" type="number" min="1" max="9999" step="1" placeholder="1" required>
           </div>
-          
           <div class="field">
             <label for="salary">เงินเดือน / ค่าจ้าง <span class="required">*</span></label>
             <select id="salary" name="salary" required>
-              <option value="" selected disabled>เลือกจำนวนเงินเดือน / ค่าจ้าง</option>
+              <option value="" selected disabled>เลือกอัตราเงินเดือน / ค่าจ้าง</option>
               <option value="9000-12000">9,000 - 12,000 บาท/เดือน</option>
               <option value="12001-18000">12,001 - 18,000 บาท/เดือน</option>
               <option value="18001-25000">18,001 - 25,000 บาท/เดือน</option>
-              <option value="25001-40000">25,001 - 40,000 บาท/เดือน</option>
-              <option value="40001">40,001บาท/เดือนขึ้นไป</option>
-              <option value="ตามตกลง/ตามประสบการณ์">ตามตกลง/ตามประสบการณ์</option>
+              <option value="25001ขึ้นไป">25,001 ขึ้นไป บาท/เดือน</option>
+              <option value="ตามตกลง/ตามประสบกการณ์">ตามตกลง/ตามประสบกการณ์</option>
             </select>
-            <div class="hint">กรอกจำนวนเงินหรือเลือกตัวเลือก</div>
           </div>
-          <!-- วันที่และเวลาปฏิบัติงาน -->
-          <div class="form-group">
-            <label class="section-label">วันและเวลาปฏิบัติงาน</label>
-
-            <div class="work-schedule-row">
-              <div class="schedule-field">
-                <label for="WorkHours">วันปฎืบัติงาน <span class="required">*</span></label>
-                <input id="WorkHours" name="WorkHours" type="date"required>       
-              </div>
-            </div>
-              
+          <div class="field">
+            <label for="workHours">เวลาทำงาน</label>
+            <input id="workHours" name="workHours" type="text" placeholder="เช่น จันทร์–เสาร์ 08:00–17:00">
+          </div>
           <div class="field full">
             <label for="workLocation">สถานที่ทำงาน <span class="required">*</span></label>
             <input id="workLocation" name="workLocation" type="text" placeholder="เช่น นิคมอุตสาหกรรมบางปู อาคาร/สาขา" required>
@@ -441,6 +433,7 @@
       <div class="submit-wrap">
         <button id="submitBtn" class="submit-button" type="submit" disabled>กำลังเชื่อมต่อ LINE...</button>
         <div id="submitStatus" class="status" role="status" aria-live="polite"></div>
+        <button id="reconnectLineBtn" class="status-reconnect hidden" type="button">เชื่อมต่อ LINE ใหม่</button>
         <div class="submit-note">เมื่อส่งแบบฟอร์ม ระบบจะสร้างรหัส Job ID และเปิดประกาศรับสมัครตามการตั้งค่าระบบ ATWORK</div>
       </div>
     </form>
@@ -489,10 +482,13 @@
      *************************************************/
     const LIFF_ID = '2011817085-B3uAWQBX';
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby22-07GUwSwZwvcF0JxVkmyiPJzxpfUQyIsj0H9AJKidTkGS0BqwJRJToxpF7FD4hv/exec';
+    const EMPLOYER_FORM_SNAPSHOT_KEY = 'atworkEmployerFormSnapshot_v1';
+    const EMPLOYER_TOKEN_REFRESH_KEY = 'atworkEmployerTokenRefreshAttempted_v1';
 
     const form = document.getElementById('jobForm');
     const submitBtn = document.getElementById('submitBtn');
     const submitStatus = document.getElementById('submitStatus');
+    const reconnectLineBtn = document.getElementById('reconnectLineBtn');
     const lineUser = document.getElementById('lineUser');
     const linePicture = document.getElementById('linePicture');
     const lineDisplayName = document.getElementById('lineDisplayName');
@@ -573,9 +569,12 @@
       try {
         await liff.init({ liffId: LIFF_ID });
         if (!liff.isLoggedIn()) {
-          liff.login();
+          liff.login({ redirectUri: window.location.href });
           return;
         }
+
+        // คืนค่าฟอร์มไว้ หากก่อนหน้านี้ต้องรีเฟรชการเชื่อมต่อ LINE
+        const restoredForm = restoreEmployerFormSnapshot();
 
         try {
           const profile = await liff.getProfile();
@@ -595,12 +594,29 @@
         }
 
         const idToken = liff.getIDToken();
-        if (!idToken) throw new Error('ไม่พบ ID Token จาก LINE กรุณาเปิดผ่าน LINE ใหม่');
+        if (!idToken) {
+          showReconnectPrompt('ไม่พบ ID Token จาก LINE กรุณากดปุ่มเชื่อมต่อ LINE ใหม่');
+          return;
+        }
 
+        // LINE ID Token มีอายุ 1 ชั่วโมง ตรวจเผื่อเวลาไว้ก่อนกดส่ง
+        if (isIdTokenExpiringSoon(idToken)) {
+          refreshExpiredLineToken('การยืนยันตัวตน LINE หมดอายุ กำลังเชื่อมต่อใหม่ โดยจะเก็บข้อมูลที่กรอกไว้');
+          return;
+        }
+
+        // ยืนยันว่าได้ token ที่ยังใช้ได้แล้ว จึงล้างสถานะการรีเฟรชครั้งก่อน
+        sessionStorage.removeItem(EMPLOYER_TOKEN_REFRESH_KEY);
         liffReady = true;
         submitBtn.disabled = false;
         submitBtn.textContent = 'ส่งคำขอเปิดตำแหน่งงาน';
-        setStatus('เชื่อมต่อ LINE สำเร็จ สามารถกรอกแบบฟอร์มได้', 'info');
+        setStatus(
+          restoredForm
+            ? 'เชื่อมต่อ LINE ใหม่แล้ว และคืนข้อมูลที่กรอกไว้ให้แล้ว กรุณาตรวจสอบข้อมูลก่อนกดส่งอีกครั้ง'
+            : 'เชื่อมต่อ LINE สำเร็จ สามารถกรอกแบบฟอร์มได้',
+          'info'
+        );
+        reconnectLineBtn.classList.add('hidden');
         refreshSectionProgress();
       } catch (error) {
         showError('ไม่สามารถเปิดระบบ LINE ได้: ' + (error && error.message ? error.message : String(error)));
@@ -608,6 +624,93 @@
         submitBtn.textContent = 'เชื่อมต่อ LINE ไม่สำเร็จ';
       }
     }
+
+    function getIdTokenExpiry(token) {
+      try {
+        const parts = String(token || '').split('.');
+        if (parts.length < 2) return 0;
+        let payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+        while (payload.length % 4) payload += '=';
+        const data = JSON.parse(atob(payload));
+        return Number(data.exp) || 0;
+      } catch (error) {
+        return 0;
+      }
+    }
+
+    function isIdTokenExpiringSoon(token) {
+      const expiry = getIdTokenExpiry(token);
+      // หากอ่าน exp ไม่ได้ จะให้เซิร์ฟเวอร์เป็นผู้ตรวจสอบตามปกติ
+      return expiry > 0 && expiry <= Math.floor(Date.now() / 1000) + 120;
+    }
+
+    function saveEmployerFormSnapshot() {
+      try {
+        const values = {};
+        Array.from(form.elements).forEach(function(element) {
+          if (!element.id || element.type === 'file' || element.type === 'button' || element.type === 'submit' || element.type === 'reset') return;
+          if (element.type === 'checkbox' || element.type === 'radio') values[element.id] = element.checked;
+          else values[element.id] = element.value;
+        });
+        sessionStorage.setItem(EMPLOYER_FORM_SNAPSHOT_KEY, JSON.stringify(values));
+      } catch (error) {
+        // หากอุปกรณ์ไม่อนุญาต sessionStorage ก็ยังสามารถกลับไปกรอกใหม่ได้
+      }
+    }
+
+    function restoreEmployerFormSnapshot() {
+      try {
+        const raw = sessionStorage.getItem(EMPLOYER_FORM_SNAPSHOT_KEY);
+        if (!raw) return false;
+        const values = JSON.parse(raw);
+        Object.keys(values).forEach(function(id) {
+          const element = document.getElementById(id);
+          if (!element || element.type === 'file') return;
+          if (element.type === 'checkbox' || element.type === 'radio') element.checked = Boolean(values[id]);
+          else element.value = values[id] == null ? '' : String(values[id]);
+        });
+        sessionStorage.removeItem(EMPLOYER_FORM_SNAPSHOT_KEY);
+        return true;
+      } catch (error) {
+        try { sessionStorage.removeItem(EMPLOYER_FORM_SNAPSHOT_KEY); } catch (ignore) {}
+        return false;
+      }
+    }
+
+    function showReconnectPrompt(message) {
+      liffReady = false;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'เชื่อมต่อ LINE ใหม่';
+      setStatus(message, 'error');
+      reconnectLineBtn.classList.remove('hidden');
+    }
+
+    function refreshExpiredLineToken(message) {
+      liffReady = false;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'กำลังเชื่อมต่อ LINE ใหม่...';
+
+      const alreadyTried = sessionStorage.getItem(EMPLOYER_TOKEN_REFRESH_KEY) === '1';
+      if (alreadyTried) {
+        saveEmployerFormSnapshot();
+        showReconnectPrompt('LINE แจ้งว่า ID Token หมดอายุ แม้ระบบจะลองเชื่อมต่อใหม่แล้ว กรุณากด “เชื่อมต่อ LINE ใหม่” ด้านล่าง ข้อมูลฟอร์มจะถูกเก็บไว้');
+        return false;
+      }
+
+      saveEmployerFormSnapshot();
+      sessionStorage.setItem(EMPLOYER_TOKEN_REFRESH_KEY, '1');
+      setStatus(message || 'กำลังเชื่อมต่อ LINE ใหม่ ข้อมูลที่กรอกจะถูกเก็บไว้', 'info');
+      reconnectLineBtn.classList.add('hidden');
+      setTimeout(function() { window.location.reload(); }, 500);
+      return true;
+    }
+
+    function reconnectLine() {
+      saveEmployerFormSnapshot();
+      sessionStorage.removeItem(EMPLOYER_TOKEN_REFRESH_KEY);
+      window.location.href = 'https://liff.line.me/' + LIFF_ID;
+    }
+    reconnectLineBtn.addEventListener('click', reconnectLine);
 
     form.addEventListener('submit', submitJob);
 
@@ -624,7 +727,11 @@
 
       const token = liff.getIDToken();
       if (!token) {
-        showError('ไม่สามารถยืนยันตัวตน LINE ได้ กรุณาเปิดหน้านี้ใหม่');
+        showReconnectPrompt('ไม่สามารถยืนยันตัวตน LINE ได้ กรุณากดปุ่มเชื่อมต่อ LINE ใหม่');
+        return;
+      }
+      if (isIdTokenExpiringSoon(token)) {
+        refreshExpiredLineToken('ID Token ของ LINE กำลังหมดอายุ ระบบจะเชื่อมต่อใหม่และเก็บข้อมูลที่กรอกไว้');
         return;
       }
 
@@ -666,12 +773,17 @@
         refreshSectionProgress();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (error) {
-        showError(error && error.message ? error.message : 'เกิดข้อผิดพลาดขณะบันทึกข้อมูล');
+        const errorMessage = error && error.message ? error.message : 'เกิดข้อผิดพลาดขณะบันทึกข้อมูล';
+        if (/id\s*token\s*expired|idtoken\s*expired|idtoken.*expired|expired.*idtoken/i.test(errorMessage)) {
+          refreshExpiredLineToken('เซิร์ฟเวอร์แจ้งว่า ID Token หมดอายุ ระบบจะเชื่อมต่อ LINE ใหม่และเก็บข้อมูลที่กรอกไว้');
+        } else {
+          showError(errorMessage);
+        }
       } finally {
         hideLoading();
         submitting = false;
         submitBtn.disabled = !liffReady;
-        submitBtn.textContent = liffReady ? 'ส่งคำขอเปิดตำแหน่งงาน' : 'เชื่อมต่อ LINE ไม่สำเร็จ';
+        submitBtn.textContent = liffReady ? 'ส่งคำขอเปิดตำแหน่งงาน' : (reconnectLineBtn.classList.contains('hidden') ? 'กำลังเชื่อมต่อ LINE...' : 'เชื่อมต่อ LINE ใหม่');
       }
     }
 
