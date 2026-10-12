@@ -145,6 +145,25 @@ async function processLineEvents(data, env) {
   }
 }
 
+ // ------------------------------------------
+// สำหรับผู้รับสมัครงาน
+// ------------------------------------------
+      if (
+        message === "สำหรับผู้รับสมัครงาน" &&
+        event.replyToken
+      ) {
+
+        await sendAtworkWelcomeFlex(
+          event.replyToken,
+          env.LINE_CHANNEL_ACCESS_TOKEN
+        );
+
+        continue;
+      }
+    }
+  }
+}
+
 
 // =====================================================
 // ATWORK FLEX
