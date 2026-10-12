@@ -162,7 +162,9 @@ async function sendAtworkWelcomeFlex(
 
   const message = {
     type: "flex",
-    altText: "@attwork เมนูสำหรับผู้หางาน",
+    altText: "@attwork เมนูสำหรับผู้หางาน"
+          },
+    
 
     contents: {
       type: "bubble",
@@ -240,7 +242,7 @@ async function sendAtworkWelcomeFlex(
         ]
       }
     }
-    }
+    
   };
 
   const response =
