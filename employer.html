@@ -408,24 +408,14 @@
             </div>
           </div>
           
-          
-          <div style="display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:8px;">
-            <div>
-              <label>วันที่ทำงาน</label>
-              <input type="date" name="WorkHours" required style="width:100%; box-sizing:border-box;">
-            </div>
-            <div>
-              <label>เวลาเริ่มงาน</label>
-              <input type="time" name="Starttime" required style="width:100%; box-sizing:border-box;">
-            </div>
-            <div>
-              <label>เวลาเลิกงาน</label>
-              <input type="time" name="Endtime" required style="width:100%; box-sizing:border-box;">
-            </div>
+    
+          <div class="field">
+            <label for="WorkHours">วันและเวลาปฎิบัติงาน <span class="required">*</span></label>
+            <input id="WorkHours" name="WorkHours" type="text" placeholder="วันจันทร์ - เสาร์ | 08.30 - 17.30 น." required>
           </div>
 
           
-          <div class="field ">
+          <div class="field">
             <label for="workLocation">สถานที่ทำงาน <span class="required">*</span></label>
             <input id="workLocation" name="workLocation" type="text" placeholder="เช่น นิคมอุตสาหกรรมบางปู อาคาร/สาขา" required>
           </div>
