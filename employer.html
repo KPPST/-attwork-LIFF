@@ -173,8 +173,6 @@
   .status.info{border:1px solid #bfdbfe;background:var(--blue-soft);color:#1d4ed8}
   .status.success{border:1px solid #bbf7d0;background:var(--green-soft);color:#15803d}
   .status.error{border:1px solid #fecaca;background:var(--red-soft);color:#b91c1c}
-  .status-reconnect{display:block;width:100%;min-height:43px;margin-top:9px;padding:10px 13px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;color:#1d4ed8;font-size:12px;font-weight:900;cursor:pointer}
-  .status-reconnect:hover{background:#eff6ff}
 
   .success-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:rgba(15,23,42,.48);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
   .success-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
@@ -433,8 +431,7 @@
       <div class="submit-wrap">
         <button id="submitBtn" class="submit-button" type="submit" disabled>กำลังเชื่อมต่อ LINE...</button>
         <div id="submitStatus" class="status" role="status" aria-live="polite"></div>
-        <button id="reconnectLineBtn" class="status-reconnect hidden" type="button">เชื่อมต่อ LINE ใหม่</button>
-        <div class="submit-note">เมื่อส่งแบบฟอร์ม ระบบจะสร้างรหัส Job ID และเปิดประกาศรับสมัครตามการตั้งค่าระบบ ATWORK</div>
+          <div class="submit-note">เมื่อส่งแบบฟอร์ม ระบบจะสร้างรหัส Job ID และเปิดประกาศรับสมัครตามการตั้งค่าระบบ ATWORK</div>
       </div>
     </form>
   </main>
@@ -482,13 +479,10 @@
      *************************************************/
     const LIFF_ID = '2011817085-B3uAWQBX';
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby22-07GUwSwZwvcF0JxVkmyiPJzxpfUQyIsj0H9AJKidTkGS0BqwJRJToxpF7FD4hv/exec';
-    const EMPLOYER_FORM_SNAPSHOT_KEY = 'atworkEmployerFormSnapshot_v1';
-    const EMPLOYER_TOKEN_REFRESH_KEY = 'atworkEmployerTokenRefreshAttempted_v1';
 
     const form = document.getElementById('jobForm');
     const submitBtn = document.getElementById('submitBtn');
     const submitStatus = document.getElementById('submitStatus');
-    const reconnectLineBtn = document.getElementById('reconnectLineBtn');
     const lineUser = document.getElementById('lineUser');
     const linePicture = document.getElementById('linePicture');
     const lineDisplayName = document.getElementById('lineDisplayName');
@@ -567,150 +561,86 @@
 
     async function init() {
       try {
-        await liff.init({ liffId: LIFF_ID });
-        if (!liff.isLoggedIn()) {
-          liff.login({ redirectUri: window.location.href });
-          return;
-        }
+        await liff.init({
+          liffId: LIFF_ID,
+          withLoginOnExternalBrowser: true
+        });
 
-        // คืนค่าฟอร์มไว้ หากก่อนหน้านี้ต้องรีเฟรชการเชื่อมต่อ LINE
-        const restoredForm = restoreEmployerFormSnapshot();
+        if (!liff.isLoggedIn()) {
+          if (!liff.isInClient()) {
+            liff.login({ redirectUri: window.location.href });
+            return;
+          }
+          throw new Error('ยังไม่ได้เข้าสู่ระบบ LINE');
+        }
 
         try {
           const profile = await liff.getProfile();
-          if (profile) {
-            lineDisplayName.textContent = profile.displayName || 'บัญชี LINE';
-            if (profile.pictureUrl) {
-              linePicture.src = profile.pictureUrl;
-              linePicture.alt = 'รูปโปรไฟล์ ' + (profile.displayName || 'LINE');
-            } else {
-              linePicture.classList.add('hidden');
-            }
-            lineUser.classList.remove('hidden');
-            connectionStatus.textContent = 'เชื่อมต่อ LINE แล้ว';
-          }
-        } catch (profileError) {
-          // แสดงผลฟอร์มต่อได้ แม้ไม่สามารถโหลดรูปโปรไฟล์ได้
-        }
+          lineUser.classList.remove('hidden');
+          lineDisplayName.textContent = profile.displayName || 'ผู้ใช้ LINE';
+          if (profile.pictureUrl) linePicture.src = profile.pictureUrl;
+        } catch (e) {}
 
-        const idToken = liff.getIDToken();
-        if (!idToken) {
-          showReconnectPrompt('ไม่พบ ID Token จาก LINE กรุณากดปุ่มเชื่อมต่อ LINE ใหม่');
-          return;
-        }
-
-        // LINE ID Token มีอายุ 1 ชั่วโมง ตรวจเผื่อเวลาไว้ก่อนกดส่ง
-        if (isIdTokenExpiringSoon(idToken)) {
-          refreshExpiredLineToken('การยืนยันตัวตน LINE หมดอายุ กำลังเชื่อมต่อใหม่ โดยจะเก็บข้อมูลที่กรอกไว้');
-          return;
-        }
-
-        // ยืนยันว่าได้ token ที่ยังใช้ได้แล้ว จึงล้างสถานะการรีเฟรชครั้งก่อน
-        sessionStorage.removeItem(EMPLOYER_TOKEN_REFRESH_KEY);
-        liffReady = true;
+        connectionStatus.textContent = 'เชื่อมต่อ LINE สำเร็จ';
         submitBtn.disabled = false;
         submitBtn.textContent = 'ส่งคำขอเปิดตำแหน่งงาน';
-        setStatus(
-          restoredForm
-            ? 'เชื่อมต่อ LINE ใหม่แล้ว และคืนข้อมูลที่กรอกไว้ให้แล้ว กรุณาตรวจสอบข้อมูลก่อนกดส่งอีกครั้ง'
-            : 'เชื่อมต่อ LINE สำเร็จ สามารถกรอกแบบฟอร์มได้',
-          'info'
-        );
-        reconnectLineBtn.classList.add('hidden');
+        liffReady = true;
         refreshSectionProgress();
       } catch (error) {
-        showError('ไม่สามารถเปิดระบบ LINE ได้: ' + (error && error.message ? error.message : String(error)));
+        console.error(error);
+        connectionStatus.textContent = 'เชื่อมต่อ LINE ไม่สำเร็จ';
+        setStatus('ไม่สามารถเชื่อมต่อ LINE ได้ กรุณาเปิด LIFF ใหม่', 'error');
         submitBtn.disabled = true;
-        submitBtn.textContent = 'เชื่อมต่อ LINE ไม่สำเร็จ';
       }
     }
 
-    function getIdTokenExpiry(token) {
+    function getTokenExpiry(token) {
       try {
-        const parts = String(token || '').split('.');
-        if (parts.length < 2) return 0;
-        let payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-        while (payload.length % 4) payload += '=';
-        const data = JSON.parse(atob(payload));
-        return Number(data.exp) || 0;
-      } catch (error) {
+        const part = token.split('.')[1];
+        const base64 = part.replace(/-/g, '+').replace(/_/g, '/');
+        const json = decodeURIComponent(
+          atob(base64)
+            .split('')
+            .map(function(c) {
+              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join('')
+        );
+        return JSON.parse(json).exp || 0;
+      } catch (e) {
         return 0;
       }
     }
 
-    function isIdTokenExpiringSoon(token) {
-      const expiry = getIdTokenExpiry(token);
-      // หากอ่าน exp ไม่ได้ จะให้เซิร์ฟเวอร์เป็นผู้ตรวจสอบตามปกติ
-      return expiry > 0 && expiry <= Math.floor(Date.now() / 1000) + 120;
-    }
-
-    function saveEmployerFormSnapshot() {
-      try {
-        const values = {};
-        Array.from(form.elements).forEach(function(element) {
-          if (!element.id || element.type === 'file' || element.type === 'button' || element.type === 'submit' || element.type === 'reset') return;
-          if (element.type === 'checkbox' || element.type === 'radio') values[element.id] = element.checked;
-          else values[element.id] = element.value;
-        });
-        sessionStorage.setItem(EMPLOYER_FORM_SNAPSHOT_KEY, JSON.stringify(values));
-      } catch (error) {
-        // หากอุปกรณ์ไม่อนุญาต sessionStorage ก็ยังสามารถกลับไปกรอกใหม่ได้
-      }
-    }
-
-    function restoreEmployerFormSnapshot() {
-      try {
-        const raw = sessionStorage.getItem(EMPLOYER_FORM_SNAPSHOT_KEY);
-        if (!raw) return false;
-        const values = JSON.parse(raw);
-        Object.keys(values).forEach(function(id) {
-          const element = document.getElementById(id);
-          if (!element || element.type === 'file') return;
-          if (element.type === 'checkbox' || element.type === 'radio') element.checked = Boolean(values[id]);
-          else element.value = values[id] == null ? '' : String(values[id]);
-        });
-        sessionStorage.removeItem(EMPLOYER_FORM_SNAPSHOT_KEY);
-        return true;
-      } catch (error) {
-        try { sessionStorage.removeItem(EMPLOYER_FORM_SNAPSHOT_KEY); } catch (ignore) {}
-        return false;
-      }
-    }
-
-    function showReconnectPrompt(message) {
-      liffReady = false;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'เชื่อมต่อ LINE ใหม่';
-      setStatus(message, 'error');
-      reconnectLineBtn.classList.remove('hidden');
-    }
-
-    function refreshExpiredLineToken(message) {
-      liffReady = false;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'กำลังเชื่อมต่อ LINE ใหม่...';
-
-      const alreadyTried = sessionStorage.getItem(EMPLOYER_TOKEN_REFRESH_KEY) === '1';
-      if (alreadyTried) {
-        saveEmployerFormSnapshot();
-        showReconnectPrompt('LINE แจ้งว่า ID Token หมดอายุ แม้ระบบจะลองเชื่อมต่อใหม่แล้ว กรุณากด “เชื่อมต่อ LINE ใหม่” ด้านล่าง ข้อมูลฟอร์มจะถูกเก็บไว้');
-        return false;
+    function handleTokenExpired() {
+      if (!liff.isInClient()) {
+        try { liff.logout(); } catch (e) {}
+        liff.login({ redirectUri: window.location.href });
+        return;
       }
 
-      saveEmployerFormSnapshot();
-      sessionStorage.setItem(EMPLOYER_TOKEN_REFRESH_KEY, '1');
-      setStatus(message || 'กำลังเชื่อมต่อ LINE ใหม่ ข้อมูลที่กรอกจะถูกเก็บไว้', 'info');
-      reconnectLineBtn.classList.add('hidden');
-      setTimeout(function() { window.location.reload(); }, 500);
-      return true;
+      const alreadyReloaded = sessionStorage.getItem('ATWORK_TOKEN_RELOAD');
+      if (!alreadyReloaded) {
+        sessionStorage.setItem('ATWORK_TOKEN_RELOAD', '1');
+        location.reload();
+        return;
+      }
+
+      sessionStorage.removeItem('ATWORK_TOKEN_RELOAD');
+      setStatus('เซสชัน LINE หมดอายุแล้ว กรุณาปิดหน้านี้ แล้วเปิดแบบฟอร์มบริษัทจาก LINE ใหม่', 'error');
     }
 
-    function reconnectLine() {
-      saveEmployerFormSnapshot();
-      sessionStorage.removeItem(EMPLOYER_TOKEN_REFRESH_KEY);
-      window.location.href = 'https://liff.line.me/' + LIFF_ID;
+    async function getCurrentIdToken() {
+      const token = liff.getIDToken();
+      if (!token) throw new Error('ไม่พบ LINE ID Token');
+
+      const exp = getTokenExpiry(token);
+      const now = Math.floor(Date.now() / 1000);
+      if (exp && exp <= now + 60) {
+        throw new Error('ID_TOKEN_EXPIRED_CLIENT');
+      }
+      return token;
     }
-    reconnectLineBtn.addEventListener('click', reconnectLine);
 
     form.addEventListener('submit', submitJob);
 
@@ -722,16 +652,6 @@
       if (!form.reportValidity()) return;
       if (!liffReady) {
         showError('ระบบยังเชื่อมต่อ LINE ไม่เสร็จ กรุณารอสักครู่แล้วลองใหม่');
-        return;
-      }
-
-      const token = liff.getIDToken();
-      if (!token) {
-        showReconnectPrompt('ไม่สามารถยืนยันตัวตน LINE ได้ กรุณากดปุ่มเชื่อมต่อ LINE ใหม่');
-        return;
-      }
-      if (isIdTokenExpiringSoon(token)) {
-        refreshExpiredLineToken('ID Token ของ LINE กำลังหมดอายุ ระบบจะเชื่อมต่อใหม่และเก็บข้อมูลที่กรอกไว้');
         return;
       }
 
@@ -761,6 +681,17 @@
       };
 
       try {
+        let token;
+        try {
+          token = await getCurrentIdToken();
+        } catch (tokenError) {
+          if (tokenError.message === 'ID_TOKEN_EXPIRED_CLIENT') {
+            handleTokenExpired();
+            return;
+          }
+          throw tokenError;
+        }
+
         const result = await apiCall('createJob', data, token);
         if (!result || result.ok !== true) {
           throw new Error((result && (result.error || result.message)) || 'ไม่สามารถสร้างตำแหน่งงานได้');
@@ -775,7 +706,7 @@
       } catch (error) {
         const errorMessage = error && error.message ? error.message : 'เกิดข้อผิดพลาดขณะบันทึกข้อมูล';
         if (/id\s*token\s*expired|idtoken\s*expired|idtoken.*expired|expired.*idtoken/i.test(errorMessage)) {
-          refreshExpiredLineToken('เซิร์ฟเวอร์แจ้งว่า ID Token หมดอายุ ระบบจะเชื่อมต่อ LINE ใหม่และเก็บข้อมูลที่กรอกไว้');
+          handleTokenExpired();
         } else {
           showError(errorMessage);
         }
@@ -783,7 +714,7 @@
         hideLoading();
         submitting = false;
         submitBtn.disabled = !liffReady;
-        submitBtn.textContent = liffReady ? 'ส่งคำขอเปิดตำแหน่งงาน' : (reconnectLineBtn.classList.contains('hidden') ? 'กำลังเชื่อมต่อ LINE...' : 'เชื่อมต่อ LINE ใหม่');
+        submitBtn.textContent = liffReady ? 'ส่งคำขอเปิดตำแหน่งงาน' : 'กำลังเชื่อมต่อ LINE...';
       }
     }
 
