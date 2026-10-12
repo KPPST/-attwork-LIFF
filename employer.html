@@ -1,884 +1,99 @@
 <!DOCTYPE html>
-<html lang="th">
+<html dir="ltr" lang="en_US">
 <head>
+      <script type="module" crossorigin src="https://static.line-scdn.net/line_web_login/edge/dist/assets/polyfills-CGqTV0cN.js"></script>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#f6f8fc">
-  <title>@attwork | แจ้งความต้องการบุคลากร</title>
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-  <style>
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>LINE Login</title>
 
-  :root{
-    --bg:#f3f7fc;
-    --surface:#ffffff;
-    --surface-2:#f8fbff;
-    --text:#0f172a;
-    --muted:#64748b;
-    --muted-2:#94a3b8;
-    --line:#e2e8f0;
-    --blue:#2563eb;
-    --blue-2:#1d4ed8;
-    --blue-soft:#eff6ff;
-    --blue-soft-2:#dbeafe;
-    --green:#16a34a;
-    --green-soft:#ecfdf3;
-    --red:#dc2626;
-    --red-soft:#fef2f2;
-    --shadow:0 18px 55px rgba(15,23,42,.08);
-    --shadow-sm:0 8px 26px rgba(15,23,42,.06);
-    --radius-xl:26px;
-    --radius-lg:19px;
-    --radius-md:14px;
-  }
+  <link rel="shortcut icon" type="image/x-icon" href="https://vos.line-scdn.net/login-web/img/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://vos.line-scdn.net/login-web/img/favicon-32x32.png">
+  <link rel="icon" type="image/x-icon" sizes="16x16" href="https://vos.line-scdn.net/login-web/img/favicon-16x16.png">
 
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    min-height:100vh;
-    color:var(--text);
-    background:
-      radial-gradient(500px 260px at -5% -5%,rgba(37,99,235,.13),transparent 72%),
-      radial-gradient(460px 260px at 105% 0%,rgba(59,130,246,.10),transparent 72%),
-      linear-gradient(180deg,#f8fbff 0%,#f3f7fc 42%,#eef4fa 100%);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
+  <link rel="apple-touch-icon-precomposed" href="https://vos.line-scdn.net/login-web/img/apple-touch-icon-precomposed.png">
 
-  body::before{
-    content:"";
-    position:fixed;inset:0;pointer-events:none;
-    background-image:linear-gradient(rgba(148,163,184,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.035) 1px,transparent 1px);
-    background-size:24px 24px;
-    mask-image:linear-gradient(to bottom,black,transparent 85%);
-  }
+<script>/* analytics */
+(function(g,d){
+  var v='release/stable';
+  g._trmq=[];g._trm=function(){g._trmq.push(arguments)};
+  g.onerror=function(m,f,l,c){g._trm('send','exception',m,f,l,c)};
+  var h=location.protocol==='https:'?'https://d.line-scdn.net':'http://d.line-cdn.net';
+  var s=d.createElement('script');s.async=1;
+  s.src=h+'/n/_4/torimochi.js/public/v1/'+v+'/min/torimochi.js';
+  var t=d.getElementsByTagName('script')[0];t.parentNode.insertBefore(s,t);
+})(window, document);
 
-  button,input,select,textarea{font:inherit}
-  button{touch-action:manipulation}
-  .container{width:min(760px,100%);margin:0 auto;padding:16px 14px 48px;position:relative;z-index:1}
+_trm('performance', { rate: 0.05 });
+_trm('enable', { productKey: "line-web-login-real" });
+/* /analytics */</script>
 
-  .hero{
-    position:relative;overflow:hidden;
-    padding:24px 22px 20px;
-    border:1px solid rgba(255,255,255,.9);
-    border-radius:30px;
-    background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(247,251,255,.96));
-    box-shadow:var(--shadow);
-  }
-  .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
-  .hero::before{width:240px;height:240px;right:-115px;top:-145px;background:radial-gradient(circle,rgba(37,99,235,.18),rgba(37,99,235,0) 70%)}
-  .hero::after{width:150px;height:150px;right:100px;bottom:-112px;background:radial-gradient(circle,rgba(59,130,246,.10),rgba(59,130,246,0) 70%)}
-  .hero-main{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
-  .brand-kicker{display:inline-flex;align-items:center;gap:7px;margin-bottom:9px;color:var(--blue);font-size:10.5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
-  .brand-kicker::before{content:"";width:18px;height:2px;border-radius:999px;background:var(--blue)}
-  .brand{font-size:34px;line-height:1;font-weight:950;letter-spacing:-.035em}
-  .hero-copy{margin-top:10px;max-width:540px;color:var(--muted);font-size:13.5px;line-height:1.65}
-  .online-badge{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #dbe5f1;border-radius:999px;background:rgba(255,255,255,.88);color:#475569;font-size:11px;font-weight:850;white-space:nowrap;box-shadow:0 8px 20px rgba(37,99,235,.06)}
-  .online-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(22,163,74,.10)}
+<script type="text/javascript" charset="UTF-8" src="https://access.line.me/oauth2/v2.1/messages"></script>
 
-  .line-user{display:flex;align-items:center;gap:12px;margin-top:18px;padding:12px 13px;border:1px solid #e4ebf3;border-radius:16px;background:rgba(255,255,255,.84)}
-  .line-user img{width:46px;height:46px;object-fit:cover;border-radius:50%;background:#eef2f7;flex:0 0 auto}
-  #lineDisplayName{font-size:14px;font-weight:900}
-  .connection{display:flex;align-items:center;gap:6px;margin-top:4px;color:var(--green);font-size:11.5px;font-weight:750}
-  .connection::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+      <script type="module" crossorigin src="https://static.line-scdn.net/line_web_login/edge/dist/assets/loginUserConfirm-F-IRQk43.js"></script>
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/common-BRp4-Zwj.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/modulepreload-polyfill-yj_LhEhV.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/typesafeUtsWithAnonymous-Cv44oc3A.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/createLayoutWrapper-CdbFb2JW.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/eventHubClickPlugin-CloXFlGP.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/uaPlugin-Cv2ZG4xJ.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/Constant-BLc9ctkG.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/lFooter01-B9FwwFbY.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/cLogo01-CqaSyojQ.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/lContents01-Dk03ln1V.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/cButton01-B1fd6ZiW.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/uLayoutMixin-DkXLoPuM.js">
+    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/darkModePlugin-BwufWwxd.js">
+    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/common-BEqGuuLX.css">
+    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/lContents01-C82IcGx0.css">
+    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/lFooter01-9ushudBt.css">
+    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/cButton01-DjQx_bLy.css">
+    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/loginUserConfirm-Cdj3cS6Y.css">
+    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/main-CxHY0W21.css">
+    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/ldsm-semantic-dark-mode-CmDwVChN.css">
 
-  .form-card{
-    margin-top:15px;padding:9px;
-    border:1px solid rgba(226,232,240,.98);
-    border-radius:30px;
-    background:rgba(255,255,255,.88);
-    box-shadow:var(--shadow);
-  }
-  .section{
-    padding:22px 20px 24px;
-    margin:0;
-    border-bottom:1px solid #edf2f7;
-  }
-  .section:last-of-type{border-bottom:0}
-  .section-head{display:flex;align-items:flex-start;gap:13px;margin-bottom:18px}
-  .section-number{
-    width:40px;height:40px;display:grid;place-items:center;flex:0 0 auto;
-    border-radius:13px;
-    background:linear-gradient(145deg,#eff6ff,#dbeafe);
-    color:var(--blue-2);
-    font-size:12px;font-weight:950;
-    box-shadow:inset 0 0 0 1px rgba(37,99,235,.10);
-  }
-  .section-title{margin:0;font-size:18px;line-height:1.3;font-weight:900;letter-spacing:-.02em}
-  .section-desc{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.6}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .full{grid-column:1/-1}
-  .field{min-width:0}
-  label{display:flex;align-items:center;gap:4px;margin:0 0 7px;color:#334155;font-size:12px;font-weight:850}
-  .required{color:var(--red)}
-
-  input,select,textarea{
-    width:100%;height:50px;padding:0 14px;
-    border:1px solid #d8e1eb;
-    border-radius:14px;
-    outline:none;
-    background:#fff;color:var(--text);
-    font-size:14.5px;
-    transition:border-color .16s ease,box-shadow .16s ease,background .16s ease,transform .16s ease;
-    box-shadow:0 1px 2px rgba(15,23,42,.02);
-  }
-  input::placeholder{color:#a8b3c2}
-  input:hover,select:hover,textarea:hover{border-color:#b9c8d9}
-  input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,.10);background:#fcfdff}
-  input[type=date]{color-scheme:light}
-  .hint{margin-top:7px;color:var(--muted-2);font-size:10.5px;line-height:1.5}
-  .job-detail{display:none;margin-top:12px;padding:14px;border:1px solid #dbeafe;border-radius:15px;background:linear-gradient(145deg,#f8fbff,#eff6ff)}
-  .job-detail.show{display:block}
-  .job-detail-title{margin:0 0 9px;font-size:13px;font-weight:900;color:#1e3a8a;line-height:1.45}
-  .job-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px}
-  .job-detail-item{min-width:0}
-  .job-detail-label{display:block;margin-bottom:3px;color:#64748b;font-size:10px;font-weight:750}
-  .job-detail-value{display:block;color:#1e293b;font-size:12px;font-weight:800;line-height:1.5;overflow-wrap:anywhere}
-  .job-load-status{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}
-  .job-load-status.error{color:#b91c1c}
-
-  .resume-box{
-    padding:16px;
-    border:1px solid #e4ebf3;
-    border-radius:18px;
-    background:linear-gradient(180deg,#fbfdff,#f7faff);
-  }
-    
-  .input-with-unit {
-    display: flex;
-    width: 100%;
-  }
-
-  .input-with-unit input {
-    flex: 1;
-    min-width: 0;
-    border-radius: 14px 0 0 14px;
-  }
-
-  .input-unit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    padding: 0 14px;
-    border: 1px solid #d8e1eb;
-    border-left: 0;
-    border-radius: 0 14px 14px 0;
-    background: #f8fafc;
-    color: #64748b;
-    font-size: 13px;
-    white-space: nowrap;
-  }
-
-  .upload-box{
-    padding:15px;
-    border:1.5px dashed #b9cbe1;
-    border-radius:16px;
-    background:#fff;
-    transition:border-color .16s ease,background .16s ease,box-shadow .16s ease;
-  }
-  .upload-box:hover{border-color:#7ea8d9;background:#fbfdff;box-shadow:0 10px 24px rgba(37,99,235,.06)}
-  input[type=file]{height:auto;padding:5px 0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:13px}
-  input[type=file]:focus{box-shadow:none}
-
-  .submit-wrap{padding:20px 20px 17px;background:linear-gradient(180deg,#ffffff,#fbfdff);border-radius:0 0 23px 23px}
-  .submit-button{
-    width:100%;min-height:56px;border:0;border-radius:15px;
-    background:linear-gradient(135deg,#1e293b 0%,#111827 55%,#0f172a 100%);
-    color:#fff;font-size:15px;font-weight:900;letter-spacing:-.01em;cursor:pointer;
-    box-shadow:0 14px 28px rgba(15,23,42,.17);
-    transition:transform .16s ease,box-shadow .16s ease,opacity .16s ease;
-  }
-  .submit-button::after{content:"→";float:right;margin-right:18px;font-size:20px;line-height:1}
-  .submit-button:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 18px 32px rgba(15,23,42,.20)}
-  .submit-button:not(:disabled):active{transform:translateY(0)}
-  .submit-button:disabled{opacity:.52;cursor:wait;box-shadow:none}
-  .submit-note{margin-top:9px;text-align:center;color:#93a1b2;font-size:10.5px;line-height:1.55}
-
-  .status{display:none;margin-top:11px;padding:12px 14px;border-radius:13px;font-size:12px;line-height:1.55}
-  .status.show{display:block}
-  .status.info{border:1px solid #bfdbfe;background:var(--blue-soft);color:#1d4ed8}
-  .status.success{border:1px solid #bbf7d0;background:var(--green-soft);color:#15803d}
-  .status.error{border:1px solid #fecaca;background:var(--red-soft);color:#b91c1c}
-
-  .success-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:rgba(15,23,42,.48);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
-  .success-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
-  .success-modal{width:min(430px,100%);padding:29px 20px 19px;border:1px solid rgba(255,255,255,.72);border-radius:27px;background:rgba(255,255,255,.98);box-shadow:0 30px 90px rgba(15,23,42,.24);text-align:center;transform:translateY(14px) scale(.97);transition:transform .22s cubic-bezier(.2,.8,.2,1)}
-  .success-overlay.show .success-modal{transform:none}
-  .success-check-wrap{width:78px;height:78px;margin:0 auto 16px;display:grid;place-items:center;border-radius:50%;background:#eaf8ef}
-  .success-check{width:60px;height:60px;display:grid;place-items:center;border-radius:50%;background:var(--green);color:#fff;box-shadow:0 10px 22px rgba(22,163,74,.22);animation:checkIn .42s ease-out both}
-  .success-check svg{width:31px;height:31px}
-  .success-title{margin:0;color:#0f172a;font-size:22px;line-height:1.25;font-weight:950;letter-spacing:-.03em}
-  .success-subtitle{margin:7px auto 19px;max-width:330px;color:var(--muted);font-size:12.5px;line-height:1.65}
-  .success-ids{display:grid;gap:9px;text-align:left}
-  .success-id-card{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:12px 13px;border:1px solid #e6edf4;border-radius:15px;background:#f8fafc}
-  .success-id-label{display:block;color:#7b8796;font-size:10.5px;line-height:1.4}
-  .success-id-value{display:block;margin-top:3px;color:#0f172a;font-size:13.5px;font-weight:950;line-height:1.45;word-break:break-word}
-  .copy-btn{min-height:34px;padding:0 10px;border:1px solid #dbe3ed;border-radius:9px;background:#fff;color:#334155;font-size:10.5px;font-weight:850;cursor:pointer}
-  .copy-btn:hover{border-color:#b7c6d8;background:#fbfdff}
-  .copy-btn:active{transform:translateY(1px)}
-  .success-close{width:100%;min-height:48px;margin-top:15px;border:0;border-radius:12px;background:#111827;color:#fff;font-size:13.5px;font-weight:900;cursor:pointer}
-  .success-close:hover{background:#1f2937}
-  @keyframes checkIn{0%{transform:scale(.55);opacity:0}65%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
-
-  /* ==========================================================
-     LOADING / UPLOAD PROGRESS
-     ========================================================== */
-  .section-head{position:relative}
-  .section-progress{
-    margin-left:auto;flex:0 0 auto;min-width:30px;height:30px;
-    display:grid;place-items:center;border:1px solid #e2e8f0;border-radius:50%;
-    background:#fff;color:#94a3b8;opacity:.82;transition:all .2s ease;
-  }
-  .section-progress svg{width:17px;height:17px}
-  .section.is-complete .section-progress{
-    border-color:#bbf7d0;background:var(--green-soft);color:var(--green);opacity:1;
-    box-shadow:0 6px 14px rgba(22,163,74,.10);
-  }
-  .section.is-active .section-progress{border-color:#bfdbfe;background:var(--blue-soft);color:var(--blue);opacity:1}
-  .section-progress .progress-spin{width:14px;height:14px;border:2px solid #bfdbfe;border-top-color:var(--blue);border-radius:50%;animation:spin .72s linear infinite}
-
-  .loading-overlay{
-    position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:18px;
-    background:rgba(15,23,42,.52);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease;
-  }
-  .loading-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
-  .loading-modal{
-    width:min(430px,100%);padding:24px 19px 20px;border:1px solid rgba(255,255,255,.78);
-    border-radius:23px;background:rgba(255,255,255,.98);box-shadow:0 30px 90px rgba(15,23,42,.24);
-  }
-  .loading-top{display:flex;align-items:center;gap:13px}
-  .loading-spinner{
-    width:42px;height:42px;flex:0 0 auto;border:4px solid #dbeafe;border-top-color:var(--blue);
-    border-radius:50%;animation:spin .78s linear infinite;
-  }
-  .loading-copy{min-width:0}
-  .loading-title{margin:0;color:#0f172a;font-size:16px;font-weight:950;line-height:1.35}
-  .loading-stage{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.5}
-  .loading-progress-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px}
-  .loading-progress-track{height:10px;flex:1;overflow:hidden;border-radius:999px;background:#e8eef6}
-  .loading-progress-bar{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#2563eb,#3b82f6,#60a5fa);transition:width .2s ease}
-  .loading-percent{min-width:46px;text-align:right;color:#0f172a;font-size:15px;font-weight:950}
-  .loading-detail{margin-top:10px;text-align:center;color:#7c8a9a;font-size:10.5px;line-height:1.5}
-  .loading-overlay.indeterminate .loading-progress-bar{width:34% !important;animation:loadingSlide 1.15s ease-in-out infinite}
-
-  .file-selected{
-    display:none;align-items:center;gap:10px;margin-top:11px;padding:10px 11px;
-    border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;
-  }
-  .file-selected.show{display:flex}
-  .file-selected-icon{width:31px;height:31px;display:grid;place-items:center;flex:0 0 auto;border-radius:9px;background:#eef2f7;color:#64748b}
-  .file-selected-icon svg{width:16px;height:16px}
-  .file-selected-copy{min-width:0;flex:1}
-  .file-selected-name{display:block;color:#1e293b;font-size:12px;font-weight:850;word-break:break-word}
-  .file-selected-state{display:block;margin-top:2px;color:#94a3b8;font-size:10px}
-  .file-selected.done{border-color:#bbf7d0;background:#f0fdf4}
-  .file-selected.done .file-selected-icon{background:#dcfce7;color:var(--green)}
-  .file-selected.done .file-selected-state{color:#15803d;font-weight:800}
-  .inline-check{display:none;width:19px;height:19px;flex:0 0 auto;color:var(--green)}
-  .inline-check.show{display:block}
-  .inline-check svg{width:19px;height:19px}
-
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes loadingSlide{0%{transform:translateX(-130%)}50%{transform:translateX(120%)}100%{transform:translateX(310%)}}
-
-  .hidden{display:none !important}
-
-  @media(max-width:620px){
-    .container{padding:10px 9px 30px}
-    .hero{padding:20px 17px 17px;border-radius:24px}
-    .hero-main{display:block}
-    .online-badge{margin-top:13px}
-    .brand{font-size:30px}
-    .hero-copy{font-size:13px}
-    .form-card{padding:7px;border-radius:24px}
-    .section{padding:19px 14px 21px}
-    .section-head{margin-bottom:16px}
-    .section-title{font-size:17px}
-    .grid{grid-template-columns:1fr;gap:12px}
-    .full{grid-column:auto}
-    .submit-wrap{padding:18px 14px 14px;border-radius:0 0 18px 18px}
-    .success-modal{padding:25px 16px 17px;border-radius:23px}
-  }
-
-
-  /* Employer form fields: same ATWORK Index visual language */
-  textarea{
-    display:block;width:100%;min-height:118px;padding:13px 14px;
-    border:1px solid #d8e1eb;border-radius:14px;outline:none;
-    background:#fff;color:var(--text);font-size:14.5px;line-height:1.65;
-    resize:vertical;transition:border-color .16s ease,box-shadow .16s ease,background .16s ease;
-    box-shadow:0 1px 2px rgba(15,23,42,.02);font-family:inherit;
-  }
-  textarea::placeholder{color:#a8b3c2}
-  .company-note{margin:0 0 14px;padding:12px 14px;border:1px solid #dbeafe;border-radius:14px;background:#f8fbff;color:#53657a;font-size:11.5px;line-height:1.65}
-  .field .hint{margin-top:7px;color:var(--muted-2);font-size:10.5px;line-height:1.5}
-  .success-job-value{display:block;margin-top:3px;color:#0f172a;font-size:13.5px;font-weight:950;line-height:1.45;word-break:break-word}
-  @media(max-width:620px){textarea{min-height:110px}}
-
-  </style>
 </head>
-<body>
-  <main class="container">
-    <header class="hero">
-      <div class="hero-main">
-        <div>
-          <div class="brand-kicker">Recruitment</div>
-          <div class="brand">@attwork</div>
-          <div class="hero-copy">แจ้งความต้องการบุคลากรและสร้างตำแหน่งงานว่าง เพื่อให้ผู้สมัครสามารถเลือกสมัครงานของบริษัทได้โดยตรง</div>
-        </div>
-        <div class="online-badge"><span class="online-dot"></span>สำหรับบริษัท</div>
-      </div>
-      <div id="lineUser" class="line-user hidden">
-        <img id="linePicture" src="" alt="LINE profile">
-        <div>
-          <div id="lineDisplayName"></div>
-          <div id="connectionStatus" class="connection">กำลังเชื่อมต่อ LINE...</div>
-        </div>
-      </div>
-    </header>
 
-    <form id="jobForm" class="form-card">
-      <section class="section">
-        <div class="section-head">
-          <div class="section-number">01</div>
-          <div>
-            <h1 class="section-title">ข้อมูลบริษัทและผู้ติดต่อ</h1>
-            <div class="section-desc">ข้อมูลสำหรับติดต่อกลับเกี่ยวกับตำแหน่งงานที่เปิดรับ</div>
-          </div>
-        </div>
-        <div class="grid">
-          <div class="field full">
-            <label for="companyName">ชื่อบริษัท <span class="required">*</span></label>
-            <input id="companyName" name="companyName" autocomplete="organization" type="text" placeholder="กรอกชื่อบริษัท" required>
-          </div>
-          <div class="field full">
-            <label for="contactName">ชื่อผู้ติดต่อ <span class="required">*</span></label>
-            <input id="contactName" name="contactName" autocomplete="name" type="text" placeholder="ชื่อ-นามสกุลผู้ติดต่อ" required>
-          </div>
-          <div class="field">
-            <label for="phone">เบอร์โทรศัพท์ <span class="required">*</span></label>
-            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="เช่น 08xxxxxxxx" required>
-          </div>
-          <div class="field">
-            <label for="email">อีเมล <span class="required">*</span></label>
-            <input id="email" name="email" type="email" autocomplete="email" placeholder="company@example.com" required>
-          </div>
-        </div>
-      </section>
+<body ontouchstart="">
 
-      <section class="section">
-        <div class="section-head">
-          <div class="section-number">02</div>
-          <div>
-            <h2 class="section-title">ตำแหน่งและสถานที่ทำงาน</h2>
-            <div class="section-desc">กรอกรายละเอียดตำแหน่งที่บริษัทต้องการเปิดรับ</div>
-          </div>
-        </div>
-        
-        <div class="grid">
-          <div class="field full">
-            <label for="position">ตำแหน่งงานที่เปิดรับ <span class="required">*</span></label>
-            <select id="position" name="position" required>
-              <option value="" selected disabled>เลือกตำแหน่งที่ต้องการเปิดรับสมัคร</option>
-              <option value="พนักงานฝ่ายผลิต">พนักงานฝ่ายผลิต</option>
-              <option value="ช่างเทคนิค">ช่างเทคนิค</option>
-              <option value="พนักงานคลังสินค้า">พนักงานคลังสินค้า</option>
-              <option value="พนักงานออฟฟิศ">พนักงานออฟฟิศ</option>
-              <option value="เจ้าหน้าที่ธุรการ">เจ้าหน้าที่ธุรการ</option>
-              <option value="พนักงานบริการลูกค้า">พนักงานบริการลูกค้า</option>
-            </select>
-            <div class="hint">เลือกตำแหน่งจากรายการแนะนำ</div>
-          </div>
-          
-          <div class="field">
-            <label for="headcount">จำนวนรับพนักงาน <span class="required">*</span></label>
-            <div class="input-with-unit">
-            <input id="headcount" name="headcount" type="number" min="1" max="9999" step="1" placeholder="1" required>
-            <span class="input-unit">คน</span>
+<noscript>
+  <div class="LyWrap">
+    <!--CONTENTS-AREA-->
+    <div class="LyContents" role="main">
+      <div class="lyContentsInner">
+        <div class="MdBox01">
+          <section class="mdBox01Inner MdLYR03Error">
+            <div class="MdLogo01 mdLogo01P01">
+              <h1 class="mdLogo01Img">LINE</h1>
             </div>
-          </div>
-            
-          <div class="field">
-            <label for="salary">เงินเดือน/ค่าจ้าง <span class="required">*</span></label>
-            <div class="input-with-unit">
-            <input id="salary" name="salary" type="text" placeholder="15,000/ตามตกลงหรือประสบการณ์" required>
-            <span class="input-unit">บาท/เดือน</span>
-            </div>
-          </div>
-          
-    
-          <div class="field">
-            <label for="workHours">วันและเวลาปฎิบัติงาน <span class="required">*</span></label>
-            <input id="workHours" name="workHours" type="text" placeholder="วันจันทร์ - เสาร์ | 08.30 - 17.30 น." required>
-          </div>
-
-          
-          <div class="field">
-            <label for="workLocation">สถานที่ทำงาน <span class="required">*</span></label>
-            <input id="workLocation" name="workLocation" type="text" placeholder="เช่น นิคมอุตสาหกรรมบางปู อาคาร/สาขา" required>
-          </div>
-          
-          <div class="field">
-            <label for="workProvince">จังหวัด <span class="required">*</span></label>
-            <input id="workProvince" name="workProvince" type="text" placeholder="จังหวัดที่ทำงาน" required>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <div class="section-number">03</div>
-          <div>
-            <h2 class="section-title">คุณสมบัติและเงื่อนไข</h2>
-            <div class="section-desc">อธิบายหน้าที่งาน คุณสมบัติ และสิ่งที่บริษัทเสนอให้ผู้สมัคร</div>
-          </div>
-        </div>
-        <div class="grid">
-          <div class="field">
-            <label for="startDate">วันที่เริ่มงาน</label>
-            <input id="startDate" name="startDate" type="date">
-          </div>
-    
-          <div class="field full">
-            <label for="qualifications">คุณสมบัติผู้สมัคร <span class="required">*</span></label>
-            <textarea id="qualifications" name="qualifications" required placeholder="เช่น วุฒิการศึกษา อายุ ประสบการณ์ ทักษะ และเอกสารที่ต้องใช้"></textarea>
-          </div>
-          
-          <div class="field full">
-            <label for="jobDescription">รายละเอียดงาน / หน้าที่รับผิดชอบ <span class="required">*</span></label>
-            <textarea id="jobDescription" name="jobDescription" required placeholder="อธิบายหน้าที่หลัก ความรับผิดชอบ และลักษณะงานในแต่ละวัน"></textarea>
-          </div>
-          
-          <div class="field full">
-            <label for="benefits">สวัสดิการ</label>
-            <textarea id="benefits" name="benefits" placeholder="เช่น ประกันสังคม โบนัส ค่าอาหาร ค่าเดินทาง ที่พัก หรือวันหยุด"></textarea>
-          </div>
-        </div>
-      </section>
-
-      <div class="submit-wrap">
-        <button id="submitBtn" class="submit-button" type="submit" disabled>กำลังเชื่อมต่อ LINE...</button>
-        <div id="submitStatus" class="status" role="status" aria-live="polite"></div>
-          <div class="submit-note">เมื่อส่งแบบฟอร์ม ระบบจะสร้างรหัส Job ID และเปิดประกาศรับสมัครตามการตั้งค่าระบบ ATWORK</div>
-      </div>
-    </form>
-  </main>
-
-  <div id="loadingOverlay" class="loading-overlay" role="dialog" aria-modal="true" aria-live="polite" aria-label="กำลังบันทึกตำแหน่งงาน">
-    <div class="loading-modal">
-      <div class="loading-top">
-        <div class="loading-spinner" aria-hidden="true"></div>
-        <div class="loading-copy">
-          <h2 id="loadingTitle" class="loading-title">กำลังบันทึกตำแหน่งงาน</h2>
-          <div id="loadingStage" class="loading-stage">กำลังส่งข้อมูลบริษัทไปยังระบบ ATWORK...</div>
+            <h2 class="mdLYR03Title mdMN10Title">
+              <span class="mdLYR03Icon MdIco01Alert">alert</span>
+              <span>JavaScript error</span>
+            </h2>
+            <p class="mdLYR03Desc mdMN10Desc">
+              JavaScript is disabled on your browser.<br />
+Please enable JavaScript to use this site.            </p>
+          </section>
         </div>
       </div>
-      <div class="loading-progress-row">
-        <div class="loading-progress-track" aria-hidden="true"><div id="loadingProgressBar" class="loading-progress-bar"></div></div>
-        <div id="loadingPercent" class="loading-percent">…</div>
-      </div>
-      <div id="loadingDetail" class="loading-detail">กรุณาอย่าปิดหน้านี้ระหว่างบันทึกข้อมูล</div>
     </div>
   </div>
+</noscript>
 
-  <div id="successOverlay" class="success-overlay" role="dialog" aria-modal="true" aria-labelledby="successTitle">
-    <div class="success-modal">
-      <div class="success-check-wrap"><div class="success-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></div></div>
-      <h2 id="successTitle" class="success-title">เปิดตำแหน่งงานสำเร็จ</h2>
-      <p class="success-subtitle">ระบบบันทึกข้อมูลตำแหน่งงานแล้ว และแสดงรหัสสำหรับอ้างอิงไว้ด้านล่าง</p>
-      <div class="success-ids">
-        <div class="success-id-card">
-          <div>
-            <span class="success-id-label">รหัสตำแหน่งงาน (Job ID)</span>
-            <strong id="successJobId" class="success-job-value">-</strong>
-          </div>
-          <button id="copyJobIdButton" class="copy-btn" type="button">คัดลอก</button>
-        </div>
-      </div>
-      <button id="successCloseButton" class="success-close" type="button">ปิดหน้าต่าง</button>
-    </div>
+<div id="__layout">
+  <div class="LyBody" id="app">
+    <app app-data="{&quot;props&quot;:{&quot;assets-origin-url&quot;:&quot;https://static.line-scdn.net/line_web_login/1a1143057ab/dist&quot;,&quot;username&quot;:&quot;S.KUMPAPAN&quot;,&quot;avatar-url&quot;:&quot;https://profile.line-scdn.net/0h2WCCdz8xbXhuOnGkhBATRh5qbhJNSzRqEV4rTg4-YUtXAyh5F193Sl85Ox0HWngpSgshFlg9MEpMdm0vIiwmQCtHakkRT11SPgpnSAZvckATUlFeKghLazNNNEkqa2N3ABkrbDpjbD0OQlYrNF8-WxM6Vg4OYU9LJ20BLmsIA_sBOBouRl8iFl8zMU_S/preview&quot;,&quot;login-url&quot;:&quot;/oauth2/v2.1/ssoLogin?loginChannelId=2011817085&amp;returnUri=%2Foauth2%2Fv2.1%2Fauthorize%2Fconsent%3Fapp_id%3D2011817085-B3uAWQBX%26client_id%3D2011817085%26scope%3Dopenid%2520profile%26state%3DybKBMJhb3nLl%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3D8FiLBlM1cyyl7VajMTilcQEhWZYxLRaZulWuAaGZlBc%26liff_sdk_version%3D2.31.2%26type%3DL%26redirect_uri%3Dhttps%253A%252F%252Fkppst.github.io%252F-attwork-LIFF%252Femployer.html&quot;,&quot;login-with-another-account-url&quot;:&quot;/oauth2/v2.1/relogin?loginChannelId=2011817085&amp;returnUri=%2Foauth2%2Fv2.1%2Fauthorize%2Fconsent%3Fapp_id%3D2011817085-B3uAWQBX%26client_id%3D2011817085%26scope%3Dopenid%2520profile%26state%3DybKBMJhb3nLl%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3D8FiLBlM1cyyl7VajMTilcQEhWZYxLRaZulWuAaGZlBc%26liff_sdk_version%3D2.31.2%26type%3DL%26redirect_uri%3Dhttps%253A%252F%252Fkppst.github.io%252F-attwork-LIFF%252Femployer.html&quot;},&quot;slots&quot;:{&quot;serverside_field&quot;:[{&quot;type&quot;:&quot;hidden&quot;,&quot;name&quot;:&quot;__csrf&quot;,&quot;value&quot;:&quot;ggN5lsxZsGiQ26K0IKNBs6&quot;,&quot;id&quot;:&quot;__csrf&quot;},{&quot;type&quot;:&quot;hidden&quot;,&quot;name&quot;:&quot;lang&quot;,&quot;value&quot;:&quot;en_US&quot;}],&quot;serverside_redirect_query&quot;:[{&quot;type&quot;:&quot;hidden&quot;,&quot;name&quot;:&quot;__csrf&quot;,&quot;value&quot;:&quot;ggN5lsxZsGiQ26K0IKNBs6&quot;,&quot;id&quot;:&quot;__csrf&quot;}]}}" />
   </div>
+</div>
 
-  <iframe id="postFrame" name="atworkEmployerPostFrame" style="display:none" title="@attwork employer background submission"></iframe>
+<script>
+  var lap_optout_check_api_url = "https://optout-api.tr.line.me/enabled";
+</script>
 
-  <script>
-    /*************************************************
-     * CONFIG — คงค่า LIFF ID และ API จากไฟล์เดิม
-     *************************************************/
-    const LIFF_ID = '2011817085-B3uAWQBX';
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby22-07GUwSwZwvcF0JxVkmyiPJzxpfUQyIsj0H9AJKidTkGS0BqwJRJToxpF7FD4hv/exec';
+<script src="https://static.line-scdn.net/line_web_login/1a1143057ab/dist/lap_optout_check.min.js"></script>
 
-    const form = document.getElementById('jobForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const submitStatus = document.getElementById('submitStatus');
-    const lineUser = document.getElementById('lineUser');
-    const linePicture = document.getElementById('linePicture');
-    const lineDisplayName = document.getElementById('lineDisplayName');
-    const connectionStatus = document.getElementById('connectionStatus');
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const loadingTitle = document.getElementById('loadingTitle');
-    const loadingStage = document.getElementById('loadingStage');
-    const loadingProgressBar = document.getElementById('loadingProgressBar');
-    const loadingPercent = document.getElementById('loadingPercent');
-    const loadingDetail = document.getElementById('loadingDetail');
-    const successOverlay = document.getElementById('successOverlay');
-    const successJobId = document.getElementById('successJobId');
-    const successCloseButton = document.getElementById('successCloseButton');
-    const copyJobIdButton = document.getElementById('copyJobIdButton');
-    const sections = Array.from(document.querySelectorAll('.form-card .section'));
-    const progressIcons = [
-      document.getElementById('sectionProgress1'),
-      document.getElementById('sectionProgress2'),
-      document.getElementById('sectionProgress3')
-    ];
 
-    let liffReady = false;
-    let submitting = false;
 
-    function setStatus(text, type) {
-      submitStatus.textContent = text || '';
-      submitStatus.className = text ? 'status show ' + type : 'status';
-    }
-
-    function showError(message) {
-      setStatus(message || 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง', 'error');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function hideError() {
-      setStatus('', '');
-    }
-
-    const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
-    const SPINNER_HTML = '<span class="progress-spin" aria-hidden="true"></span>';
-
-    function refreshSectionProgress() {
-      sections.forEach(function(section, index) {
-        const icon = progressIcons[index];
-        if (!icon) return;
-        const requiredFields = Array.from(section.querySelectorAll('input[required], select[required], textarea[required]'));
-        const complete = requiredFields.length > 0 && requiredFields.every(function(field) {
-          return field.checkValidity() && String(field.value || '').trim() !== '';
-        });
-        section.classList.toggle('is-complete', complete);
-        if (complete) {
-          section.classList.remove('is-active');
-          icon.innerHTML = CHECK_SVG;
-          icon.setAttribute('aria-label', 'กรอกข้อมูลครบแล้ว');
-        } else {
-          icon.innerHTML = '';
-          icon.setAttribute('aria-label', 'ยังกรอกข้อมูลไม่ครบ');
-        }
-      });
-    }
-
-    sections.forEach(function(section) {
-      section.addEventListener('focusin', function() {
-        sections.forEach(function(other) { other.classList.remove('is-active'); });
-        if (!section.classList.contains('is-complete')) {
-          section.classList.add('is-active');
-          const index = sections.indexOf(section);
-          if (progressIcons[index]) progressIcons[index].innerHTML = SPINNER_HTML;
-        }
-      });
-      section.addEventListener('input', refreshSectionProgress);
-      section.addEventListener('change', refreshSectionProgress);
-    });
-
-    document.addEventListener('DOMContentLoaded', init);
-
-    async function init() {
-      try {
-        await liff.init({
-          liffId: LIFF_ID,
-          withLoginOnExternalBrowser: true
-        });
-
-        if (!liff.isLoggedIn()) {
-          if (!liff.isInClient()) {
-            liff.login({ redirectUri: window.location.href });
-            return;
-          }
-          throw new Error('ยังไม่ได้เข้าสู่ระบบ LINE');
-        }
-
-        try {
-          const profile = await liff.getProfile();
-          lineUser.classList.remove('hidden');
-          lineDisplayName.textContent = profile.displayName || 'ผู้ใช้ LINE';
-          if (profile.pictureUrl) linePicture.src = profile.pictureUrl;
-        } catch (e) {}
-
-        connectionStatus.textContent = 'เชื่อมต่อ LINE สำเร็จ';
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'ส่งคำขอเปิดตำแหน่งงาน';
-        liffReady = true;
-        refreshSectionProgress();
-      } catch (error) {
-        console.error(error);
-        connectionStatus.textContent = 'เชื่อมต่อ LINE ไม่สำเร็จ';
-        setStatus('ไม่สามารถเชื่อมต่อ LINE ได้ กรุณาเปิด LIFF ใหม่', 'error');
-        submitBtn.disabled = true;
-      }
-    }
-
-    function getTokenExpiry(token) {
-      try {
-        const part = token.split('.')[1];
-        const base64 = part.replace(/-/g, '+').replace(/_/g, '/');
-        const json = decodeURIComponent(
-          atob(base64)
-            .split('')
-            .map(function(c) {
-              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            })
-            .join('')
-        );
-        return JSON.parse(json).exp || 0;
-      } catch (e) {
-        return 0;
-      }
-    }
-
-    function handleTokenExpired() {
-      if (!liff.isInClient()) {
-        try { liff.logout(); } catch (e) {}
-        liff.login({ redirectUri: window.location.href });
-        return;
-      }
-
-      const alreadyReloaded = sessionStorage.getItem('ATWORK_TOKEN_RELOAD');
-      if (!alreadyReloaded) {
-        sessionStorage.setItem('ATWORK_TOKEN_RELOAD', '1');
-        location.reload();
-        return;
-      }
-
-      sessionStorage.removeItem('ATWORK_TOKEN_RELOAD');
-      setStatus('เซสชัน LINE หมดอายุแล้ว กรุณาปิดหน้านี้ แล้วเปิดแบบฟอร์มบริษัทจาก LINE ใหม่', 'error');
-    }
-
-    async function getCurrentIdToken() {
-      const token = liff.getIDToken();
-      if (!token) throw new Error('ไม่พบ LINE ID Token');
-
-      const exp = getTokenExpiry(token);
-      const now = Math.floor(Date.now() / 1000);
-      if (exp && exp <= now + 60) {
-        throw new Error('ID_TOKEN_EXPIRED_CLIENT');
-      }
-      return token;
-    }
-
-    form.addEventListener('submit', submitJob);
-
-    async function submitJob(event) {
-      event.preventDefault();
-      if (submitting) return;
-      hideError();
-
-      if (!form.reportValidity()) return;
-      if (!liffReady) {
-        showError('ระบบยังเชื่อมต่อ LINE ไม่เสร็จ กรุณารอสักครู่แล้วลองใหม่');
-        return;
-      }
-
-      submitting = true;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'กำลังบันทึกข้อมูล...';
-      showLoading();
-
-      const data = {
-        companyName: getValue('companyName'),
-        contactName: getValue('contactName'),
-        phone: getValue('phone'),
-        email: getValue('email'),
-        position: getValue('position'),
-        headcount: Number(document.getElementById('headcount').value),
-        workLocation: getValue('workLocation'),
-        workProvince: getValue('workProvince'),
-        workDistrict: getValue('workDistrict'),
-        salary: getValue('salary'),
-        employmentType: getValue('employmentType'),
-        workHours: getValue('workHours'),
-        startDate: getValue('startDate'),
-        applicationDeadline: getValue('applicationDeadline'),
-        qualifications: getValue('qualifications'),
-        jobDescription: getValue('jobDescription'),
-        benefits: getValue('benefits')
-      };
-
-      try {
-        let token;
-        try {
-          token = await getCurrentIdToken();
-        } catch (tokenError) {
-          if (tokenError.message === 'ID_TOKEN_EXPIRED_CLIENT') {
-            handleTokenExpired();
-            return;
-          }
-          throw tokenError;
-        }
-
-        const result = await apiCall('createJob', data, token);
-        if (!result || result.ok !== true) {
-          throw new Error((result && (result.error || result.message)) || 'ไม่สามารถสร้างตำแหน่งงานได้');
-        }
-
-        setStatus('บันทึกตำแหน่งงานเรียบร้อยแล้ว', 'success');
-        showSuccess(result.jobId || result.JobID || result.jobID || 'บันทึกสำเร็จ');
-        form.reset();
-        document.getElementById('headcount').value = '1';
-        refreshSectionProgress();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (error) {
-        const errorMessage = error && error.message ? error.message : 'เกิดข้อผิดพลาดขณะบันทึกข้อมูล';
-        if (/id\s*token\s*expired|idtoken\s*expired|idtoken.*expired|expired.*idtoken/i.test(errorMessage)) {
-          handleTokenExpired();
-        } else {
-          showError(errorMessage);
-        }
-      } finally {
-        hideLoading();
-        submitting = false;
-        submitBtn.disabled = !liffReady;
-        submitBtn.textContent = liffReady ? 'ส่งคำขอเปิดตำแหน่งงาน' : 'กำลังเชื่อมต่อ LINE...';
-      }
-    }
-
-    function getValue(id) {
-      const element = document.getElementById(id);
-      return element ? String(element.value || '').trim() : '';
-    }
-
-    function showLoading() {
-      loadingTitle.textContent = 'กำลังบันทึกตำแหน่งงาน';
-      loadingStage.textContent = 'กำลังส่งข้อมูลบริษัทไปยังระบบ ATWORK...';
-      loadingDetail.textContent = 'กรุณาอย่าปิดหน้านี้ระหว่างบันทึกข้อมูล';
-      loadingProgressBar.style.width = '34%';
-      loadingPercent.textContent = '…';
-      loadingOverlay.classList.add('indeterminate', 'show');
-    }
-
-    function hideLoading() {
-      loadingOverlay.classList.remove('show', 'indeterminate');
-    }
-
-    function apiCall(action, data, idToken) {
-      return new Promise(function(resolve, reject) {
-        const requestId = 'req_' + Date.now() + '_' + Math.random().toString(36).substring(2);
-        const targetName = 'atworkEmployerApiFrame';
-        let iframe = document.getElementById(targetName);
-        if (!iframe) {
-          iframe = document.createElement('iframe');
-          iframe.id = targetName;
-          iframe.name = targetName;
-          iframe.style.display = 'none';
-          document.body.appendChild(iframe);
-        }
-
-        const targetForm = document.createElement('form');
-        targetForm.method = 'POST';
-        targetForm.action = SCRIPT_URL;
-        targetForm.target = targetName;
-
-        const fields = {
-          action: action,
-          requestId: requestId,
-          idToken: idToken,
-          data: JSON.stringify(data || {})
-        };
-        Object.keys(fields).forEach(function(key) {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = key;
-          input.value = fields[key];
-          targetForm.appendChild(input);
-        });
-
-        document.body.appendChild(targetForm);
-        try {
-          targetForm.submit();
-          targetForm.remove();
-          pollApiResult(requestId, resolve, reject);
-        } catch (error) {
-          targetForm.remove();
-          reject(error);
-        }
-      });
-    }
-
-    function pollApiResult(requestId, resolve, reject, attempt) {
-      attempt = attempt || 0;
-      if (attempt > 40) {
-        reject(new Error('เซิร์ฟเวอร์ไม่ตอบกลับภายในเวลาที่กำหนด กรุณาลองใหม่อีกครั้ง'));
-        return;
-      }
-
-      const callbackName = 'atworkEmployerCallback_' + Date.now() + '_' + Math.random().toString(36).substring(2);
-      const script = document.createElement('script');
-      let finished = false;
-
-      function cleanup() {
-        if (script.parentNode) script.parentNode.removeChild(script);
-        try { delete window[callbackName]; }
-        catch (ignore) { window[callbackName] = undefined; }
-      }
-
-      window[callbackName] = function(result) {
-        if (finished) return;
-        if (result && result.pending) {
-          cleanup();
-          setTimeout(function() { pollApiResult(requestId, resolve, reject, attempt + 1); }, 700);
-          return;
-        }
-        finished = true;
-        cleanup();
-        resolve(result);
-      };
-
-      script.onerror = function() {
-        if (finished) return;
-        cleanup();
-        setTimeout(function() { pollApiResult(requestId, resolve, reject, attempt + 1); }, 700);
-      };
-
-      script.src = SCRIPT_URL + '?action=status&requestId=' + encodeURIComponent(requestId) + '&callback=' + encodeURIComponent(callbackName) + '&_=' + Date.now();
-      document.body.appendChild(script);
-    }
-
-    function showSuccess(jobId) {
-      successJobId.textContent = jobId || '-';
-      copyJobIdButton.dataset.value = jobId || '';
-      copyJobIdButton.textContent = 'คัดลอก';
-      successOverlay.classList.add('show');
-    }
-
-    function closeSuccessPopup() {
-      successOverlay.classList.remove('show');
-    }
-
-    async function copyJobId() {
-      const value = copyJobIdButton.dataset.value || '';
-      if (!value) return;
-      try {
-        await navigator.clipboard.writeText(value);
-        copyJobIdButton.textContent = 'คัดลอกแล้ว';
-      } catch (error) {
-        window.prompt('คัดลอกรหัส Job ID นี้', value);
-      }
-    }
-
-    successCloseButton.addEventListener('click', closeSuccessPopup);
-    copyJobIdButton.addEventListener('click', copyJobId);
-    successOverlay.addEventListener('click', function(event) {
-      if (event.target === successOverlay) closeSuccessPopup();
-    });
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') closeSuccessPopup();
-    });
-  </script>
 </body>
 </html>
