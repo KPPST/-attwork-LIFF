@@ -240,6 +240,7 @@ async function sendAtworkWelcomeFlex(
         ]
       }
     }
+    }
   };
 
   const response =
