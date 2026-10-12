@@ -163,19 +163,21 @@ async function sendAtworkWelcomeFlex(
   const message = {
     type: "flex",
     altText: "@attwork เมนูสำหรับผู้หางาน"
-          },
+                  },
     
 
     contents: {
       type: "bubble",
-      size: "mega",
+      size: "mega"
+              },
 
       body: {
         type: "box",
         layout: "vertical",
         paddingAll: "20px",
         spacing: "md",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#FFFFFF"
+              },
 
         contents: [
 
@@ -203,7 +205,8 @@ async function sendAtworkWelcomeFlex(
           {
             type: "button",
             style: "secondary",
-            height: "md",
+            height: "md"
+          },
 
             action: {
               type: "uri",
@@ -211,12 +214,12 @@ async function sendAtworkWelcomeFlex(
               uri:
                 "https://liff.line.me/2011817085-Mqy2mWhy"
             }
-          },
 
           {
             type: "button",
             style: "secondary",
-            height: "md",
+            height: "md"
+          },
 
             action: {
               type: "uri",
@@ -224,24 +227,19 @@ async function sendAtworkWelcomeFlex(
               uri:
                 "https://liff.line.me/2011817085-Mqy2mWhy"
             }
-          },
+          
 
           {
             type: "button",
             style: "secondary",
-            height: "md",
+            height: "md"
+          },
 
             action: {
               type: "uri",
               label: "ตรวจสอบสถานะการสมัคร",
               uri:
-                "https://liff.line.me/2011817085-3jHPlME0"  
-            }
-          }
-
-        ]
-    }
-    
+                "https://liff.line.me/2011817085-3jHPlME0"      
   };
 
   const response =
