@@ -1,1110 +1,834 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
+  <base target="_top">
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
-  <meta
-    name="theme-color"
-    content="#f6f8fc"
-  >
-
-  <title>@attwork | ฝาก Resume</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ATWORK | สมัครงาน</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-
   <style>
-
-  :root{
-    --bg:#f3f7fc;
-    --surface:#ffffff;
-    --surface-2:#f8fbff;
-    --text:#0f172a;
-    --muted:#64748b;
-    --muted-2:#94a3b8;
-    --line:#e2e8f0;
-    --blue:#2563eb;
-    --blue-2:#1d4ed8;
-    --blue-soft:#eff6ff;
-    --blue-soft-2:#dbeafe;
-    --green:#16a34a;
-    --green-soft:#ecfdf3;
-    --red:#dc2626;
-    --red-soft:#fef2f2;
-    --shadow:0 18px 55px rgba(15,23,42,.08);
-    --shadow-sm:0 8px 26px rgba(15,23,42,.06);
-    --radius-xl:26px;
-    --radius-lg:19px;
-    --radius-md:14px;
-  }
-
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    min-height:100vh;
-    color:var(--text);
-    background:
-      radial-gradient(500px 260px at -5% -5%,rgba(37,99,235,.13),transparent 72%),
-      radial-gradient(460px 260px at 105% 0%,rgba(59,130,246,.10),transparent 72%),
-      linear-gradient(180deg,#f8fbff 0%,#f3f7fc 42%,#eef4fa 100%);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  body::before{
-    content:"";
-    position:fixed;inset:0;pointer-events:none;
-    background-image:linear-gradient(rgba(148,163,184,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.035) 1px,transparent 1px);
-    background-size:24px 24px;
-    mask-image:linear-gradient(to bottom,black,transparent 85%);
-  }
-
-  button,input,select{font:inherit}
-  button{touch-action:manipulation}
-  .container{width:min(760px,100%);margin:0 auto;padding:16px 14px 48px;position:relative;z-index:1}
-
-  .hero{
-    position:relative;overflow:hidden;
-    padding:24px 22px 20px;
-    border:1px solid rgba(255,255,255,.9);
-    border-radius:30px;
-    background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(247,251,255,.96));
-    box-shadow:var(--shadow);
-  }
-  .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
-  .hero::before{width:240px;height:240px;right:-115px;top:-145px;background:radial-gradient(circle,rgba(37,99,235,.18),rgba(37,99,235,0) 70%)}
-  .hero::after{width:150px;height:150px;right:100px;bottom:-112px;background:radial-gradient(circle,rgba(59,130,246,.10),rgba(59,130,246,0) 70%)}
-  .hero-main{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
-  .brand-kicker{display:inline-flex;align-items:center;gap:7px;margin-bottom:9px;color:var(--blue);font-size:10.5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
-  .brand-kicker::before{content:"";width:18px;height:2px;border-radius:999px;background:var(--blue)}
-  .brand{font-size:34px;line-height:1;font-weight:950;letter-spacing:-.035em}
-  .hero-copy{margin-top:10px;max-width:540px;color:var(--muted);font-size:13.5px;line-height:1.65}
-  .online-badge{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #dbe5f1;border-radius:999px;background:rgba(255,255,255,.88);color:#475569;font-size:11px;font-weight:850;white-space:nowrap;box-shadow:0 8px 20px rgba(37,99,235,.06)}
-  .online-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(22,163,74,.10)}
-
-  .line-user{display:flex;align-items:center;gap:12px;margin-top:18px;padding:12px 13px;border:1px solid #e4ebf3;border-radius:16px;background:rgba(255,255,255,.84)}
-  .line-user img{width:46px;height:46px;object-fit:cover;border-radius:50%;background:#eef2f7;flex:0 0 auto}
-  #lineDisplayName{font-size:14px;font-weight:900}
-  .connection{display:flex;align-items:center;gap:6px;margin-top:4px;color:var(--green);font-size:11.5px;font-weight:750}
-  .connection::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
-
-  .form-card{
-    margin-top:15px;padding:9px;
-    border:1px solid rgba(226,232,240,.98);
-    border-radius:30px;
-    background:rgba(255,255,255,.88);
-    box-shadow:var(--shadow);
-  }
-  .section{
-    padding:22px 20px 24px;
-    margin:0;
-    border-bottom:1px solid #edf2f7;
-  }
-  .section:last-of-type{border-bottom:0}
-  .section-head{display:flex;align-items:flex-start;gap:13px;margin-bottom:18px}
-  .section-number{
-    width:40px;height:40px;display:grid;place-items:center;flex:0 0 auto;
-    border-radius:13px;
-    background:linear-gradient(145deg,#eff6ff,#dbeafe);
-    color:var(--blue-2);
-    font-size:12px;font-weight:950;
-    box-shadow:inset 0 0 0 1px rgba(37,99,235,.10);
-  }
-  .section-title{margin:0;font-size:18px;line-height:1.3;font-weight:900;letter-spacing:-.02em}
-  .section-desc{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.6}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .full{grid-column:1/-1}
-  .field{min-width:0}
-  label{display:flex;align-items:center;gap:4px;margin:0 0 7px;color:#334155;font-size:12px;font-weight:850}
-  .required{color:var(--red)}
-
-  input,select{
-    width:100%;height:50px;padding:0 14px;
-    border:1px solid #d8e1eb;
-    border-radius:14px;
-    outline:none;
-    background:#fff;color:var(--text);
-    font-size:14.5px;
-    transition:border-color .16s ease,box-shadow .16s ease,background .16s ease,transform .16s ease;
-    box-shadow:0 1px 2px rgba(15,23,42,.02);
-  }
-  input::placeholder{color:#a8b3c2}
-  input:hover,select:hover{border-color:#b9c8d9}
-  input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,.10);background:#fcfdff}
-  input[type=date]{color-scheme:light}
-  .hint{margin-top:7px;color:var(--muted-2);font-size:10.5px;line-height:1.5}
-
-  .resume-box{
-    padding:16px;
-    border:1px solid #e4ebf3;
-    border-radius:18px;
-    background:linear-gradient(180deg,#fbfdff,#f7faff);
-  }
-  .upload-box{
-    padding:15px;
-    border:1.5px dashed #b9cbe1;
-    border-radius:16px;
-    background:#fff;
-    transition:border-color .16s ease,background .16s ease,box-shadow .16s ease;
-  }
-  .upload-box:hover{border-color:#7ea8d9;background:#fbfdff;box-shadow:0 10px 24px rgba(37,99,235,.06)}
-  input[type=file]{height:auto;padding:5px 0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:13px}
-  input[type=file]:focus{box-shadow:none}
-
-  .submit-wrap{padding:20px 20px 17px;background:linear-gradient(180deg,#ffffff,#fbfdff);border-radius:0 0 23px 23px}
-  .submit-button{
-    width:100%;min-height:56px;border:0;border-radius:15px;
-    background:linear-gradient(135deg,#1e293b 0%,#111827 55%,#0f172a 100%);
-    color:#fff;font-size:15px;font-weight:900;letter-spacing:-.01em;cursor:pointer;
-    box-shadow:0 14px 28px rgba(15,23,42,.17);
-    transition:transform .16s ease,box-shadow .16s ease,opacity .16s ease;
-  }
-  .submit-button::after{content:"→";float:right;margin-right:18px;font-size:20px;line-height:1}
-  .submit-button:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 18px 32px rgba(15,23,42,.20)}
-  .submit-button:not(:disabled):active{transform:translateY(0)}
-  .submit-button:disabled{opacity:.52;cursor:wait;box-shadow:none}
-  .submit-note{margin-top:9px;text-align:center;color:#93a1b2;font-size:10.5px;line-height:1.55}
-
-  .status{display:none;margin-top:11px;padding:12px 14px;border-radius:13px;font-size:12px;line-height:1.55}
-  .status.show{display:block}
-  .status.info{border:1px solid #bfdbfe;background:var(--blue-soft);color:#1d4ed8}
-  .status.success{border:1px solid #bbf7d0;background:var(--green-soft);color:#15803d}
-  .status.error{border:1px solid #fecaca;background:var(--red-soft);color:#b91c1c}
-
-  .success-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:rgba(15,23,42,.48);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
-  .success-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
-  .success-modal{width:min(430px,100%);padding:29px 20px 19px;border:1px solid rgba(255,255,255,.72);border-radius:27px;background:rgba(255,255,255,.98);box-shadow:0 30px 90px rgba(15,23,42,.24);text-align:center;transform:translateY(14px) scale(.97);transition:transform .22s cubic-bezier(.2,.8,.2,1)}
-  .success-overlay.show .success-modal{transform:none}
-  .success-check-wrap{width:78px;height:78px;margin:0 auto 16px;display:grid;place-items:center;border-radius:50%;background:#eef3f8}
-  .success-badge-dot{width:18px;height:18px;border-radius:50%;background:#2563eb;box-shadow:0 0 0 10px rgba(37,99,235,.08)}
-
-  .file-selected{
-    display:none;align-items:center;gap:10px;margin-top:11px;padding:10px 11px;
-    border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;
-  }
-  .file-selected.show{display:flex}
-  .file-selected-icon{width:31px;height:31px;display:grid;place-items:center;flex:0 0 auto;border-radius:9px;background:#eef2f7;color:#64748b}
-  .file-selected-icon svg{width:16px;height:16px}
-  .file-selected-copy{min-width:0;flex:1}
-  .file-selected-name{display:block;color:#1e293b;font-size:12px;font-weight:850;word-break:break-word}
-  .file-selected-state{display:block;margin-top:2px;color:#94a3b8;font-size:10px}
-  .file-selected.done{border-color:#bbf7d0;background:#f0fdf4}
-  .file-selected.done .file-selected-icon{background:#dcfce7;color:var(--green)}
-  .file-selected.done .file-selected-state{color:#15803d;font-weight:800}
-  .inline-check{display:none;width:19px;height:19px;flex:0 0 auto;color:var(--green)}
-  .inline-check.show{display:block}
-  .inline-check svg{width:19px;height:19px}
-
-    .loading-overlay{
-    position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:18px;
-    background:rgba(15,23,42,.42);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease;
-  }
-  .loading-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
-  .loading-modal{
-    width:min(390px,100%);padding:28px 20px 20px;border:1px solid rgba(255,255,255,.76);
-    border-radius:26px;background:rgba(255,255,255,.98);box-shadow:0 28px 90px rgba(15,23,42,.24);
-    text-align:center;transform:translateY(12px) scale(.98);transition:transform .22s cubic-bezier(.2,.8,.2,1);
-  }
-  .loading-overlay.show .loading-modal{transform:none}
-  .loading-visual{width:116px;height:116px;margin:0 auto 18px;position:relative;display:grid;place-items:center}
-  .loading-spinner{
-    width:52px;height:52px;border:5px solid #e7edf5;border-top-color:var(--blue);
-    border-radius:50%;animation:spin .85s linear infinite;
-  }
-  .upload-progress{position:absolute;inset:0;display:grid;place-items:center}
-  .progress-ring{width:116px;height:116px;transform:rotate(-90deg);overflow:visible}
-  .progress-ring-track{fill:none;stroke:#e8eef6;stroke-width:8}
-  .progress-ring-value{fill:none;stroke:var(--blue);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .24s ease}
-  .progress-percent{position:absolute;inset:0;display:grid;place-items:center;line-height:1}
-  .progress-percent strong{display:block;font-size:25px;font-weight:950;letter-spacing:-.04em}
-  .progress-percent span{display:block;margin-top:5px;color:#8b9aab;font-size:10px;font-weight:800;letter-spacing:.03em}
-  .loading-title{margin:0;color:#0f172a;font-size:18px;font-weight:950;letter-spacing:-.02em}
-  .loading-stage{margin-top:7px;color:#475569;font-size:12.5px;line-height:1.55;font-weight:750}
-  .loading-detail{margin-top:9px;color:#94a3b8;font-size:10.5px;line-height:1.5}
-  .loading-meta{display:none;align-items:center;justify-content:center;gap:8px;margin-top:12px;color:#64748b;font-size:10.5px;font-weight:800}
-  .loading-meta.show{display:flex}
-  .loading-meta-pill{padding:6px 9px;border-radius:999px;background:#f4f7fb;border:1px solid #e6edf5}
-  .section{scroll-margin-top:14px}
-  .field-label{min-height:18px}
-  .upload-box{position:relative}
-  .upload-box::before{
-    content:"";position:absolute;top:10px;right:12px;width:7px;height:7px;border-radius:50%;
-    background:#cbd5e1;box-shadow:0 0 0 5px #f8fafc;pointer-events:none;
-  }
-  .upload-box:focus-within{border-color:#8db2e2;background:#fcfdff;box-shadow:0 0 0 4px rgba(37,99,235,.06)}
-  .file-selected{box-shadow:0 6px 18px rgba(15,23,42,.03)}
-  .file-selected.done{border-color:#cdd8e6;background:#f8fafc}
-  .file-selected.done .file-selected-icon{background:#eef2f7;color:#64748b}
-  .file-selected.done .file-selected-state{color:#64748b;font-weight:750}
-  .form-card{overflow:hidden}
-  @media(max-width:620px){
-    .loading-modal{padding:24px 16px 18px;border-radius:23px}
-    .loading-visual,.progress-ring{width:108px;height:108px}
-  }
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-
-
-
-    /* =========================================
-       APPLY PAGE CLEANUP
-    ========================================= */
-
-    .form-card {
-      margin-top: 15px;
+    :root {
+      --navy: #071b3a;
+      --blue: #1657b8;
+      --purple: #6c4ce6;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #182230;
+      --muted: #667085;
+      --border: #dbe2ea;
+      --success: #138a58;
+      --warning: #b7791f;
+      --danger: #c53b4b;
+      --shadow: 0 8px 30px rgba(15, 35, 70, .08);
+      --radius: 16px;
     }
 
-    .footer-note {
-      margin-top: 13px;
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #eef4ff 0, var(--bg) 260px);
+      color: var(--text);
+      font-family: Arial, Tahoma, sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 18px 16px 40px;
+    }
+
+    .hero {
+      border-radius: 20px;
+      color: white;
+      padding: 22px;
+      background: linear-gradient(135deg, var(--navy), #153d83 55%, var(--purple));
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      font-size: 13px;
+      letter-spacing: .8px;
+      opacity: .9;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 6px 0 4px;
+      font-size: 26px;
+    }
+
+    .hero p {
+      margin: 0;
+      opacity: .92;
+      font-size: 14px;
+    }
+
+    .line-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 14px;
+      font-size: 13px;
+      background: rgba(255,255,255,.12);
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #e9eef6;
+      padding: 5px;
+      border-radius: 13px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      border: 0;
+      padding: 11px 10px;
+      border-radius: 9px;
+      background: transparent;
+      color: #5f6b7a;
+      font-weight: 700;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: var(--navy);
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #e7edf4;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin: 0 0 4px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0 0 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 800;
+      margin: 18px 0 8px;
+      color: var(--navy);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--danger);
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(22,87,184,.11);
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      background: #fafcff;
+    }
+
+    .file-note {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .primary {
+      width: 100%;
+      border: 0;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #1657b8, #6c4ce6);
+      color: white;
+      padding: 13px 16px;
+      font-weight: 800;
+      margin-top: 16px;
+    }
+
+    .primary:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .secondary {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--navy);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-weight: 700;
+    }
+
+    .notice {
+      padding: 11px 12px;
+      border-radius: 10px;
+      background: #f3f6fa;
+      color: #52606f;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    .notice.success { background: #ebf9f2; color: var(--success); }
+    .notice.warning { background: #fff8e8; color: var(--warning); }
+    .notice.danger { background: #fff0f2; color: var(--danger); }
+
+    .progress-wrap {
+      margin-top: 14px;
+      display: none;
+    }
+
+    .progress-track {
+      height: 9px;
+      background: #e8edf4;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #1657b8, #6c4ce6);
+      transition: width .15s ease;
+    }
+
+    .progress-text {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .application-card {
+      border: 1px solid #e3eaf2;
+      border-radius: 13px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: white;
+    }
+
+    .application-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .application-id {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .status-pill {
+      display: inline-block;
+      white-space: nowrap;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .detail {
+      background: #f7f9fc;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .detail.full { grid-column: 1 / -1; }
+    .detail-label { color: var(--muted); font-size: 11px; }
+    .detail-value { font-size: 13px; margin-top: 2px; word-break: break-word; }
+
+    .resume-box {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: #f7f9fc;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .resume-status {
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .empty {
       text-align: center;
-      color: #94a3b8;
-      font-size: 10px;
-      line-height: 1.6;
+      padding: 28px 12px;
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    @media (max-width: 620px) {
-      .footer-note {
-        padding: 0 8px;
-      }
+    @media (max-width: 600px) {
+      .grid, .detail-grid { grid-template-columns: 1fr; }
+      .field.full, .detail.full { grid-column: auto; }
+      .app { padding: 12px 12px 30px; }
+      .hero { padding: 18px; }
+      h1 { font-size: 23px; }
     }
   </style>
 </head>
 
 <body>
-
-  <div class="container">
-
-    <header class="hero">
-
-      <div class="hero-main">
-
-        <div>
-
-          <div class="brand-kicker">
-            Recruitment
-          </div>
-
-          <div class="brand">
-            @attwork
-          </div>
-
-          <div class="hero-copy">
-            กรอกข้อมูลสมัครงานและแนบ Resume
-            เพื่อฝากประวัติไว้กับ ATWORK
-          </div>
-
-        </div>
-
-        <div class="online-badge">
-          <span class="online-dot"></span>
-          ฝาก Resume ออนไลน์
-        </div>
-
-      </div>
-
-      <div id="lineUser" class="line-user hidden">
-
-        <img
-          id="linePicture"
-          src=""
-          alt="LINE profile"
-        >
-
-        <div>
-
-          <div id="lineDisplayName">
-            ผู้ใช้ LINE
-          </div>
-
-          <div
-            id="connectionStatus"
-            class="connection"
-          >
-            กำลังเชื่อมต่อ LINE...
-          </div>
-
-        </div>
-
-      </div>
-
-    </header>
-
-
-    <form
-      id="applicationForm"
-      class="form-card"
-    >
-
-      <section class="section">
-
-        <div class="section-head">
-
-          <div class="section-number">
-            01
-          </div>
-
-          <div>
-
-            <h1 class="section-title">
-              ข้อมูลผู้สมัคร
-            </h1>
-
-            <div class="section-desc">
-              ข้อมูลพื้นฐานสำหรับการสมัครงาน
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="grid">
-
-          <div class="field full">
-
-            <label
-              for="appName"
-              class="field-label"
-            >
-              <span>
-                ชื่อ-นามสกุล
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="appName"
-              name="name"
-              autocomplete="name"
-              placeholder="กรอกชื่อ-นามสกุล"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label
-              for="appPhone"
-              class="field-label"
-            >
-              <span>
-                เบอร์โทรศัพท์
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="appPhone"
-              name="phone"
-              type="tel"
-              inputmode="tel"
-              autocomplete="tel"
-              placeholder="เช่น 0812345678"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label
-              for="appEmail"
-              class="field-label"
-            >
-              <span>
-                Email
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="appEmail"
-              name="email"
-              type="email"
-              autocomplete="email"
-              placeholder="example@email.com"
-              required
-            >
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <section class="section">
-
-        <div class="section-head">
-
-          <div class="section-number">
-            02
-          </div>
-
-          <div>
-
-            <h2 class="section-title">
-              รายละเอียดการสมัคร
-            </h2>
-
-            <div class="section-desc">
-              เลือกตำแหน่งและข้อมูลที่เกี่ยวข้องกับการเริ่มงาน
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="grid">
-
-          <div class="field full">
-
-            <label
-              for="position"
-              class="field-label"
-            >
-              <span>
-                ตำแหน่งที่สมัคร
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <select
-              id="position"
-              name="position"
-              required
-            >
-              <option value="" selected disabled>
-                เลือกตำแหน่งที่สมัคร
-              </option>
-
-              <option value="ช่าง">
-                ช่าง
-              </option>
-
-              <option value="พนักงานโรงงาน">
-                พนักงานโรงงาน
-              </option>
-
-              <option value="ออฟฟิศ">
-                ออฟฟิศ
-              </option>
-            </select>
-
-            <div class="hint">
-              เลือกตำแหน่งที่ตรงกับงานที่ต้องการสมัคร
-            </div>
-
-          </div>
-
-
-          <div class="field">
-
-            <label
-              for="salary"
-              class="field-label"
-            >
-              <span>
-                เงินเดือนที่คาดหวัง
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="salary"
-              name="expectedSalary"
-              type="number"
-              min="1"
-              inputmode="numeric"
-              placeholder="เช่น 15000"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label
-              for="startDate"
-              class="field-label"
-            >
-              <span>
-                วันที่พร้อมเริ่มงาน
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="startDate"
-              name="startDate"
-              type="date"
-              required
-            >
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <section class="section">
-
-        <div class="section-head">
-
-          <div class="section-number">
-            03
-          </div>
-
-          <div>
-
-            <h2 class="section-title">
-              ที่อยู่ปัจจุบัน
-            </h2>
-
-            <div class="section-desc">
-              ใช้สำหรับข้อมูลประกอบและการติดต่อในขั้นตอนถัดไป
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="grid">
-
-          <div class="field">
-
-            <label
-              for="houseNo"
-              class="field-label"
-            >
-              <span>
-                บ้านเลขที่
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="houseNo"
-              name="houseNo"
-              autocomplete="street-address"
-              placeholder="เช่น 123/45"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="moo">
-              หมู่
-            </label>
-
-            <input
-              id="moo"
-              name="moo"
-              placeholder="เช่น 5"
-            >
-
-          </div>
-
-
-          <div class="field full">
-
-            <label for="road">
-              ถนน
-            </label>
-
-            <input
-              id="road"
-              name="road"
-              placeholder="ชื่อถนน"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label
-              for="subdistrict"
-              class="field-label"
-            >
-              <span>
-                ตำบล / แขวง
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="subdistrict"
-              name="subdistrict"
-              placeholder="ตำบล / แขวง"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label
-              for="district"
-              class="field-label"
-            >
-              <span>
-                อำเภอ / เขต
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="district"
-              name="district"
-              placeholder="อำเภอ / เขต"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label
-              for="appProvince"
-              class="field-label"
-            >
-              <span>
-                จังหวัด
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="appProvince"
-              name="province"
-              placeholder="จังหวัด"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label
-              for="postalCode"
-              class="field-label"
-            >
-              <span>
-                รหัสไปรษณีย์
-                <span class="required">*</span>
-              </span>
-            </label>
-
-            <input
-              id="postalCode"
-              name="postalCode"
-              inputmode="numeric"
-              autocomplete="postal-code"
-              maxlength="5"
-              placeholder="เช่น 10110"
-              pattern="\d{5}"
-              required
-            >
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <section class="section">
-
-        <div class="section-head">
-
-          <div class="section-number">
-            04
-          </div>
-
-          <div>
-
-            <h2 class="section-title">
-              แนบ Resume
-            </h2>
-
-            <div class="section-desc">
-              แนบประวัติของคุณเพื่อให้เจ้าหน้าที่พิจารณาข้อมูลได้รวดเร็วยิ่งขึ้น
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="resume-box">
-
-          <div class="field">
-
-            <label
-              for="resumeFile"
-              class="field-label"
-            >
-              <span>
-                Resume
-                <span class="required">*</span>
-              </span>
-            </label>
-
-
-            <div class="upload-box">
-
-              <input
-                id="resumeFile"
-                type="file"
-                accept=".jpg,.jpeg,.png,image/jpeg,image/png"
-                required
-              >
-
-              <div class="hint">
-                รองรับ JPG / JPEG / PNG •
-                ขนาดไม่เกิน 50 MB
-              </div>
-
-            </div>
-
-
-            <div
-              id="selectedFile"
-              class="file-selected"
-            >
-
-              <div
-                class="file-selected-icon"
-                id="selectedFileIcon"
-                aria-hidden="true"
-              ></div>
-
-              <div class="file-selected-copy">
-
-                <span
-                  id="selectedFileName"
-                  class="file-selected-name"
-                >
-                  -
-                </span>
-
-                <span
-                  id="selectedFileState"
-                  class="file-selected-state"
-                >
-                  เลือกไฟล์แล้ว แต่ยังไม่ได้อัปโหลด
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <div class="submit-wrap">
-
-        <button
-          id="submitButton"
-          class="submit-button"
-          type="submit"
-          disabled
-        >
-          กำลังเชื่อมต่อ LINE...
-        </button>
-
-        <div
-          id="submitStatus"
-          class="status"
-          role="status"
-          aria-live="polite"
-        ></div>
-
-        <div class="submit-note">
-          ข้อมูลของคุณจะถูกส่งให้เจ้าหน้าที่ @attwork
-          เพื่อตรวจสอบและติดต่อกลับ
-        </div>
-
-      </div>
-
-    </form>
-
-
-    <div class="footer-note">
-      การใช้งานหน้านี้เป็นการฝากข้อมูลสมัครงานกับ ATWORK
+  <main class="app">
+    <section class="hero">
+      <div class="brand">ATWORK | RECRUITMENT SERVICE</div>
+      <h1>ระบบสมัครงาน</h1>
+      <p>สมัครงานกับ ATWORK และตรวจสอบสถานะใบสมัครของคุณได้จาก LINE</p>
+      <div id="lineState" class="line-state">กำลังเชื่อมต่อ LINE...</div>
+    </section>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-panel="applyPanel">สมัครงาน</button>
+      <button class="tab-btn" data-panel="statusPanel">สถานะของฉัน</button>
     </div>
 
-  </div>
+    <section id="applyPanel" class="panel active">
+      <div class="card">
+        <h2>ใบสมัครงาน</h2>
+        <p class="hint">กรอกข้อมูลให้ครบทุกช่องที่มีเครื่องหมาย * และแนบ Resume ได้ถ้ามี</p>
 
+        <form id="applicationForm">
+          <div class="section-title">ข้อมูลผู้สมัคร</div>
+          <div class="grid">
+            <div class="field full">
+              <label class="required" for="name">ชื่อ-นามสกุล</label>
+              <input id="name" name="name" maxlength="150" required>
+            </div>
 
-  <!-- =======================================
-       LOADING
-  ======================================== -->
+            <div class="field">
+              <label class="required" for="position">ตำแหน่งที่ต้องการ</label>
+              <select id="position" name="position" required>
+                <option value="">เลือกตำแหน่ง</option>
+                <option value="ช่าง">ช่าง</option>
+                <option value="พนักงานโรงงาน">พนักงานโรงงาน</option>
+                <option value="ออฟฟิศ">ออฟฟิศ</option>
+              </select>
+            </div>
 
-  <div
-    id="loadingOverlay"
-    class="loading-overlay"
-    role="dialog"
-    aria-modal="true"
-    aria-live="polite"
-    aria-label="กำลังส่งข้อมูล"
-  >
+            <div class="field">
+              <label class="required" for="expectedSalary">เงินเดือนที่คาดหวัง</label>
+              <input id="expectedSalary" name="expectedSalary" type="number" min="1" step="1" inputmode="numeric" placeholder="เช่น 15000" required>
+            </div>
 
-    <div class="loading-modal">
+            <div class="field full">
+              <label class="required" for="startDate">วันที่สามารถเริ่มงานได้</label>
+              <input id="startDate" name="startDate" type="date" required>
+            </div>
+          </div>
 
-      <div
-        class="loading-visual"
-        aria-hidden="true"
-      >
+          <div class="section-title">ที่อยู่ปัจจุบัน</div>
+          <div class="grid">
+            <div class="field">
+              <label class="required" for="houseNo">บ้านเลขที่</label>
+              <input id="houseNo" name="houseNo" maxlength="100" required>
+            </div>
 
-        <div
-          id="loadingSpinner"
-          class="loading-spinner"
-        ></div>
+            <div class="field">
+              <label for="moo">หมู่</label>
+              <input id="moo" name="moo" maxlength="100">
+            </div>
 
-        <div
-          id="uploadProgress"
-          class="upload-progress"
-          hidden
-        >
+            <div class="field full">
+              <label for="road">ถนน</label>
+              <input id="road" name="road" maxlength="150">
+            </div>
 
-          <svg
-            class="progress-ring"
-            viewBox="0 0 120 120"
-          >
+            <div class="field">
+              <label class="required" for="subdistrict">ตำบล/แขวง</label>
+              <input id="subdistrict" name="subdistrict" maxlength="150" required>
+            </div>
 
-            <circle
-              class="progress-ring-track"
-              cx="60"
-              cy="60"
-              r="52"
-            ></circle>
+            <div class="field">
+              <label class="required" for="district">อำเภอ/เขต</label>
+              <input id="district" name="district" maxlength="150" required>
+            </div>
 
-            <circle
-              id="progressRingValue"
-              class="progress-ring-value"
-              cx="60"
-              cy="60"
-              r="52"
-            ></circle>
+            <div class="field">
+              <label class="required" for="province">จังหวัด</label>
+              <input id="province" name="province" maxlength="150" required>
+            </div>
 
-          </svg>
+            <div class="field">
+              <label class="required" for="postalCode">รหัสไปรษณีย์</label>
+              <input id="postalCode" name="postalCode" inputmode="numeric" maxlength="5" pattern="\d{5}" required>
+            </div>
+          </div>
 
-          <div class="progress-percent">
+          <div class="section-title">ช่องทางติดต่อ</div>
+          <div class="grid">
+            <div class="field">
+              <label class="required" for="phone">เบอร์โทรศัพท์</label>
+              <input id="phone" name="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="08xxxxxxxx" required>
+            </div>
 
+            <div class="field">
+              <label class="required" for="email">อีเมล</label>
+              <input id="email" name="email" type="email" maxlength="150" placeholder="name@example.com" required>
+            </div>
+          </div>
+
+          <div class="section-title">Resume</div>
+          <div class="field full">
+            <label for="resume">แนบ Resume (ถ้ามี)</label>
+            <input id="resume" name="resume" type="file">
+            <div id="fileNote" class="file-note">ไม่บังคับแนบ • รองรับทุกประเภทไฟล์ • ขนาดไม่เกิน 50 MB</div>
+          </div>
+
+          <div id="progressWrap" class="progress-wrap">
+            <div class="progress-track">
+              <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <div id="progressText" class="progress-text">กำลังอัปโหลด...</div>
+          </div>
+
+          <div id="formMessage" class="notice" style="display:none;"></div>
+
+          <button id="submitButton" class="primary" type="submit" disabled>
+            กำลังเตรียมระบบ...
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="statusPanel" class="panel">
+      <div class="card">
+        <div class="application-head">
+          <div>
+            <h2>สถานะใบสมัครของฉัน</h2>
+            <p class="hint">แสดงเฉพาะใบสมัครที่ผูกกับบัญชี LINE นี้</p>
+          </div>
+          <button id="refreshButton" class="secondary" type="button" disabled>รีเฟรช</button>
+        </div>
+
+        <div id="statusMessage" class="notice" style="display:none;"></div>
+        <div id="applicationsList"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let appConfig = null;
+    let ready = false;
+    let idToken = '';
+
+    const $ = id => document.getElementById(id);
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch]));
+    }
+
+    function formatMoney(value) {
+      const number = Number(value || 0);
+      if (!number) return '-';
+      return new Intl.NumberFormat('th-TH').format(number) + ' บาท';
+    }
+
+    function setNotice(id, message, type = '') {
+      const el = $(id);
+      el.textContent = message;
+      el.className = 'notice' + (type ? ' ' + type : '');
+      el.style.display = 'block';
+    }
+
+    function hideNotice(id) {
+      $(id).style.display = 'none';
+    }
+
+    function serverCall(method, ...args) {
+      return new Promise((resolve, reject) => {
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(error => {
+            reject(new Error(error && error.message ? error.message : 'เกิดข้อผิดพลาดจากระบบ'));
+          })[method](...args);
+      });
+    }
+
+    async function init() {
+      try {
+        appConfig = await serverCall('getAppConfig');
+
+        if (!appConfig || !appConfig.liffId) {
+          throw new Error('ไม่พบ LIFF ID จากระบบ');
+        }
+
+        // เริ่ม LIFF
+        // withLoginOnExternalBrowser: true
+        // ช่วยให้กรณี LINE เปิดหน้า LIFF ใน in-app browser
+        // หรือผู้ใช้เปิดผ่าน browser ภายนอก สามารถเข้าสู่ LINE Login ได้
+        await liff.init({
+          liffId: appConfig.liffId,
+          withLoginOnExternalBrowser: true
+        });
+
+        // ใน LIFF Browser ผู้ใช้จะถูกยืนยันตัวตนอยู่แล้ว
+        // ส่วน external browser / LINE in-app browser
+        // LIFF จะจัดการ login ตาม option ด้านบน
+        if (!liff.isLoggedIn()) {
+          // กรณีที่ระบบยังไม่ได้ login และ automatic login ไม่ได้ทำงาน
+          liff.login();
+          return;
+        }
+
+        // ดึง ID Token จากบัญชี LINE ที่ผ่านการยืนยันแล้ว
+        idToken = liff.getIDToken() || '';
+
+        if (!idToken) {
+          throw new Error(
+            'ไม่พบ ID Token จาก LINE กรุณาปิดหน้านี้แล้วเปิด LIFF ใหม่'
+          );
+        }
+
+        ready = true;
+
+        // แสดงสถานะตาม environment จริง
+        const inClient = liff.isInClient();
+        $('lineState').textContent = inClient
+          ? '● เชื่อมต่อ LINE แล้ว'
+          : '● เชื่อมต่อ LINE แล้ว (Browser)';
+
+        $('submitButton').disabled = false;
+        $('submitButton').textContent = 'ส่งใบสมัคร';
+        $('refreshButton').disabled = false;
+
+        const maxMb = Math.round(
+          Number(appConfig.maxFileSize || 50 * 1024 * 1024) /
+          1024 /
+          1024
+        );
+
+        $('fileNote').textContent =
+          'ไม่บังคับแนบ • รองรับทุกประเภทไฟล์ • ขนาดไม่เกิน ' +
+          maxMb +
+          ' MB';
+
+        await loadApplications();
+
+      } catch (error) {
+        console.error('LIFF INIT ERROR:', error);
+
+        ready = false;
+
+        $('lineState').textContent =
+          'เชื่อมต่อ LINE ไม่สำเร็จ';
+
+        $('submitButton').disabled = true;
+        $('refreshButton').disabled = true;
+
+        setNotice(
+          'formMessage',
+          error && error.message
+            ? error.message
+            : 'เปิดระบบไม่สำเร็จ กรุณาลองใหม่',
+          'danger'
+        );
+      }
+    }
+
+    async function refreshToken() {
+      idToken = liff.getIDToken() || '';
+      if (!idToken) throw new Error('ไม่พบ ID Token กรุณาเปิดระบบใหม่');
+      return idToken;
+    }
+
+    async function loadApplications() {
+      if (!ready) return;
+
+      try {
+        await refreshToken();
+        hideNotice('statusMessage');
+
+        const result = await serverCall('getMyApplications', idToken);
+        renderApplications(result.applications || []);
+      } catch (error) {
+        setNotice('statusMessage', error.message || 'โหลดสถานะไม่สำเร็จ', 'danger');
+      }
+    }
+
+    function renderApplications(applications) {
+      const container = $('applicationsList');
+      container.innerHTML = '';
+
+      if (!applications.length) {
+        container.innerHTML = '<div class="empty">ยังไม่มีใบสมัครที่ผูกกับบัญชี LINE นี้</div>';
+        return;
+      }
+
+      [...applications].reverse().forEach(app => {
+        const div = document.createElement('div');
+        div.className = 'application-card';
+        div.innerHTML = `
+          <div class="application-head">
             <div>
-
-              <strong id="uploadPercent">
-                0%
-              </strong>
-
-              <span>
-                อัปโหลด
-              </span>
-
+              <div><strong>${escapeHtml(app.position)}</strong></div>
+              <div class="application-id">${escapeHtml(app.applicationId)}</div>
             </div>
-
+            <span class="status-pill">${escapeHtml(app.status || 'รอตรวจสอบ')}</span>
           </div>
 
-        </div>
-
-      </div>
-
-
-      <div class="loading-copy">
-
-        <h2
-          id="loadingTitle"
-          class="loading-title"
-        >
-          กำลังส่งข้อมูล
-        </h2>
-
-        <div
-          id="loadingStage"
-          class="loading-stage"
-        >
-          กำลังเตรียมระบบ...
-        </div>
-
-      </div>
-
-
-      <div
-        id="loadingDetail"
-        class="loading-detail"
-      >
-        กรุณาอย่าปิดหน้านี้ระหว่างส่งข้อมูล
-      </div>
-
-
-      <div
-        id="loadingMeta"
-        class="loading-meta"
-        aria-live="polite"
-      >
-
-        <span
-          id="loadingChunk"
-          class="loading-meta-pill"
-        >
-          0/0 ส่วน
-        </span>
-
-        <span
-          id="loadingSize"
-          class="loading-meta-pill"
-        >
-          0 MB / 0 MB
-        </span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =======================================
-       SUCCESS
-  ======================================== -->
-
-  <div
-    id="successOverlay"
-    class="success-overlay"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="successTitle"
-  >
-
-    <div class="success-modal">
-
-      <div
-        class="success-check-wrap"
-        aria-hidden="true"
-      >
-        <span class="success-badge-dot"></span>
-      </div>
-
-
-      <h2
-        id="successTitle"
-        class="success-title"
-      >
-        ฝาก Resume สำเร็จ
-      </h2>
-
-
-      <p class="success-subtitle">
-        ข้อมูลของคุณถูกส่งให้เจ้าหน้าที่
-        @attwork เรียบร้อยแล้ว
-      </p>
-
-
-      <div class="success-ids">
-
-        <div class="success-id-card">
-
-          <div>
-
-            <span class="success-id-label">
-              ใบสมัครหมายเลข
-            </span>
-
-            <strong
-              id="successApplicationId"
-              class="success-id-value"
-            >
-              -
-            </strong>
-
+          <div class="detail-grid">
+            <div class="detail">
+              <div class="detail-label">ชื่อ-นามสกุล</div>
+              <div class="detail-value">${escapeHtml(app.name)}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">เงินเดือนที่คาดหวัง</div>
+              <div class="detail-value">${escapeHtml(formatMoney(app.expectedSalary))}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">เริ่มงานได้</div>
+              <div class="detail-value">${escapeHtml(app.startDate)}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">วันที่สมัคร</div>
+              <div class="detail-value">${escapeHtml(app.appliedDate)}</div>
+            </div>
+            <div class="detail full">
+              <div class="detail-label">ที่อยู่ปัจจุบัน</div>
+              <div class="detail-value">${escapeHtml(app.address)}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">เบอร์โทรศัพท์</div>
+              <div class="detail-value">${escapeHtml(app.phone)}</div>
+            </div>
+            <div class="detail">
+              <div class="detail-label">อีเมล</div>
+              <div class="detail-value">${escapeHtml(app.email)}</div>
+            </div>
           </div>
 
-          <button
-            id="copyApplicationId"
-            class="copy-btn"
-            type="button"
-          >
-            คัดลอก
-          </button>
-
-        </div>
-
-
-        <div class="success-id-card">
-
-          <div>
-
-            <span class="success-id-label">
-              Resume หมายเลข
-            </span>
-
-            <strong
-              id="successResumeId"
-              class="success-id-value"
-            >
-              -
-            </strong>
-
+          <div class="resume-box">
+            <strong>Resume:</strong>
+            <span class="resume-status">${escapeHtml(app.resumeStatus || 'ไม่มีไฟล์แนบ')}</span>
+            ${app.resumeName ? '<br><span>ไฟล์: ' + escapeHtml(app.resumeName) + '</span>' : ''}
           </div>
+        `;
+        container.appendChild(div);
+      });
+    }
 
-          <button
-            id="copyResumeId"
-            class="copy-btn"
-            type="button"
-          >
-            คัดลอก
-          </button>
+    function readFileAsBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || '');
+          const comma = result.indexOf(',');
+          resolve(comma >= 0 ? result.substring(comma + 1) : result);
+        };
+        reader.onerror = () => reject(new Error('อ่านไฟล์ Resume ไม่สำเร็จ'));
+        reader.readAsDataURL(blob);
+      });
+    }
 
-        </div>
+    async function uploadResume(applicationId, file) {
+      if (!file) {
+        return { ok: true, status: 'NO_FILE' };
+      }
 
-      </div>
+      const maxSize = Number(appConfig.maxFileSize || 0);
 
+      if (file.size > maxSize) {
+        throw new Error('ไฟล์ Resume ต้องมีขนาดไม่เกิน ' + Math.round(maxSize / 1024 / 1024) + ' MB');
+      }
 
-      <button
-        id="successCloseButton"
-        class="success-close"
-        type="button"
-      >
-        ปิด
-      </button>
+      const chunkSize = Number(appConfig.chunkSize || 2 * 1024 * 1024);
+      const totalChunks = Math.ceil(file.size / chunkSize);
+      const mimeType = file.type || 'application/octet-stream';
 
-    </div>
+      const start = await serverCall(
+        'prepareApplicationResumeUpload',
+        idToken,
+        applicationId,
+        file.name,
+        mimeType,
+        file.size,
+        totalChunks
+      );
 
-  </div>
+      const uploadId = start.uploadId;
+      const uploadKey = start.uploadKey;
 
+      $('progressWrap').style.display = 'block';
+      $('progressBar').style.width = '0%';
+      $('progressText').textContent = 'เริ่มอัปโหลด ' + escapeHtml(file.name);
 
-  <iframe
-    id="postFrame"
-    name="atworkPostFrame"
-    style="display:none"
-    title="ATWORK background submission"
-  ></iframe>
+      for (let index = 0; index < totalChunks; index++) {
+        const startByte = index * chunkSize;
+        const endByte = Math.min(startByte + chunkSize, file.size);
+        const blob = file.slice(startByte, endByte);
+        const base64 = await readFileAsBase64(blob);
 
+        const result = await serverCall(
+          'uploadApplicationChunk',
+          uploadId,
+          uploadKey,
+          index,
+          base64
+        );
 
+        const uploadedBytes = Number(result.uploadedBytes || endByte);
+        const percent = Math.min(100, Math.round((uploadedBytes / file.size) * 100));
+
+        $('progressBar').style.width = percent + '%';
+        $('progressText').textContent = 'กำลังอัปโหลด... ' + percent + '% (' + (index + 1) + '/' + totalChunks + ')';
+
+        if (result.status === 'COMPLETE') {
+          $('progressBar').style.width = '100%';
+          $('progressText').textContent = 'แนบ Resume สำเร็จ';
+          return result;
+        }
+      }
+
+      throw new Error('การอัปโหลด Resume ไม่จบสมบูรณ์');
+    }
+
+    $('applicationForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!ready) return;
+
+      const button = $('submitButton');
+      const file = $('resume').files && $('resume').files[0] ? $('resume').files[0] : null;
+
+      button.disabled = true;
+      button.textContent = 'กำลังส่งใบสมัคร...';
+      hideNotice('formMessage');
+      $('progressWrap').style.display = 'none';
+
+      try {
+        await refreshToken();
+
+        const form = {
+          name: $('name').value.trim(),
+          position: $('position').value,
+          expectedSalary: $('expectedSalary').value,
+          startDate: $('startDate').value,
+          houseNo: $('houseNo').value.trim(),
+          moo: $('moo').value.trim(),
+          road: $('road').value.trim(),
+          subdistrict: $('subdistrict').value.trim(),
+          district: $('district').value.trim(),
+          province: $('province').value.trim(),
+          postalCode: $('postalCode').value.trim(),
+          phone: $('phone').value.trim(),
+          email: $('email').value.trim()
+        };
+
+        const result = await serverCall('createApplication', idToken, form);
+        let resumeResult = null;
+
+        if (file) {
+          button.textContent = 'กำลังแนบ Resume...';
+          resumeResult = await uploadResume(result.applicationId, file);
+        }
+
+        if (file && resumeResult && resumeResult.status === 'COMPLETE') {
+          setNotice(
+            'formMessage',
+            'ส่งใบสมัครและแนบ Resume เรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId,
+            'success'
+          );
+        } else if (!file) {
+          setNotice(
+            'formMessage',
+            'ส่งใบสมัครเรียบร้อยแล้ว\nเลขที่สมัคร: ' + result.applicationId + '\nResume: ไม่มีไฟล์แนบ',
+            'success'
+          );
+        } else {
+          setNotice(
+            'formMessage',
+            'ส่งใบสมัครแล้ว แต่ Resume มีปัญหาในการอัปโหลด\nเลขที่สมัคร: ' + result.applicationId,
+            'warning'
+          );
+        }
+
+        $('applicationForm').reset();
+        await loadApplications();
+      } catch (error) {
+        setNotice('formMessage', error.message || 'ส่งใบสมัครไม่สำเร็จ', 'danger');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'ส่งใบสมัคร';
+      }
+    });
+
+    $('refreshButton').addEventListener('click', loadApplications);
+
+    document.querySelectorAll('.tab-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
+
+        button.classList.add('active');
+        $(button.dataset.panel).classList.add('active');
+
+        if (button.dataset.panel === 'statusPanel') {
+          loadApplications();
+        }
+      });
+    });
+
+    init();
+  </script>
 </body>
 </html>
