@@ -1,99 +1,424 @@
+
 <!DOCTYPE html>
-<html dir="ltr" lang="en_US">
+<html lang="th">
 <head>
-      <script type="module" crossorigin src="https://static.line-scdn.net/line_web_login/edge/dist/assets/polyfills-CGqTV0cN.js"></script>
-
+  <base target="_top">
   <meta charset="UTF-8">
-  <meta name="robots" content="noindex">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>LINE Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ATWORK | สมัครงานและฝาก Resume</title>
 
-  <link rel="shortcut icon" type="image/x-icon" href="https://vos.line-scdn.net/login-web/img/favicon.ico">
-  <link rel="icon" type="image/x-icon" sizes="32x32" href="https://vos.line-scdn.net/login-web/img/favicon-32x32.png">
-  <link rel="icon" type="image/x-icon" sizes="16x16" href="https://vos.line-scdn.net/login-web/img/favicon-16x16.png">
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-  <link rel="apple-touch-icon-precomposed" href="https://vos.line-scdn.net/login-web/img/apple-touch-icon-precomposed.png">
+  <style>
+    * { box-sizing: border-box; }
 
-<script>/* analytics */
-(function(g,d){
-  var v='release/stable';
-  g._trmq=[];g._trm=function(){g._trmq.push(arguments)};
-  g.onerror=function(m,f,l,c){g._trm('send','exception',m,f,l,c)};
-  var h=location.protocol==='https:'?'https://d.line-scdn.net':'http://d.line-cdn.net';
-  var s=d.createElement('script');s.async=1;
-  s.src=h+'/n/_4/torimochi.js/public/v1/'+v+'/min/torimochi.js';
-  var t=d.getElementsByTagName('script')[0];t.parentNode.insertBefore(s,t);
-})(window, document);
+    body {
+      margin: 0;
+      font-family: Arial, Tahoma, sans-serif;
+      background: #f3f6fb;
+      color: #172033;
+    }
 
-_trm('performance', { rate: 0.05 });
-_trm('enable', { productKey: "line-web-login-real" });
-/* /analytics */</script>
+    .container {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
 
-<script type="text/javascript" charset="UTF-8" src="https://access.line.me/oauth2/v2.1/messages"></script>
+    .header {
+      background: #173f73;
+      color: white;
+      padding: 26px 22px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+    }
 
-      <script type="module" crossorigin src="https://static.line-scdn.net/line_web_login/edge/dist/assets/loginUserConfirm-F-IRQk43.js"></script>
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/common-BRp4-Zwj.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/modulepreload-polyfill-yj_LhEhV.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/typesafeUtsWithAnonymous-Cv44oc3A.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/createLayoutWrapper-CdbFb2JW.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/eventHubClickPlugin-CloXFlGP.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/uaPlugin-Cv2ZG4xJ.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/Constant-BLc9ctkG.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/lFooter01-B9FwwFbY.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/cLogo01-CqaSyojQ.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/lContents01-Dk03ln1V.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/cButton01-B1fd6ZiW.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/uLayoutMixin-DkXLoPuM.js">
-    <link rel="modulepreload" crossorigin href="https://static.line-scdn.net/line_web_login/edge/dist/assets/darkModePlugin-BwufWwxd.js">
-    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/common-BEqGuuLX.css">
-    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/lContents01-C82IcGx0.css">
-    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/lFooter01-9ushudBt.css">
-    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/cButton01-DjQx_bLy.css">
-    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/loginUserConfirm-Cdj3cS6Y.css">
-    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/main-CxHY0W21.css">
-    <link rel="stylesheet" href="https://static.line-scdn.net/line_web_login/edge/dist/assets/ldsm-semantic-dark-mode-CmDwVChN.css">
+    .header h1 { margin: 0 0 8px; font-size: 25px; }
+    .header p { margin: 0; line-height: 1.6; color: #e4edfa; }
 
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 5px 20px #182b4610;
+      margin-bottom: 16px;
+    }
+
+    h2 { font-size: 19px; margin: 0 0 18px; }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 14px 0 7px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      background: white;
+      font-size: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #1769aa;
+      color: white;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    button:disabled { opacity: .6; cursor: wait; }
+
+    .notice {
+      background: #eef5ff;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #24476d;
+    }
+
+    #message {
+      display: none;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    #message.success { display: block; background: #e7f7ed; color: #17683a; }
+    #message.error { display: block; background: #fff0f0; color: #a42626; }
+
+    .hidden { display: none; }
+
+    .required { color: #c62828; }
+
+    @media (max-width: 420px) {
+      .grid { grid-template-columns: 1fr; }
+      .card { padding: 17px; }
+    }
+  </style>
 </head>
 
-<body ontouchstart="">
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>ATWORK</h1>
+      <p>ระบบสมัครงานและฝาก Resume<br>กรอกข้อมูลเพื่อให้เจ้าหน้าที่ตรวจสอบ</p>
+    </header>
 
-<noscript>
-  <div class="LyWrap">
-    <!--CONTENTS-AREA-->
-    <div class="LyContents" role="main">
-      <div class="lyContentsInner">
-        <div class="MdBox01">
-          <section class="mdBox01Inner MdLYR03Error">
-            <div class="MdLogo01 mdLogo01P01">
-              <h1 class="mdLogo01Img">LINE</h1>
-            </div>
-            <h2 class="mdLYR03Title mdMN10Title">
-              <span class="mdLYR03Icon MdIco01Alert">alert</span>
-              <span>JavaScript error</span>
-            </h2>
-            <p class="mdLYR03Desc mdMN10Desc">
-              JavaScript is disabled on your browser.<br />
-Please enable JavaScript to use this site.            </p>
-          </section>
+    <div id="message" role="status" aria-live="polite"></div>
+
+    <section class="card">
+      <h2>เลือกบริการ</h2>
+      <label for="service">ต้องการใช้บริการใด</label>
+      <select id="service">
+        <option value="application">สมัครงาน</option>
+        <option value="resume">ฝาก Resume</option>
+      </select>
+      <p class="notice" id="lineStatus">กำลังเชื่อมต่อ LINE...</p>
+    </section>
+
+    <form id="applicationForm" class="card">
+      <h2>ข้อมูลสมัครงาน</h2>
+
+      <label for="appName">ชื่อ-นามสกุล <span class="required">*</span></label>
+      <input id="appName" name="name" required maxlength="120">
+
+      <div class="grid">
+        <div>
+          <label for="appPhone">เบอร์โทรศัพท์ <span class="required">*</span></label>
+          <input id="appPhone" name="phone" type="tel" required maxlength="20">
+        </div>
+        <div>
+          <label for="appEmail">อีเมล</label>
+          <input id="appEmail" name="email" type="email" maxlength="150">
         </div>
       </div>
-    </div>
-  </div>
-</noscript>
 
-<div id="__layout">
-  <div class="LyBody" id="app">
-    <app app-data="{&quot;props&quot;:{&quot;assets-origin-url&quot;:&quot;https://static.line-scdn.net/line_web_login/1a1143057ab/dist&quot;,&quot;username&quot;:&quot;S.KUMPAPAN&quot;,&quot;avatar-url&quot;:&quot;https://profile.line-scdn.net/0h2WCCdz8xbXhuOnGkhBATRh5qbhJNSzRqEV4rTg4-YUtXAyh5F193Sl85Ox0HWngpSgshFlg9MEpMdm0vIiwmQCtHakkRT11SPgpnSAZvckATUlFeKghLazNNNEkqa2N3ABkrbDpjbD0OQlYrNF8-WxM6Vg4OYU9LJ20BLmsIA_sBOBouRl8iFl8zMU_S/preview&quot;,&quot;login-url&quot;:&quot;/oauth2/v2.1/ssoLogin?loginChannelId=2011817085&amp;returnUri=%2Foauth2%2Fv2.1%2Fauthorize%2Fconsent%3Fapp_id%3D2011817085-Mqy2mWhy%26client_id%3D2011817085%26scope%3Dopenid%2520profile%26state%3DuNqy3WXY3zhT%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DeJx-afX_iVf0BkRRPhtj3T9a1hN-6pXdY1Dd3xk0tcw%26liff_sdk_version%3D2.31.2%26type%3DL%26redirect_uri%3Dhttps%253A%252F%252Fkppst.github.io%252F-attwork-LIFF%252FIndex.html&quot;,&quot;login-with-another-account-url&quot;:&quot;/oauth2/v2.1/relogin?loginChannelId=2011817085&amp;returnUri=%2Foauth2%2Fv2.1%2Fauthorize%2Fconsent%3Fapp_id%3D2011817085-Mqy2mWhy%26client_id%3D2011817085%26scope%3Dopenid%2520profile%26state%3DuNqy3WXY3zhT%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DeJx-afX_iVf0BkRRPhtj3T9a1hN-6pXdY1Dd3xk0tcw%26liff_sdk_version%3D2.31.2%26type%3DL%26redirect_uri%3Dhttps%253A%252F%252Fkppst.github.io%252F-attwork-LIFF%252FIndex.html&quot;},&quot;slots&quot;:{&quot;serverside_field&quot;:[{&quot;type&quot;:&quot;hidden&quot;,&quot;name&quot;:&quot;__csrf&quot;,&quot;value&quot;:&quot;JwptWXecblvIluYnLR2RlZ&quot;,&quot;id&quot;:&quot;__csrf&quot;},{&quot;type&quot;:&quot;hidden&quot;,&quot;name&quot;:&quot;lang&quot;,&quot;value&quot;:&quot;en_US&quot;}],&quot;serverside_redirect_query&quot;:[{&quot;type&quot;:&quot;hidden&quot;,&quot;name&quot;:&quot;__csrf&quot;,&quot;value&quot;:&quot;JwptWXecblvIluYnLR2RlZ&quot;,&quot;id&quot;:&quot;__csrf&quot;}]}}" />
-  </div>
-</div>
+      <label for="position">ตำแหน่งที่สมัคร <span class="required">*</span></label>
+      <select id="position" name="position" required>
+        <option value="">เลือกตำแหน่ง</option>
+        <option value="ช่าง">ช่าง</option>
+        <option value="พนักงานโรงงาน">พนักงานโรงงาน</option>
+        <option value="ออฟฟิศ">พนักงานออฟฟิศ</option>
+        <option value="อื่น ๆ">อื่น ๆ</option>
+      </select>
 
-<script>
-  var lap_optout_check_api_url = "https://optout-api.tr.line.me/enabled";
-</script>
+      <div class="grid">
+        <div>
+          <label for="salary">เงินเดือนที่คาดหวัง</label>
+          <input id="salary" name="expectedSalary" type="number" min="0">
+        </div>
+        <div>
+          <label for="startDate">วันที่เริ่มงานได้</label>
+          <input id="startDate" name="startDate" type="date">
+        </div>
+      </div>
 
-<script src="https://static.line-scdn.net/line_web_login/1a1143057ab/dist/lap_optout_check.min.js"></script>
+      <label for="houseNo">บ้านเลขที่</label>
+      <input id="houseNo" name="houseNo" maxlength="50">
 
+      <div class="grid">
+        <div>
+          <label for="moo">หมู่</label>
+          <input id="moo" name="moo" maxlength="20">
+        </div>
+        <div>
+          <label for="road">ถนน</label>
+          <input id="road" name="road" maxlength="100">
+        </div>
+      </div>
 
+      <div class="grid">
+        <div>
+          <label for="subdistrict">ตำบล / แขวง</label>
+          <input id="subdistrict" name="subdistrict" maxlength="100">
+        </div>
+        <div>
+          <label for="district">อำเภอ / เขต</label>
+          <input id="district" name="district" maxlength="100">
+        </div>
+      </div>
 
+      <div class="grid">
+        <div>
+          <label for="appProvince">จังหวัด</label>
+          <input id="appProvince" name="province" maxlength="100">
+        </div>
+        <div>
+          <label for="postalCode">รหัสไปรษณีย์</label>
+          <input id="postalCode" name="postalCode" inputmode="numeric" maxlength="10">
+        </div>
+      </div>
+
+      <button class="primary" type="submit">ส่งใบสมัคร</button>
+    </form>
+
+    <form id="resumeForm" class="card hidden">
+      <h2>ฝาก Resume</h2>
+
+      <label for="resumeName">ชื่อ-นามสกุล <span class="required">*</span></label>
+      <input id="resumeName" name="name" required maxlength="120">
+
+      <label for="resumePhone">เบอร์โทรศัพท์ <span class="required">*</span></label>
+      <input id="resumePhone" name="phone" type="tel" required maxlength="20">
+
+      <label for="jobType">ประเภทงานที่สนใจ <span class="required">*</span></label>
+      <select id="jobType" name="jobType" required>
+        <option value="">เลือกประเภทงาน</option>
+        <option value="ช่าง">ช่าง</option>
+        <option value="พนักงานโรงงาน">พนักงานโรงงาน</option>
+        <option value="ออฟฟิศ">พนักงานออฟฟิศ</option>
+        <option value="อื่น ๆ">อื่น ๆ</option>
+      </select>
+
+      <label for="resumeProvince">จังหวัดที่ต้องการทำงาน</label>
+      <input id="resumeProvince" name="province" maxlength="100">
+
+      <label for="resumeFile">ไฟล์ Resume <span class="required">*</span></label>
+      <input id="resumeFile" type="file" accept=".pdf,.jpg,.jpeg,.png" required>
+      <p class="notice">
+        รองรับ PDF, JPG และ PNG ขนาดไม่เกิน 5 MB
+        ไฟล์จะถูกเก็บใน Google Drive และให้เจ้าหน้าที่ตรวจสอบ
+      </p>
+
+      <button class="primary" type="submit">ส่ง Resume</button>
+    </form>
+
+    <p class="notice">
+      ข้อมูลที่ส่งจะมีสถานะเริ่มต้นเป็น “รอตรวจสอบ”
+      โปรดตรวจสอบความถูกต้องก่อนส่ง
+    </p>
+  </main>
+
+  <script>
+    const LIFF_ID = '<?= liffId ?>';
+    let idToken = '';
+    let profile = null;
+    let liffReady = false;
+
+    const $ = id => document.getElementById(id);
+    const appForm = $('applicationForm');
+    const resumeForm = $('resumeForm');
+    const service = $('service');
+    const message = $('message');
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = type;
+      message.style.display = 'block';
+      message.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function setBusy(form, busy) {
+      const button = form.querySelector('button[type="submit"]');
+      button.disabled = busy;
+      button.textContent = busy ? 'กำลังส่งข้อมูล...' :
+        (form === appForm ? 'ส่งใบสมัคร' : 'ส่ง Resume');
+    }
+
+    function updateService() {
+      const isResume = service.value === 'resume';
+      appForm.classList.toggle('hidden', isResume);
+      resumeForm.classList.toggle('hidden', !isResume);
+      appForm.querySelectorAll('input,select').forEach(el => {
+        el.disabled = isResume;
+      });
+      resumeForm.querySelectorAll('input,select').forEach(el => {
+        el.disabled = !isResume;
+      });
+      message.style.display = 'none';
+    }
+
+    service.addEventListener('change', updateService);
+    updateService();
+
+    async function initLiff() {
+      try {
+        await liff.init({ liffId: LIFF_ID });
+
+        if (!liff.isLoggedIn()) {
+          $('lineStatus').textContent = 'กำลังเข้าสู่ระบบ LINE...';
+          liff.login();
+          return;
+        }
+
+        idToken = liff.getIDToken();
+
+        if (!idToken) {
+          throw new Error('ไม่สามารถอ่าน LINE ID Token ได้ กรุณาตรวจสอบ LIFF และสิทธิ์การเข้าสู่ระบบ');
+        }
+
+        profile = await liff.getProfile();
+        liffReady = true;
+
+        $('lineStatus').textContent =
+          'เชื่อมต่อ LINE แล้ว' +
+          (profile.displayName ? ' · ' + profile.displayName : '');
+
+        $('appName').value = profile.displayName || '';
+        $('resumeName').value = profile.displayName || '';
+      } catch (error) {
+        $('lineStatus').textContent = 'เชื่อมต่อ LINE ไม่สำเร็จ';
+        showMessage(error.message || 'เกิดข้อผิดพลาดในการเชื่อมต่อ LINE', 'error');
+      }
+    }
+
+    function callServer(method, payload, form) {
+      if (!liffReady || !idToken) {
+        showMessage('กรุณาเปิดหน้านี้ผ่าน LINE และเข้าสู่ระบบก่อนส่งข้อมูล', 'error');
+        return;
+      }
+
+      payload.idToken = idToken;
+      setBusy(form, true);
+
+      const runner = google.script.run
+        .withSuccessHandler(result => {
+          setBusy(form, false);
+          if (result && result.success) {
+            showMessage(
+              result.message + ' สถานะ: ' + result.status,
+              'success'
+            );
+            form.reset();
+            if (profile) {
+              $('appName').value = profile.displayName || '';
+              $('resumeName').value = profile.displayName || '';
+            }
+          } else {
+            showMessage('ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่', 'error');
+          }
+        })
+        .withFailureHandler(error => {
+          setBusy(form, false);
+          showMessage(error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
+        });
+
+      if (method === 'application') {
+        runner.submitApplication(payload);
+      } else {
+        runner.submitResume(payload);
+      }
+    }
+
+    appForm.addEventListener('submit', event => {
+      event.preventDefault();
+
+      const payload = Object.fromEntries(new FormData(appForm).entries());
+      callServer('application', payload, appForm);
+    });
+
+    resumeForm.addEventListener('submit', async event => {
+      event.preventDefault();
+
+      const file = $('resumeFile').files[0];
+      if (!file) {
+        showMessage('กรุณาเลือกไฟล์ Resume', 'error');
+        return;
+      }
+
+      const allowed = [
+        'application/pdf',
+        'image/jpeg',
+        'image/png'
+      ];
+
+      if (!allowed.includes(file.type)) {
+        showMessage('รองรับเฉพาะ PDF, JPG และ PNG', 'error');
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showMessage('ไฟล์ต้องมีขนาดไม่เกิน 5 MB', 'error');
+        return;
+      }
+
+      try {
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error('อ่านไฟล์ไม่สำเร็จ'));
+          reader.readAsDataURL(file);
+        });
+
+        const fileData = String(dataUrl).split(',')[1];
+        const payload = {
+          name: $('resumeName').value.trim(),
+          phone: $('resumePhone').value.trim(),
+          jobType: $('jobType').value,
+          province: $('resumeProvince').value.trim(),
+          fileName: file.name,
+          mimeType: file.type,
+          fileData: fileData
+        };
+
+        callServer('resume', payload, resumeForm);
+      } catch (error) {
+        showMessage(error.message || 'อ่านไฟล์ไม่สำเร็จ', 'error');
+      }
+    });
+
+    initLiff();
+  </script>
 </body>
 </html>
