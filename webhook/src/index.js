@@ -1,4 +1,4 @@
-```javascript
+javascript
 const LIFF_URL =
   "https://liff.line.me/2011817085-Mqy2mWhy";
 
@@ -279,4 +279,3 @@ function timingSafeEqual(a, b) {
 
   return result === 0;
 }
-```
